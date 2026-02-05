@@ -1,13 +1,13 @@
 import React from 'react'
 import { DatePicker, Form } from 'antd'
 import { Controller, Control } from 'react-hook-form'
-import { DateField as DateFieldConfig } from '@/types'
+import { DateField as DateFieldConfig, FormValues } from '@/types'
 import moment, { Moment } from 'moment'
 import { validateFieldConfig } from '@/validation/fieldSchemas'
 
 interface DateFieldProps {
   config: DateFieldConfig
-  control: Control<any>
+  control: Control<FormValues>
   error?: string
   disabled?: boolean
 }

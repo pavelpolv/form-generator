@@ -1,12 +1,12 @@
 import React from 'react'
 import { Input, Form } from 'antd'
 import { Controller, Control } from 'react-hook-form'
-import { InputNumberField as InputNumberFieldConfig } from '@/types'
+import { InputNumberField as InputNumberFieldConfig, FormValues } from '@/types'
 import { validateFieldConfig } from '@/validation/fieldSchemas'
 
 interface InputNumberFieldProps {
   config: InputNumberFieldConfig
-  control: Control<any>
+  control: Control<FormValues>
   error?: string
   disabled?: boolean
 }

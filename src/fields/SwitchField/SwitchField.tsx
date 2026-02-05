@@ -1,12 +1,12 @@
 import React from 'react'
 import { Switch, Form } from 'antd'
 import { Controller, Control } from 'react-hook-form'
-import { SwitchField as SwitchFieldConfig } from '@/types'
+import { SwitchField as SwitchFieldConfig, FormValues } from '@/types'
 import { validateFieldConfig } from '@/validation/fieldSchemas'
 
 interface SwitchFieldProps {
   config: SwitchFieldConfig
-  control: Control<any>
+  control: Control<FormValues>
   error?: string
   disabled?: boolean
 }
