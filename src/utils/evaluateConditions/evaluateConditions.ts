@@ -11,7 +11,7 @@ import {
  * Check if a value is empty
  * Empty values: null, undefined, '', [], {}
  */
-function isEmpty(value: any): boolean {
+function isEmpty(value: unknown): boolean {
   if (value === null || value === undefined) return true
   if (typeof value === 'string') return value.trim() === ''
   if (Array.isArray(value)) return value.length === 0
@@ -22,7 +22,7 @@ function isEmpty(value: any): boolean {
 /**
  * Check if a value is a valid ISO date string
  */
-function isISODateString(value: any): boolean {
+function isISODateString(value: unknown): value is string {
   if (typeof value !== 'string') return false
   const isoDateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$/
   return isoDateRegex.test(value)
@@ -32,7 +32,7 @@ function isISODateString(value: any): boolean {
  * Get comparable value for date or number comparisons
  * Handles ISO date strings and numbers
  */
-function getComparableValue(value: any): number {
+function getComparableValue(value: unknown): number {
   // If it's an ISO date string, convert to timestamp
   if (isISODateString(value)) {
     return new Date(value).getTime()
@@ -44,7 +44,7 @@ function getComparableValue(value: any): number {
 /**
  * Get field value, supports $ prefix for field references
  */
-function getFieldValue(value: any, formValues: FormValues): any {
+function getFieldValue(value: unknown, formValues: FormValues): unknown {
   // If value is a string starting with $, treat it as a field reference
   if (typeof value === 'string' && value.startsWith('$')) {
     const fieldName = value.substring(1)
@@ -57,9 +57,9 @@ function getFieldValue(value: any, formValues: FormValues): any {
  * Compare two values based on operator
  */
 function compareValues(
-  leftValue: any,
+  leftValue: unknown,
   operator: ComparisonOperator,
-  rightValue: any
+  rightValue: unknown
 ): boolean {
   try {
     switch (operator) {

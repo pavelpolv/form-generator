@@ -1,14 +1,14 @@
 import React from 'react'
 import { Select, Form } from 'antd'
 import { Controller, Control } from 'react-hook-form'
-import { SelectField as SelectFieldConfig } from '@/types'
+import { SelectField as SelectFieldConfig, FormValues } from '@/types'
 import { validateFieldConfig } from '@/validation/fieldSchemas'
 
 const { Option } = Select
 
 interface SelectFieldProps {
   config: SelectFieldConfig
-  control: Control<any>
+  control: Control<FormValues>
   error?: string
   disabled?: boolean
 }

@@ -64,4 +64,5 @@ export interface FormConfig {
  *   birthDate: '1999-01-01'
  * }
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type FormValues = Record<string, any>

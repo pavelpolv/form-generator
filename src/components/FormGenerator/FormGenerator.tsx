@@ -4,6 +4,12 @@ import { Button, Space, Form } from 'antd'
 import { FormConfig, FormValues } from '@/types'
 import { FieldGroup } from '@/components/FieldGroup'
 
+export interface FormGeneratorRef {
+  getValues: () => FormValues
+  reset: (values?: FormValues) => void
+  submit: () => void
+}
+
 export interface FormGeneratorProps {
   /**
    * Form configuration
@@ -54,7 +60,7 @@ export interface FormGeneratorProps {
  * Form Generator Component
  * Main component for rendering dynamic forms based on configuration
  */
-export const FormGenerator = React.forwardRef<any, FormGeneratorProps>(
+export const FormGenerator = React.forwardRef<FormGeneratorRef, FormGeneratorProps>(
   (
     {
       config,

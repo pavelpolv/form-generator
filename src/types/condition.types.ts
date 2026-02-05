@@ -52,6 +52,7 @@ export interface ConditionValue {
    * - Field reference: use $ prefix (e.g., "$otherField")
    * - Not required for ∅ and !∅ operators
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   value?: any
 
   /**

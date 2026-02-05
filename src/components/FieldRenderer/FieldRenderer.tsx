@@ -1,11 +1,11 @@
 import React from 'react'
 import { Control } from 'react-hook-form'
-import { Field } from '@/types'
+import { Field, FormValues } from '@/types'
 import { InputField, InputNumberField, SelectField, SwitchField, DateField } from '@/fields'
 
 interface FieldRendererProps {
   field: Field
-  control: Control<any>
+  control: Control<FormValues>
   error?: string
   disabled?: boolean
 }
@@ -72,7 +72,7 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({
       )
 
     default:
-      console.error(`[Form Generator] Unknown field type: ${(field as any).type}`)
+      console.error(`[Form Generator] Unknown field type: ${(field as Field).type}`)
       return null
   }
 }

@@ -51,6 +51,7 @@ export interface BaseField {
   /**
    * Default value for the field
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   defaultValue?: any
 }
 

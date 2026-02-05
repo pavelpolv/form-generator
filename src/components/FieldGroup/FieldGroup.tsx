@@ -7,9 +7,9 @@ import { FieldRenderer } from '@/components/FieldRenderer'
 
 interface FieldGroupProps {
   group: GroupField
-  control: Control<any>
+  control: Control<FormValues>
   formValues: FormValues
-  touchedFields: Record<string, any>
+  touchedFields: Record<string, boolean | undefined>
 }
 
 /**
