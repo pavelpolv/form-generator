@@ -14,6 +14,7 @@ export {
 // Field types
 export type {
   FieldType,
+  InputType,
   BaseField,
   InputFieldProps,
   InputNumberFieldProps,
