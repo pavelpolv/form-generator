@@ -77,7 +77,7 @@ export const WithDisabledDateBefore: Story = {
       label: 'Future Date (no past dates)',
       placeholder: 'Select a future date',
       format: 'YYYY-MM-DD',
-      disabledDateBefore: new Date().toISOString(),
+      disabledDateBefore: new Date(),
     },
   },
 }
