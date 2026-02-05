@@ -1,0 +1,28 @@
+# Source files
+src/
+stories/
+.storybook/
+
+# Config files
+vite.config.ts
+tsconfig.json
+tsconfig.node.json
+tsconfig.build.json
+.eslintrc.cjs
+
+# Test files
+**/*.test.ts
+**/*.test.tsx
+**/*.stories.tsx
+
+# Development
+node_modules/
+.vscode/
+.idea/
+
+# Build artifacts
+storybook-static/
+
+# Misc
+.DS_Store
+*.log
