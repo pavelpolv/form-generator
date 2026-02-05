@@ -56,13 +56,18 @@ export interface BaseField {
 }
 
 /**
+ * HTML input type for text-based inputs
+ */
+export type InputType = 'text' | 'password' | 'email' | 'tel' | 'url' | 'search'
+
+/**
  * Input field specific props
  */
 export interface InputFieldProps {
   /**
-   * Input type (text or password)
+   * Input type (text, password, email, tel, url, search)
    */
-  inputType?: 'text' | 'password'
+  inputType?: InputType
 
   /**
    * Maximum length

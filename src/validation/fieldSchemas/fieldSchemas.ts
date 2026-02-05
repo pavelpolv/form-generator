@@ -1,5 +1,4 @@
 import { z } from 'zod'
-import { Field } from '@/types'
 
 /**
  * Base field schema shared by all field types
@@ -71,10 +70,20 @@ export const dateFieldSchema = baseFieldSchema.extend({
 
 /**
  * Validate field config and return error message if invalid
+ * Accepts unknown input for runtime validation
  */
-export function validateFieldConfig(config: Field): string | null {
+export function validateFieldConfig(config: unknown): string | null {
+  if (typeof config !== 'object' || config === null) {
+    return 'Config must be an object'
+  }
+
+  const fieldConfig = config as { type?: unknown }
+  if (typeof fieldConfig.type !== 'string') {
+    return 'Config must have a type property'
+  }
+
   try {
-    switch (config.type) {
+    switch (fieldConfig.type) {
       case 'input':
         inputFieldSchema.parse(config)
         break
@@ -90,10 +99,8 @@ export function validateFieldConfig(config: Field): string | null {
       case 'date':
         dateFieldSchema.parse(config)
         break
-      default: {
-        const unknownConfig = config as { type: string }
-        return `Unknown field type: ${unknownConfig.type}`
-      }
+      default:
+        return `Unknown field type: ${fieldConfig.type}`
     }
     return null
   } catch (error) {
