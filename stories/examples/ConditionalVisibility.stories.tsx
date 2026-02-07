@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import { fn } from '@storybook/test'
 import { FormGenerator } from '../../src/components/FormGenerator'
 import { FormConfig } from '../../src/types'
 
@@ -7,6 +8,9 @@ const meta: Meta<typeof FormGenerator> = {
   component: FormGenerator,
   parameters: {
     layout: 'padded',
+  },
+  args: {
+    onSubmit: fn(),
   },
 }
 
@@ -130,10 +134,6 @@ export const ConditionalGroups: Story = {
     config: conditionalVisibilityConfig,
     showSubmitButton: true,
     showResetButton: true,
-    onSubmit: (values) => {
-      console.log('Form submitted:', values)
-      alert('Form submitted! Check console for values.')
-    },
   },
 }
 
@@ -210,9 +210,5 @@ export const NestedConditions: Story = {
     config: nestedConditionsConfig,
     showSubmitButton: true,
     showResetButton: true,
-    onSubmit: (values) => {
-      console.log('Form submitted:', values)
-      alert('Form submitted! Check console for values.')
-    },
   },
 }

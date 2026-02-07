@@ -18,7 +18,7 @@ const baseFieldSchema = z.object({
  */
 export const inputFieldSchema = baseFieldSchema.extend({
   type: z.literal('input'),
-  inputType: z.enum(['text', 'password']).optional(),
+  inputType: z.enum(['text', 'password', 'email', 'tel', 'url', 'search']).optional(),
   maxLength: z.number().int().positive().optional(),
 })
 
