@@ -15,7 +15,7 @@ interface InputNumberFieldProps {
  * Input number field component
  * Supports numeric input with min, max, and step configuration
  */
-export const InputNumberField: React.FC<InputNumberFieldProps> = ({
+export const InputNumberField: React.FC<InputNumberFieldProps> = React.memo(({
   config,
   control,
   error,
@@ -42,9 +42,6 @@ export const InputNumberField: React.FC<InputNumberFieldProps> = ({
     step,
   } = config
 
-  const validateStatus = error ? 'error' : undefined
-  const help = error || undefined
-
   return (
     <Controller
       name={name}
@@ -53,10 +50,8 @@ export const InputNumberField: React.FC<InputNumberFieldProps> = ({
       render={({ field }) => (
         <Form.Item
           label={label}
-          validateStatus={validateStatus}
-          help={help}
-          hasFeedback={!!error}
-          required={false}
+          validateStatus={error ? 'error' : undefined}
+          help={error}
         >
           <Input
             {...field}
@@ -78,4 +73,4 @@ export const InputNumberField: React.FC<InputNumberFieldProps> = ({
       )}
     />
   )
-}
+})

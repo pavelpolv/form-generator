@@ -15,7 +15,7 @@ interface SwitchFieldProps {
  * Switch field component
  * Represents a boolean toggle with optional checked/unchecked text
  */
-export const SwitchField: React.FC<SwitchFieldProps> = ({
+export const SwitchField: React.FC<SwitchFieldProps> = React.memo(({
   config,
   control,
   error,
@@ -40,9 +40,6 @@ export const SwitchField: React.FC<SwitchFieldProps> = ({
     uncheckedText,
   } = config
 
-  const validateStatus = error ? 'error' : undefined
-  const help = error || undefined
-
   return (
     <Controller
       name={name}
@@ -51,10 +48,8 @@ export const SwitchField: React.FC<SwitchFieldProps> = ({
       render={({ field }) => (
         <Form.Item
           label={label}
-          validateStatus={validateStatus}
-          help={help}
-          hasFeedback={!!error}
-          required={false}
+          validateStatus={error ? 'error' : undefined}
+          help={error}
         >
           <Switch
             checked={field.value}
@@ -67,4 +62,4 @@ export const SwitchField: React.FC<SwitchFieldProps> = ({
       )}
     />
   )
-}
+})

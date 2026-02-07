@@ -15,7 +15,7 @@ interface InputFieldProps {
  * Input field component
  * Supports text, number, email, password, tel, url input types
  */
-export const InputField: React.FC<InputFieldProps> = ({
+export const InputField: React.FC<InputFieldProps> = React.memo(({
   config,
   control,
   error,
@@ -41,9 +41,6 @@ export const InputField: React.FC<InputFieldProps> = ({
     maxLength,
   } = config
 
-  const validateStatus = error ? 'error' : undefined
-  const help = error || undefined
-
   return (
     <Controller
       name={name}
@@ -52,10 +49,8 @@ export const InputField: React.FC<InputFieldProps> = ({
       render={({ field }) => (
         <Form.Item
           label={label}
-          validateStatus={validateStatus}
-          help={help}
-          hasFeedback={!!error}
-          required={false}
+          validateStatus={error ? 'error' : undefined}
+          help={error}
         >
           {inputType === 'password' ? (
             <Input.Password
@@ -77,4 +72,4 @@ export const InputField: React.FC<InputFieldProps> = ({
       )}
     />
   )
-}
+})

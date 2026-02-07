@@ -16,7 +16,7 @@ interface DateFieldProps {
  * Date field component
  * Supports date and datetime selection with format customization
  */
-export const DateField: React.FC<DateFieldProps> = ({
+export const DateField: React.FC<DateFieldProps> = React.memo(({
   config,
   control,
   error,
@@ -44,9 +44,6 @@ export const DateField: React.FC<DateFieldProps> = ({
     disabledDateAfter,
   } = config
 
-  const validateStatus = error ? 'error' : undefined
-  const help = error || undefined
-
   const disabledDate = (current: Moment) => {
     if (!current) return false
 
@@ -71,20 +68,15 @@ export const DateField: React.FC<DateFieldProps> = ({
       render={({ field }) => (
         <Form.Item
           label={label}
-          validateStatus={validateStatus}
-          help={help}
-          hasFeedback={!!error}
-          required={false}
+          validateStatus={error ? 'error' : undefined}
+          help={error}
         >
           <DatePicker
             value={field.value ? moment(field.value) : null}
             onChange={(date) => {
               field.onChange(date ? date.toISOString() : null)
             }}
-            onBlur={() => {
-              console.log('[DateField] onBlur called for:', name)
-              field.onBlur()
-            }}
+            onBlur={field.onBlur}
             format={format}
             placeholder={placeholder}
             disabled={disabled}
@@ -96,4 +88,4 @@ export const DateField: React.FC<DateFieldProps> = ({
       )}
     />
   )
-}
+})
