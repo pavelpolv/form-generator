@@ -17,7 +17,7 @@ interface SelectFieldProps {
  * Select field component
  * Supports single and multiple selection with optional search
  */
-export const SelectField: React.FC<SelectFieldProps> = ({
+export const SelectField: React.FC<SelectFieldProps> = React.memo(({
   config,
   control,
   error,
@@ -44,9 +44,6 @@ export const SelectField: React.FC<SelectFieldProps> = ({
     searchable = false,
   } = config
 
-  const validateStatus = error ? 'error' : undefined
-  const help = error || undefined
-
   return (
     <Controller
       name={name}
@@ -55,10 +52,8 @@ export const SelectField: React.FC<SelectFieldProps> = ({
       render={({ field }) => (
         <Form.Item
           label={label}
-          validateStatus={validateStatus}
-          help={help}
-          hasFeedback={!!error}
-          required={false}
+          validateStatus={error ? 'error' : undefined}
+          help={error}
         >
           <Select
             {...field}
@@ -74,10 +69,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                       .includes(input.toLowerCase())
                 : undefined
             }
-            onBlur={() => {
-              console.log('[SelectField] onBlur called for:', name)
-              field.onBlur()
-            }}
+            onBlur={field.onBlur}
             style={{ width: '100%' }}
           >
             {options.map((option) => (
@@ -94,4 +86,4 @@ export const SelectField: React.FC<SelectFieldProps> = ({
       )}
     />
   )
-}
+})

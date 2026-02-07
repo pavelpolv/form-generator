@@ -11,10 +11,26 @@ interface FieldRendererProps {
 }
 
 /**
+ * Custom comparison for React.memo
+ * Prevents unnecessary re-renders when props are functionally equal
+ */
+const arePropsEqual = (
+  prevProps: FieldRendererProps,
+  nextProps: FieldRendererProps
+): boolean => {
+  return (
+    prevProps.field === nextProps.field &&
+    prevProps.control === nextProps.control &&
+    prevProps.error === nextProps.error &&
+    prevProps.disabled === nextProps.disabled
+  )
+}
+
+/**
  * Dynamic field renderer
  * Renders the appropriate field component based on field type
  */
-export const FieldRenderer: React.FC<FieldRendererProps> = ({
+export const FieldRenderer: React.FC<FieldRendererProps> = React.memo(({
   field,
   control,
   error,
@@ -75,4 +91,4 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({
       console.error(`[Form Generator] Unknown field type: ${(field as Field).type}`)
       return null
   }
-}
+}, arePropsEqual)
