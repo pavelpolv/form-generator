@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import { fn } from '@storybook/test'
 import { FormGenerator } from '../../src/components/FormGenerator'
 import { FormConfig } from '../../src/types'
 
@@ -7,6 +8,9 @@ const meta: Meta<typeof FormGenerator> = {
   component: FormGenerator,
   parameters: {
     layout: 'padded',
+  },
+  args: {
+    onSubmit: fn(),
   },
 }
 
@@ -136,10 +140,6 @@ export const RequiredFields: Story = {
     config: validationConfig,
     showSubmitButton: true,
     showResetButton: true,
-    onSubmit: (values) => {
-      console.log('Form submitted:', values)
-      alert('Form submitted! Check console for values.')
-    },
   },
 }
 
@@ -239,9 +239,5 @@ export const ComplexValidation: Story = {
     config: complexValidationConfig,
     showSubmitButton: true,
     showResetButton: true,
-    onSubmit: (values) => {
-      console.log('Form submitted:', values)
-      alert('Form submitted! Check console for values.')
-    },
   },
 }
