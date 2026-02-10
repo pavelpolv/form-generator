@@ -1,0 +1,63 @@
+{
+  "name": "@form-generator/core",
+  "version": "0.1.0",
+  "description": "Configurable form generator with conditional logic",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build && tsc --project tsconfig.build.json",
+    "dev": "vite build --watch",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "bench": "vitest bench",
+    "lint": "eslint . --max-warnings 0",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist coverage .turbo"
+  },
+  "peerDependencies": {
+    "antd": "^4.24.15",
+    "react": "^17.0.2 || ^18.0.0",
+    "react-dom": "^17.0.2 || ^18.0.0",
+    "react-hook-form": "^7.43.0"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.19",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.2.0",
+    "@testing-library/react": "^12.1.5",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/react": "^17.0.80",
+    "@types/react-dom": "^17.0.25",
+    "@vitejs/plugin-react": "^4.2.1",
+    "@vitest/coverage-v8": "^4.0.18",
+    "antd": "^4.24.15",
+    "jsdom": "^24.0.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-hook-form": "^7.43.0",
+    "typescript": "^5.3.3",
+    "vite": "^6.4.1",
+    "vitest": "^4.0.18"
+  },
+  "keywords": [
+    "form",
+    "form-generator",
+    "react",
+    "typescript",
+    "conditional-logic",
+    "dynamic-forms"
+  ],
+  "license": "MIT"
+}
