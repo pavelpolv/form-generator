@@ -1,0 +1,91 @@
+import React, { useMemo, useCallback } from 'react'
+import { Select, Form } from 'antd'
+import { Controller, Control } from 'react-hook-form'
+import { SelectField as SelectFieldConfig, FormValues } from '@/types'
+import { validateFieldConfig } from '@/validation/fieldSchemas'
+
+const { Option } = Select
+
+interface SelectFieldProps {
+  config: SelectFieldConfig
+  control: Control<FormValues>
+  error?: string
+  disabled?: boolean
+}
+
+/**
+ * Select field component
+ * Supports single and multiple selection with optional search
+ */
+export const SelectField: React.FC<SelectFieldProps> = React.memo(({
+  config,
+  control,
+  error,
+  disabled = false,
+}) => {
+  // Validate config - memoized since config doesn't change after initialization
+  const configError = useMemo(() => validateFieldConfig(config), [config])
+  if (configError) {
+    return (
+      <div style={{ color: '#ff4d4f', marginBottom: 16 }}>
+        <div style={{ fontWeight: 600 }}>Невозможно отобразить поле</div>
+        <div style={{ fontSize: 12, marginTop: 4 }}>{configError}</div>
+      </div>
+    )
+  }
+
+  const {
+    name,
+    label,
+    placeholder,
+    defaultValue,
+    options,
+    multiple = false,
+    searchable = false,
+  } = config
+
+  // Memoize filter function to prevent recreation on each render
+  const filterOption = useCallback(
+    (input: string, option: { children?: unknown } | undefined) =>
+      (option?.children as string)?.toLowerCase().includes(input.toLowerCase()),
+    []
+  )
+
+  return (
+    <Controller
+      name={name}
+      control={control}
+      defaultValue={defaultValue}
+      render={({ field }) => (
+        <Form.Item
+          label={label}
+          validateStatus={error ? 'error' : undefined}
+          help={error}
+        >
+          <Select
+            {...field}
+            mode={multiple ? 'multiple' : undefined}
+            placeholder={placeholder}
+            disabled={disabled}
+            showSearch={searchable}
+            filterOption={searchable ? filterOption : undefined}
+            onBlur={field.onBlur}
+            style={{ width: '100%' }}
+          >
+            {options.map((option) => (
+              <Option
+                key={option.value}
+                value={option.value}
+                disabled={option.disabled}
+              >
+                {option.label}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
+      )}
+    />
+  )
+})
+
+SelectField.displayName = 'SelectField'

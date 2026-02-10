@@ -1,84 +1,29 @@
 {
-  "name": "form-generator",
+  "name": "form-generator-monorepo",
   "version": "0.1.0",
-  "description": "Configurable form generator with conditional logic",
-  "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    }
-  },
-  "files": [
-    "dist"
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
   ],
   "scripts": {
-    "dev": "vite",
-    "build": "vite build && tsc --project tsconfig.build.json",
-    "preview": "vite preview",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
-    "test": "vitest",
-    "test:ui": "vitest --ui",
-    "test:coverage": "vitest --coverage",
-    "lint": "eslint . --max-warnings 0",
-    "type-check": "tsc --noEmit",
-    "prepublishOnly": "npm run build"
-  },
-  "peerDependencies": {
-    "antd": "^4.24.15",
-    "moment": "^2.30.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-hook-form": "^7.43.0"
-  },
-  "dependencies": {
-    "zod": "^3.23.8"
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "test:coverage": "turbo run test:coverage",
+    "lint": "turbo run lint",
+    "type-check": "turbo run type-check",
+    "bench": "turbo run bench --filter=@form-generator/core",
+    "playground": "npm run dev --workspace=@form-generator/playground",
+    "clean": "turbo run clean && rm -rf node_modules"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.2",
-    "@storybook/addon-essentials": "^8.6.14",
-    "@storybook/addon-interactions": "^8.6.14",
-    "@storybook/addon-links": "^8.6.15",
-    "@storybook/blocks": "^8.6.14",
-    "@storybook/react": "^8.6.15",
-    "@storybook/react-vite": "^8.6.15",
-    "@storybook/test": "^8.6.15",
-    "@testing-library/jest-dom": "^6.2.0",
-    "@testing-library/react": "^12.1.5",
-    "@testing-library/user-event": "^14.5.2",
-    "@types/react": "^17.0.80",
-    "@types/react-dom": "^17.0.25",
-    "@vitejs/plugin-react": "^4.2.1",
-    "@vitest/coverage-v8": "^4.0.18",
-    "@vitest/ui": "^4.0.18",
-    "antd": "^4.24.15",
-    "dayjs": "^1.11.19",
-    "eslint": "^9.39.2",
-    "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-react-refresh": "^0.5.0",
-    "globals": "^17.3.0",
-    "jsdom": "^24.0.0",
-    "moment": "^2.30.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-hook-form": "^7.43.0",
-    "storybook": "^8.6.15",
-    "typescript": "^5.3.3",
-    "typescript-eslint": "^8.54.0",
-    "vite": "^6.4.1",
-    "vitest": "^4.0.18"
+    "@types/node": "^20.11.0",
+    "turbo": "^2.3.0",
+    "typescript": "^5.3.3"
   },
-  "keywords": [
-    "form",
-    "form-generator",
-    "react",
-    "typescript",
-    "conditional-logic",
-    "dynamic-forms"
-  ],
-  "author": "",
-  "license": "MIT"
+  "packageManager": "npm@10.0.0",
+  "engines": {
+    "node": ">=18"
+  }
 }

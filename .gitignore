@@ -13,6 +13,9 @@ dist
 dist-ssr
 *.local
 
+# Turbo
+.turbo
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -31,6 +34,7 @@ storybook-static
 # Testing
 coverage
 .vitest
+test-results
 
 # Local config
 .mcp.json
