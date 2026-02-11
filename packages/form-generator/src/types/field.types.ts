@@ -44,6 +44,11 @@ export interface BaseField {
   disabledCondition?: ConditionGroup
 
   /**
+   * Display order (lower values rendered first, default 0)
+   */
+  order?: number
+
+  /**
    * Placeholder text
    */
   placeholder?: string

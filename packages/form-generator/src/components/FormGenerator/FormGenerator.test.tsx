@@ -233,6 +233,55 @@ describe('FormGenerator', () => {
     })
   })
 
+  describe('order sorting', () => {
+    it('should render groups sorted by order property', () => {
+      const orderedConfig: FormConfig = {
+        groups: [
+          {
+            name: 'Group C',
+            order: 3,
+            fields: [{ type: 'input', name: 'c', label: 'C' }],
+          },
+          {
+            name: 'Group A',
+            order: 1,
+            fields: [{ type: 'input', name: 'a', label: 'A' }],
+          },
+          {
+            name: 'Group B',
+            order: 2,
+            fields: [{ type: 'input', name: 'b', label: 'B' }],
+          },
+        ],
+      }
+      const { container } = render(<FormGenerator config={orderedConfig} />)
+      const titles = container.querySelectorAll('.ant-card-head-title')
+      expect(titles[0].textContent).toBe('Group A')
+      expect(titles[1].textContent).toBe('Group B')
+      expect(titles[2].textContent).toBe('Group C')
+    })
+
+    it('should default order to 0 when not specified', () => {
+      const orderedConfig: FormConfig = {
+        groups: [
+          {
+            name: 'Group B',
+            order: 1,
+            fields: [{ type: 'input', name: 'b', label: 'B' }],
+          },
+          {
+            name: 'Group A',
+            fields: [{ type: 'input', name: 'a', label: 'A' }],
+          },
+        ],
+      }
+      const { container } = render(<FormGenerator config={orderedConfig} />)
+      const titles = container.querySelectorAll('.ant-card-head-title')
+      expect(titles[0].textContent).toBe('Group A')
+      expect(titles[1].textContent).toBe('Group B')
+    })
+  })
+
   describe('initialValues', () => {
     it('should default to empty object when no initialValues provided', () => {
       const ref = React.createRef<FormGeneratorRef>()

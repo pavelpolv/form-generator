@@ -70,6 +70,37 @@ describe('fieldSchemas', () => {
     })
   })
 
+  describe('order property', () => {
+    it('should accept order as a number', () => {
+      const config = {
+        type: 'input',
+        name: 'field',
+        label: 'Field',
+        order: 5,
+      }
+      expect(() => inputFieldSchema.parse(config)).not.toThrow()
+    })
+
+    it('should accept config without order', () => {
+      const config = {
+        type: 'input',
+        name: 'field',
+        label: 'Field',
+      }
+      expect(() => inputFieldSchema.parse(config)).not.toThrow()
+    })
+
+    it('should reject non-number order', () => {
+      const config = {
+        type: 'input',
+        name: 'field',
+        label: 'Field',
+        order: 'first',
+      }
+      expect(() => inputFieldSchema.parse(config)).toThrow()
+    })
+  })
+
   describe('inputNumberFieldSchema', () => {
     it('should validate valid inputNumber config', () => {
       const config = {
