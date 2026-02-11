@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react';
+import { FC, memo, useMemo, useCallback } from 'react';
 import { Select, Form } from 'antd';
 import { Controller, Control } from 'react-hook-form';
 import { SelectField as SelectFieldConfig, FormValues } from '@/types';
@@ -17,7 +17,7 @@ interface SelectFieldProps {
  * Select field component
  * Supports single and multiple selection with optional search
  */
-export const SelectField: React.FC<SelectFieldProps> = React.memo(({
+export const SelectField: FC<SelectFieldProps> = memo(({
   config,
   control,
   error,

@@ -46,6 +46,10 @@ export default [
         name: 'lodash',
         message: "Please use single imports of lodash functions, e.g 'import isEqual from \"lodash/isEqual\"'",
       }],
+      'no-restricted-syntax': ['error', {
+        selector: 'MemberExpression[object.name="React"]',
+        message: 'Use named imports from "react" instead of React.xxx (e.g. import { memo } from "react")',
+      }],
       'padding-line-between-statements': ['warn',
         { blankLine: 'always', prev: ['const', 'let', 'var'], next: 'return' },
       ],

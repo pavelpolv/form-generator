@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { FC, memo, useMemo } from 'react';
 import { Switch, Form } from 'antd';
 import { Controller, Control } from 'react-hook-form';
 import { SwitchField as SwitchFieldConfig, FormValues } from '@/types';
@@ -15,7 +15,7 @@ interface SwitchFieldProps {
  * Switch field component
  * Represents a boolean toggle with optional checked/unchecked text
  */
-export const SwitchField: React.FC<SwitchFieldProps> = React.memo(({
+export const SwitchField: FC<SwitchFieldProps> = memo(({
   config,
   control,
   error,

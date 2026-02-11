@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react';
+import { ChangeEvent, FC, memo, useMemo, useCallback } from 'react';
 import { Input, Form } from 'antd';
 import { Controller, Control, ControllerRenderProps } from 'react-hook-form';
 import { InputNumberField as InputNumberFieldConfig, FormValues } from '@/types';
@@ -12,7 +12,7 @@ interface InputNumberFieldProps {
 }
 
 // Memoized inner component to use hooks with field from render prop
-const InputNumberInner: React.FC<{
+const InputNumberInner: FC<{
   field: ControllerRenderProps<FormValues, string>
   label?: string
   placeholder?: string
@@ -21,8 +21,8 @@ const InputNumberInner: React.FC<{
   max?: number
   step?: number
   error?: string
-}> = React.memo(({ field, label, placeholder, disabled, min, max, step, error }) => {
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+}> = memo(({ field, label, placeholder, disabled, min, max, step, error }) => {
+  const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     field.onChange(value === '' ? undefined : Number(value));
   }, [field]);
@@ -58,7 +58,7 @@ InputNumberInner.displayName = 'InputNumberInner';
  * Input number field component
  * Supports numeric input with min, max, and step configuration
  */
-export const InputNumberField: React.FC<InputNumberFieldProps> = React.memo(({
+export const InputNumberField: FC<InputNumberFieldProps> = memo(({
   config,
   control,
   error,

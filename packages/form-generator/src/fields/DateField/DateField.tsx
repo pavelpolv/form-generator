@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react';
+import { FC, memo, useMemo, useCallback } from 'react';
 import { DatePicker, Form } from 'antd';
 import { Controller, Control } from 'react-hook-form';
 import { DateField as DateFieldConfig, FormValues } from '@/types';
@@ -16,7 +16,7 @@ interface DateFieldProps {
  * Date field component
  * Supports date and datetime selection with format customization
  */
-export const DateField: React.FC<DateFieldProps> = React.memo(({
+export const DateField: FC<DateFieldProps> = memo(({
   config,
   control,
   error,

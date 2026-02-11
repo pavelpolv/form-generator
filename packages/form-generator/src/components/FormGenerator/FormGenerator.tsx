@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef } from 'react';
 import { useForm, useFormState } from 'react-hook-form';
 import { Button, Space, Form } from 'antd';
 import { FormConfig, FormValues } from '@/types';
@@ -60,7 +60,7 @@ export interface FormGeneratorProps {
  * Form Generator Component
  * Main component for rendering dynamic forms based on configuration
  */
-export const FormGenerator = React.forwardRef<FormGeneratorRef, FormGeneratorProps>(
+export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
   (
     {
       config,
@@ -90,7 +90,7 @@ export const FormGenerator = React.forwardRef<FormGeneratorRef, FormGeneratorPro
     // Create a plain object copy of touchedFields for child components
     // react-hook-form uses Proxy objects which can cause issues with React's hook dependency comparison
     // We use a ref to track the previous value and only update when keys actually change
-    const touchedFieldsRef = React.useRef<Record<string, boolean>>({});
+    const touchedFieldsRef = useRef<Record<string, boolean>>({});
 
     // Build current touched state safely
     const currentTouchedKeys: string[] = [];
@@ -132,7 +132,7 @@ export const FormGenerator = React.forwardRef<FormGeneratorRef, FormGeneratorPro
     };
 
     // Expose form methods via ref
-    React.useImperativeHandle(ref, () => ({
+    useImperativeHandle(ref, () => ({
       getValues: () => formValues,
       reset: (values?: FormValues) => reset(values || initialValues),
       submit: () => handleSubmit(handleFormSubmit)(),

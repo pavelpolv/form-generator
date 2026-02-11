@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { FC, memo, useMemo } from 'react';
 import { Input, Form } from 'antd';
 import { Controller, Control } from 'react-hook-form';
 import { InputField as InputFieldConfig, FormValues } from '@/types';
@@ -15,7 +15,7 @@ interface InputFieldProps {
  * Input field component
  * Supports text, number, email, password, tel, url input types
  */
-export const InputField: React.FC<InputFieldProps> = React.memo(({
+export const InputField: FC<InputFieldProps> = memo(({
   config,
   control,
   error,

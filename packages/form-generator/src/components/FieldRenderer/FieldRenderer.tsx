@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC, memo } from 'react';
 import { Control } from 'react-hook-form';
 import { Field, FormValues } from '@/types';
 import { InputField, InputNumberField, SelectField, SwitchField, DateField } from '@/fields';
@@ -11,7 +11,7 @@ interface FieldRendererProps {
 }
 
 /**
- * Custom comparison for React.memo
+ * Custom comparison for memo
  * Prevents unnecessary re-renders when props are functionally equal
  */
 const arePropsEqual = (
@@ -30,7 +30,7 @@ const arePropsEqual = (
  * Dynamic field renderer
  * Renders the appropriate field component based on field type
  */
-export const FieldRenderer: React.FC<FieldRendererProps> = React.memo(({
+export const FieldRenderer: FC<FieldRendererProps> = memo(({
   field,
   control,
   error,

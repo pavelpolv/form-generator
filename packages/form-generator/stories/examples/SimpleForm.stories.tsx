@@ -100,6 +100,47 @@ export const BasicForm: Story = {
   },
 }
 
+const noTitleNoBorderConfig: FormConfig = {
+  groups: [
+    {
+      name: 'Hidden Group',
+      showTitle: false,
+      showBorder: false,
+      fields: [
+        {
+          type: 'input',
+          name: 'firstName',
+          label: 'First Name',
+          placeholder: 'Enter your first name',
+          inputType: 'text',
+        },
+        {
+          type: 'input',
+          name: 'lastName',
+          label: 'Last Name',
+          placeholder: 'Enter your last name',
+          inputType: 'text',
+        },
+        {
+          type: 'input',
+          name: 'email',
+          label: 'Email',
+          placeholder: 'Enter your email',
+          inputType: 'text',
+        },
+      ],
+    },
+  ],
+}
+
+export const NoTitleNoBorder: Story = {
+  args: {
+    config: noTitleNoBorderConfig,
+    initialValues: {},
+    showSubmitButton: true,
+  },
+}
+
 export const WithInitialValues: Story = {
   args: {
     config: simpleFormConfig,
