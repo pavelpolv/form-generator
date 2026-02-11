@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, memo, useMemo, useCallback, useState, useRef } from 'react';
+import { ChangeEvent, FC, memo, useMemo, useCallback, useState, useRef, useLayoutEffect } from 'react';
 import { Input, Form } from 'antd';
 import { Controller, Control, ControllerRenderProps } from 'react-hook-form';
 import { MoneyField as MoneyFieldConfig, FormValues } from '@/types';
@@ -19,6 +19,23 @@ function formatMoney(value: number | undefined | null, decimalPlaces: number): s
   const formatted = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 
   const result = decPart !== undefined ? `${formatted},${decPart}` : formatted;
+
+  return isNegative ? `-${result}` : result;
+}
+
+/**
+ * Format a raw input string with space thousand separators (integer part only)
+ */
+function formatWithSpaces(value: string): string {
+  if (!value) return value;
+
+  const isNegative = value.startsWith('-');
+  const withoutMinus = isNegative ? value.slice(1) : value;
+  const [intPart, ...rest] = withoutMinus.split(',');
+
+  const cleanInt = intPart.replace(/\s/g, '');
+  const formattedInt = cleanInt.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  const result = rest.length > 0 ? `${formattedInt},${rest.join('')}` : formattedInt;
 
   return isNegative ? `-${result}` : result;
 }
@@ -60,14 +77,27 @@ const MoneyInner: FC<{
   const [displayValue, setDisplayValue] = useState(() =>
     formatMoney(field.value as number | undefined | null, decimalPlaces),
   );
-  const isFocusedRef = useRef(false);
+  const inputElRef = useRef<HTMLInputElement | null>(null);
+  const cursorRef = useRef<number>(0);
 
-  const handleFocus = useCallback(() => {
-    isFocusedRef.current = true;
-  }, []);
+  // Restore cursor position after React re-renders with formatted value
+  useLayoutEffect(() => {
+    if (inputElRef.current && document.activeElement === inputElRef.current) {
+      inputElRef.current.setSelectionRange(cursorRef.current, cursorRef.current);
+    }
+  }, [displayValue]);
 
   const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    const raw = e.target.value;
+    const inputEl = e.target;
+    inputElRef.current = inputEl;
+    const cursorPos = inputEl.selectionStart ?? 0;
+    const raw = inputEl.value;
+
+    // Count significant (non-space) chars before cursor in raw input
+    let sigCharsBefore = 0;
+    for (let i = 0; i < cursorPos && i < raw.length; i++) {
+      if (raw[i] !== ' ') sigCharsBefore++;
+    }
 
     // Filter: only digits, comma, space, and optionally minus
     const allowedPattern = allowNegative ? /[^0-9, -]/g : /[^0-9, ]/g;
@@ -87,9 +117,22 @@ const MoneyInner: FC<{
       filtered = beforeComma + afterComma;
     }
 
-    setDisplayValue(filtered);
+    // Format integer part with space separators
+    const formatted = formatWithSpaces(filtered);
 
-    const parsed = parseMoney(filtered);
+    // Calculate new cursor position based on significant chars count
+    let newCursor = 0;
+    let seen = 0;
+    for (let i = 0; i < formatted.length; i++) {
+      if (seen === sigCharsBefore) break;
+      if (formatted[i] !== ' ') seen++;
+      newCursor = i + 1;
+    }
+    cursorRef.current = newCursor;
+
+    setDisplayValue(formatted);
+
+    const parsed = parseMoney(formatted);
     if (parsed !== undefined) {
       let clamped = parsed;
       if (min !== undefined && clamped < min) clamped = min;
@@ -101,7 +144,6 @@ const MoneyInner: FC<{
   }, [field, allowNegative, min, max]);
 
   const handleBlur = useCallback(() => {
-    isFocusedRef.current = false;
     field.onBlur();
     // Reformat display value on blur
     const numericValue = field.value as number | undefined | null;
@@ -124,7 +166,6 @@ const MoneyInner: FC<{
         addonBefore={prefix}
         addonAfter={suffix}
         onChange={handleChange}
-        onFocus={handleFocus}
         onBlur={handleBlur}
       />
     </Form.Item>
