@@ -1,5 +1,5 @@
-import { ConditionGroup } from './condition.types'
-import { Field } from './field.types'
+import { ConditionGroup } from './condition.types';
+import { Field } from './field.types';
 
 /**
  * Field group configuration

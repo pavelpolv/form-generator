@@ -1,6 +1,6 @@
-import { afterEach } from 'vitest'
-import { cleanup } from '@testing-library/react'
-import '@testing-library/jest-dom'
+import { afterEach } from 'vitest';
+import { cleanup } from '@testing-library/react';
+import '@testing-library/jest-dom';
 
 // Mock window.matchMedia for antd components
 Object.defineProperty(window, 'matchMedia', {
@@ -15,9 +15,9 @@ Object.defineProperty(window, 'matchMedia', {
     removeEventListener: () => {},
     dispatchEvent: () => false,
   }),
-})
+});
 
 // Cleanup after each test
 afterEach(() => {
-  cleanup()
-})
+  cleanup();
+});

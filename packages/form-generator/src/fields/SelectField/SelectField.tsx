@@ -1,10 +1,10 @@
-import React, { useMemo, useCallback } from 'react'
-import { Select, Form } from 'antd'
-import { Controller, Control } from 'react-hook-form'
-import { SelectField as SelectFieldConfig, FormValues } from '@/types'
-import { validateFieldConfig } from '@/validation/fieldSchemas'
+import React, { useMemo, useCallback } from 'react';
+import { Select, Form } from 'antd';
+import { Controller, Control } from 'react-hook-form';
+import { SelectField as SelectFieldConfig, FormValues } from '@/types';
+import { validateFieldConfig } from '@/validation/fieldSchemas';
 
-const { Option } = Select
+const { Option } = Select;
 
 interface SelectFieldProps {
   config: SelectFieldConfig
@@ -24,14 +24,14 @@ export const SelectField: React.FC<SelectFieldProps> = React.memo(({
   disabled = false,
 }) => {
   // Validate config - memoized since config doesn't change after initialization
-  const configError = useMemo(() => validateFieldConfig(config), [config])
+  const configError = useMemo(() => validateFieldConfig(config), [config]);
   if (configError) {
     return (
       <div style={{ color: '#ff4d4f', marginBottom: 16 }}>
         <div style={{ fontWeight: 600 }}>Невозможно отобразить поле</div>
         <div style={{ fontSize: 12, marginTop: 4 }}>{configError}</div>
       </div>
-    )
+    );
   }
 
   const {
@@ -42,14 +42,14 @@ export const SelectField: React.FC<SelectFieldProps> = React.memo(({
     options,
     multiple = false,
     searchable = false,
-  } = config
+  } = config;
 
   // Memoize filter function to prevent recreation on each render
   const filterOption = useCallback(
     (input: string, option: { children?: unknown } | undefined) =>
       (option?.children as string)?.toLowerCase().includes(input.toLowerCase()),
-    []
-  )
+    [],
+  );
 
   return (
     <Controller
@@ -85,7 +85,7 @@ export const SelectField: React.FC<SelectFieldProps> = React.memo(({
         </Form.Item>
       )}
     />
-  )
-})
+  );
+});
 
-SelectField.displayName = 'SelectField'
+SelectField.displayName = 'SelectField';

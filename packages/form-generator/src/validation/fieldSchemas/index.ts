@@ -1,8 +1,8 @@
 export {
+  dateFieldSchema,
   inputFieldSchema,
   inputNumberFieldSchema,
   selectFieldSchema,
   switchFieldSchema,
-  dateFieldSchema,
   validateFieldConfig,
-} from './fieldSchemas'
+} from './fieldSchemas';

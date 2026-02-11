@@ -1,13 +1,16 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import { useForm } from 'react-hook-form'
-import { DateField } from './DateField'
-import { DateField as DateFieldConfig } from '@/types'
+import type { Meta, StoryObj } from '@storybook/react';
+import { useForm } from 'react-hook-form';
+import { DateField } from './DateField';
+import { DateField as DateFieldConfig } from '@/types';
 
 // Wrapper component to provide react-hook-form context
 const DateFieldWrapper = ({ config }: { config: DateFieldConfig }) => {
-  const { control } = useForm()
-  return <DateField config={config} control={control} />
-}
+  const { control } = useForm();
+
+  return <DateField
+    config={config}
+    control={control} />;
+};
 
 const meta: Meta<typeof DateFieldWrapper> = {
   title: 'Fields/DateField',
@@ -15,9 +18,9 @@ const meta: Meta<typeof DateFieldWrapper> = {
   parameters: {
     layout: 'padded',
   },
-}
+};
 
-export default meta
+export default meta;
 type Story = StoryObj<typeof DateFieldWrapper>
 
 export const BasicDate: Story = {
@@ -29,7 +32,7 @@ export const BasicDate: Story = {
       placeholder: 'Select your birth date',
     },
   },
-}
+};
 
 export const WithCustomFormat: Story = {
   args: {
@@ -41,7 +44,7 @@ export const WithCustomFormat: Story = {
       format: 'DD/MM/YYYY',
     },
   },
-}
+};
 
 export const WithTime: Story = {
   args: {
@@ -54,7 +57,7 @@ export const WithTime: Story = {
       showTime: true,
     },
   },
-}
+};
 
 export const WithDefaultValue: Story = {
   args: {
@@ -67,7 +70,7 @@ export const WithDefaultValue: Story = {
       defaultValue: '2024-01-15T10:00:00.000Z',
     },
   },
-}
+};
 
 export const WithDisabledDateBefore: Story = {
   args: {
@@ -80,18 +83,19 @@ export const WithDisabledDateBefore: Story = {
       disabledDateBefore: new Date(),
     },
   },
-}
+};
 
 export const WithError: Story = {
   render: (args) => {
-    const { control } = useForm()
+    const { control } = useForm();
+
     return (
       <DateField
         config={args.config}
         control={control}
         error="This date is required"
       />
-    )
+    );
   },
   args: {
     config: {
@@ -102,18 +106,19 @@ export const WithError: Story = {
       format: 'YYYY-MM-DD',
     },
   },
-}
+};
 
 export const Disabled: Story = {
   render: (args) => {
-    const { control } = useForm()
+    const { control } = useForm();
+
     return (
       <DateField
         config={args.config}
         control={control}
         disabled={true}
       />
-    )
+    );
   },
   args: {
     config: {
@@ -125,4 +130,4 @@ export const Disabled: Story = {
       defaultValue: '2024-01-15T10:00:00.000Z',
     },
   },
-}
+};

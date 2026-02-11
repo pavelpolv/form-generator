@@ -1,13 +1,16 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import { useForm } from 'react-hook-form'
-import { SelectField } from './SelectField'
-import { SelectField as SelectFieldConfig } from '@/types'
+import type { Meta, StoryObj } from '@storybook/react';
+import { useForm } from 'react-hook-form';
+import { SelectField } from './SelectField';
+import { SelectField as SelectFieldConfig } from '@/types';
 
 // Wrapper component to provide react-hook-form context
 const SelectFieldWrapper = ({ config }: { config: SelectFieldConfig }) => {
-  const { control } = useForm()
-  return <SelectField config={config} control={control} />
-}
+  const { control } = useForm();
+
+  return <SelectField
+    config={config}
+    control={control} />;
+};
 
 const meta: Meta<typeof SelectFieldWrapper> = {
   title: 'Fields/SelectField',
@@ -15,9 +18,9 @@ const meta: Meta<typeof SelectFieldWrapper> = {
   parameters: {
     layout: 'padded',
   },
-}
+};
 
-export default meta
+export default meta;
 type Story = StoryObj<typeof SelectFieldWrapper>
 
 const countryOptions = [
@@ -27,7 +30,7 @@ const countryOptions = [
   { label: 'Australia', value: 'AU' },
   { label: 'Germany', value: 'DE' },
   { label: 'France', value: 'FR' },
-]
+];
 
 export const SingleSelect: Story = {
   args: {
@@ -39,7 +42,7 @@ export const SingleSelect: Story = {
       options: countryOptions,
     },
   },
-}
+};
 
 export const MultipleSelect: Story = {
   args: {
@@ -52,7 +55,7 @@ export const MultipleSelect: Story = {
       multiple: true,
     },
   },
-}
+};
 
 export const SearchableSelect: Story = {
   args: {
@@ -65,7 +68,7 @@ export const SearchableSelect: Story = {
       searchable: true,
     },
   },
-}
+};
 
 export const WithDefaultValue: Story = {
   args: {
@@ -78,7 +81,7 @@ export const WithDefaultValue: Story = {
       defaultValue: 'US',
     },
   },
-}
+};
 
 export const WithDisabledOptions: Story = {
   args: {
@@ -94,18 +97,19 @@ export const WithDisabledOptions: Story = {
       ],
     },
   },
-}
+};
 
 export const WithError: Story = {
   render: (args) => {
-    const { control } = useForm()
+    const { control } = useForm();
+
     return (
       <SelectField
         config={args.config}
         control={control}
         error="Please select a country"
       />
-    )
+    );
   },
   args: {
     config: {
@@ -116,18 +120,19 @@ export const WithError: Story = {
       options: countryOptions,
     },
   },
-}
+};
 
 export const Disabled: Story = {
   render: (args) => {
-    const { control } = useForm()
+    const { control } = useForm();
+
     return (
       <SelectField
         config={args.config}
         control={control}
         disabled={true}
       />
-    )
+    );
   },
   args: {
     config: {
@@ -139,4 +144,4 @@ export const Disabled: Story = {
       defaultValue: 'US',
     },
   },
-}
+};

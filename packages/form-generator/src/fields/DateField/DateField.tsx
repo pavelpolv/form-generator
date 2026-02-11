@@ -1,9 +1,9 @@
-import React, { useMemo, useCallback } from 'react'
-import { DatePicker, Form } from 'antd'
-import { Controller, Control } from 'react-hook-form'
-import { DateField as DateFieldConfig, FormValues } from '@/types'
-import moment, { Moment } from 'moment'
-import { validateFieldConfig } from '@/validation/fieldSchemas'
+import React, { useMemo, useCallback } from 'react';
+import { DatePicker, Form } from 'antd';
+import { Controller, Control } from 'react-hook-form';
+import { DateField as DateFieldConfig, FormValues } from '@/types';
+import moment, { Moment } from 'moment';
+import { validateFieldConfig } from '@/validation/fieldSchemas';
 
 interface DateFieldProps {
   config: DateFieldConfig
@@ -23,14 +23,14 @@ export const DateField: React.FC<DateFieldProps> = React.memo(({
   disabled = false,
 }) => {
   // Validate config - memoized since config doesn't change after initialization
-  const configError = useMemo(() => validateFieldConfig(config), [config])
+  const configError = useMemo(() => validateFieldConfig(config), [config]);
   if (configError) {
     return (
       <div style={{ color: '#ff4d4f', marginBottom: 16 }}>
         <div style={{ fontWeight: 600 }}>Невозможно отобразить поле</div>
         <div style={{ fontSize: 12, marginTop: 4 }}>{configError}</div>
       </div>
-    )
+    );
   }
 
   const {
@@ -42,24 +42,24 @@ export const DateField: React.FC<DateFieldProps> = React.memo(({
     showTime = false,
     disabledDateBefore,
     disabledDateAfter,
-  } = config
+  } = config;
 
   // Memoize disabledDate function to prevent recreation on each render
   const disabledDate = useCallback((current: Moment) => {
-    if (!current) return false
+    if (!current) return false;
 
-    let isDisabled = false
+    let isDisabled = false;
 
     if (disabledDateBefore) {
-      isDisabled = isDisabled || current.isBefore(moment(disabledDateBefore), 'day')
+      isDisabled = isDisabled || current.isBefore(moment(disabledDateBefore), 'day');
     }
 
     if (disabledDateAfter) {
-      isDisabled = isDisabled || current.isAfter(moment(disabledDateAfter), 'day')
+      isDisabled = isDisabled || current.isAfter(moment(disabledDateAfter), 'day');
     }
 
-    return isDisabled
-  }, [disabledDateBefore, disabledDateAfter])
+    return isDisabled;
+  }, [disabledDateBefore, disabledDateAfter]);
 
   return (
     <Controller
@@ -75,7 +75,7 @@ export const DateField: React.FC<DateFieldProps> = React.memo(({
           <DatePicker
             value={field.value ? moment(field.value) : null}
             onChange={(date: Moment | null) => {
-              field.onChange(date ? date.toISOString() : null)
+              field.onChange(date ? date.toISOString() : null);
             }}
             onBlur={field.onBlur}
             format={format}
@@ -88,7 +88,7 @@ export const DateField: React.FC<DateFieldProps> = React.memo(({
         </Form.Item>
       )}
     />
-  )
-})
+  );
+});
 
-DateField.displayName = 'DateField'
+DateField.displayName = 'DateField';

@@ -1,8 +1,8 @@
-import React, { useMemo } from 'react'
-import { Switch, Form } from 'antd'
-import { Controller, Control } from 'react-hook-form'
-import { SwitchField as SwitchFieldConfig, FormValues } from '@/types'
-import { validateFieldConfig } from '@/validation/fieldSchemas'
+import React, { useMemo } from 'react';
+import { Switch, Form } from 'antd';
+import { Controller, Control } from 'react-hook-form';
+import { SwitchField as SwitchFieldConfig, FormValues } from '@/types';
+import { validateFieldConfig } from '@/validation/fieldSchemas';
 
 interface SwitchFieldProps {
   config: SwitchFieldConfig
@@ -22,14 +22,14 @@ export const SwitchField: React.FC<SwitchFieldProps> = React.memo(({
   disabled = false,
 }) => {
   // Validate config - memoized since config doesn't change after initialization
-  const configError = useMemo(() => validateFieldConfig(config), [config])
+  const configError = useMemo(() => validateFieldConfig(config), [config]);
   if (configError) {
     return (
       <div style={{ color: '#ff4d4f', marginBottom: 16 }}>
         <div style={{ fontWeight: 600 }}>Невозможно отобразить поле</div>
         <div style={{ fontSize: 12, marginTop: 4 }}>{configError}</div>
       </div>
-    )
+    );
   }
 
   const {
@@ -38,7 +38,7 @@ export const SwitchField: React.FC<SwitchFieldProps> = React.memo(({
     defaultValue,
     checkedText,
     uncheckedText,
-  } = config
+  } = config;
 
   return (
     <Controller
@@ -61,7 +61,7 @@ export const SwitchField: React.FC<SwitchFieldProps> = React.memo(({
         </Form.Item>
       )}
     />
-  )
-})
+  );
+});
 
-SwitchField.displayName = 'SwitchField'
+SwitchField.displayName = 'SwitchField';

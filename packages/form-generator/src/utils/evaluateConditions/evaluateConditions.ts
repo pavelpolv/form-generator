@@ -5,27 +5,28 @@ import {
   isConditionValue,
   isConditionGroup,
   FormValues,
-} from '@/types'
+} from '@/types';
 
 /**
  * Check if a value is empty
  * Empty values: null, undefined, '', [], {}
  */
 function isEmpty(value: unknown): boolean {
-  if (value === null || value === undefined) return true
-  if (typeof value === 'string') return value.trim() === ''
-  if (Array.isArray(value)) return value.length === 0
-  if (typeof value === 'object') return Object.keys(value).length === 0
-  return false
+  if (value === null || value === undefined) return true;
+  if (typeof value === 'string') return value.trim() === '';
+  if (Array.isArray(value)) return value.length === 0;
+  if (typeof value === 'object') return Object.keys(value).length === 0;
+  return false;
 }
 
 /**
  * Check if a value is a valid ISO date string
  */
 function isISODateString(value: unknown): value is string {
-  if (typeof value !== 'string') return false
-  const isoDateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$/
-  return isoDateRegex.test(value)
+  if (typeof value !== 'string') return false;
+  const isoDateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$/;
+
+  return isoDateRegex.test(value);
 }
 
 /**
@@ -35,10 +36,10 @@ function isISODateString(value: unknown): value is string {
 function getComparableValue(value: unknown): number {
   // If it's an ISO date string, convert to timestamp
   if (isISODateString(value)) {
-    return new Date(value).getTime()
+    return new Date(value).getTime();
   }
   // Otherwise convert to number
-  return Number(value)
+  return Number(value);
 }
 
 /**
@@ -47,90 +48,93 @@ function getComparableValue(value: unknown): number {
 function getFieldValue(value: unknown, formValues: FormValues): unknown {
   // If value is a string starting with $, treat it as a field reference
   if (typeof value === 'string' && value.startsWith('$')) {
-    const fieldName = value.substring(1)
-    return formValues[fieldName]
+    const fieldName = value.substring(1);
+
+    return formValues[fieldName];
   }
-  return value
+  return value;
 }
 
 /**
  * Compare two values based on operator
  */
+// eslint-disable-next-line complexity
 function compareValues(
   leftValue: unknown,
   operator: ComparisonOperator,
-  rightValue: unknown
+  rightValue: unknown,
 ): boolean {
   try {
     switch (operator) {
-      case '<':
-        return getComparableValue(leftValue) < getComparableValue(rightValue)
+    case '<':
+      return getComparableValue(leftValue) < getComparableValue(rightValue);
 
-      case '>':
-        return getComparableValue(leftValue) > getComparableValue(rightValue)
+    case '>':
+      return getComparableValue(leftValue) > getComparableValue(rightValue);
 
-      case '<=':
-        return getComparableValue(leftValue) <= getComparableValue(rightValue)
+    case '<=':
+      return getComparableValue(leftValue) <= getComparableValue(rightValue);
 
-      case '>=':
-        return getComparableValue(leftValue) >= getComparableValue(rightValue)
+    case '>=':
+      return getComparableValue(leftValue) >= getComparableValue(rightValue);
 
-      case '===':
-        return leftValue === rightValue
+    case '===':
+      return leftValue === rightValue;
 
-      case '!==':
-        return leftValue !== rightValue
+    case '!==':
+      return leftValue !== rightValue;
 
-      case '∅':
-        return isEmpty(leftValue)
+    case '∅':
+      return isEmpty(leftValue);
 
-      case '!∅':
-        return !isEmpty(leftValue)
+    case '!∅':
+      return !isEmpty(leftValue);
 
-      case 'includes':
-        if (typeof leftValue === 'string' && typeof rightValue === 'string') {
-          return leftValue.includes(rightValue)
+    case 'includes':
+      if (typeof leftValue === 'string' && typeof rightValue === 'string') {
+        return leftValue.includes(rightValue);
+      }
+      if (Array.isArray(leftValue)) {
+        return leftValue.includes(rightValue);
+      }
+      return false;
+
+    case 'startsWith':
+      if (typeof leftValue === 'string' && typeof rightValue === 'string') {
+        return leftValue.startsWith(rightValue);
+      }
+      return false;
+
+    case 'endsWith':
+      if (typeof leftValue === 'string' && typeof rightValue === 'string') {
+        return leftValue.endsWith(rightValue);
+      }
+      return false;
+
+    case 'match':
+      if (typeof leftValue === 'string' && typeof rightValue === 'string') {
+        try {
+          const regex = new RegExp(rightValue);
+
+          return regex.test(leftValue);
+        } catch (e) {
+          console.error(`[Form Generator] Invalid regex pattern: ${rightValue}`, e);
+          return false;
         }
-        if (Array.isArray(leftValue)) {
-          return leftValue.includes(rightValue)
-        }
-        return false
+      }
+      return false;
 
-      case 'startsWith':
-        if (typeof leftValue === 'string' && typeof rightValue === 'string') {
-          return leftValue.startsWith(rightValue)
-        }
-        return false
-
-      case 'endsWith':
-        if (typeof leftValue === 'string' && typeof rightValue === 'string') {
-          return leftValue.endsWith(rightValue)
-        }
-        return false
-
-      case 'match':
-        if (typeof leftValue === 'string' && typeof rightValue === 'string') {
-          try {
-            const regex = new RegExp(rightValue)
-            return regex.test(leftValue)
-          } catch (e) {
-            console.error(`[Form Generator] Invalid regex pattern: ${rightValue}`, e)
-            return false
-          }
-        }
-        return false
-
-      default:
-        console.error(`[Form Generator] Unknown operator: ${operator}`)
-        return false
+    default:
+      console.error(`[Form Generator] Unknown operator: ${operator}`);
+      return false;
     }
   } catch (error) {
     console.error('[Form Generator] Error comparing values:', error, {
       leftValue,
       operator,
       rightValue,
-    })
-    return false
+    });
+    return false;
   }
 }
 
@@ -139,17 +143,17 @@ function compareValues(
  */
 function evaluateConditionValue(
   condition: ConditionValue,
-  formValues: FormValues
+  formValues: FormValues,
 ): boolean {
-  const { field, condition: operator, value } = condition
+  const { field, condition: operator, value } = condition;
 
   // Check if field exists in form values (but don't fail if it doesn't)
-  const fieldValue = formValues[field]
+  const fieldValue = formValues[field];
 
   // Get the comparison value (resolve field references with $)
-  const comparisonValue = getFieldValue(value, formValues)
+  const comparisonValue = getFieldValue(value, formValues);
 
-  return compareValues(fieldValue, operator, comparisonValue)
+  return compareValues(fieldValue, operator, comparisonValue);
 }
 
 /**
@@ -158,39 +162,39 @@ function evaluateConditionValue(
 function evaluateConditionGroupInternal(
   group: ConditionGroup,
   formValues: FormValues,
-  depth: number = 0
+  depth: number = 0,
 ): boolean {
   // Protect against circular dependencies
   if (depth > 50) {
-    console.error('[Form Generator] Maximum condition depth exceeded. Possible circular dependency.')
-    return false
+    console.error('[Form Generator] Maximum condition depth exceeded. Possible circular dependency.');
+    return false;
   }
 
-  const { comparisonType, children } = group
+  const { comparisonType, children } = group;
 
   if (!children || children.length === 0) {
-    console.error('[Form Generator] ConditionGroup has no children')
-    return false
+    console.error('[Form Generator] ConditionGroup has no children');
+    return false;
   }
 
   const results = children.map((child) => {
     if (isConditionValue(child)) {
-      return evaluateConditionValue(child, formValues)
+      return evaluateConditionValue(child, formValues);
     } else if (isConditionGroup(child)) {
-      return evaluateConditionGroupInternal(child, formValues, depth + 1)
+      return evaluateConditionGroupInternal(child, formValues, depth + 1);
     } else {
-      console.error('[Form Generator] Invalid child in ConditionGroup:', child)
-      return false
+      console.error('[Form Generator] Invalid child in ConditionGroup:', child);
+      return false;
     }
-  })
+  });
 
   if (comparisonType === 'and') {
-    return results.every((result) => result === true)
+    return results.every((result) => result === true);
   } else if (comparisonType === 'or') {
-    return results.some((result) => result === true)
+    return results.some((result) => result === true);
   } else {
-    console.error(`[Form Generator] Unknown comparisonType: ${comparisonType}`)
-    return false
+    console.error(`[Form Generator] Unknown comparisonType: ${comparisonType}`);
+    return false;
   }
 }
 
@@ -214,25 +218,25 @@ function evaluateConditionGroupInternal(
  */
 export function evaluateConditions(
   condition: ConditionGroup | ConditionValue | undefined,
-  formValues: FormValues
+  formValues: FormValues,
 ): boolean {
   // If no condition is provided, return true (no restrictions)
   if (!condition) {
-    return true
+    return true;
   }
 
   try {
     if (isConditionValue(condition)) {
-      return evaluateConditionValue(condition, formValues)
+      return evaluateConditionValue(condition, formValues);
     } else if (isConditionGroup(condition)) {
-      return evaluateConditionGroupInternal(condition, formValues)
+      return evaluateConditionGroupInternal(condition, formValues);
     } else {
-      console.error('[Form Generator] Invalid condition:', condition)
-      return false
+      console.error('[Form Generator] Invalid condition:', condition);
+      return false;
     }
   } catch (error) {
-    console.error('[Form Generator] Error evaluating condition:', error, condition)
-    return false
+    console.error('[Form Generator] Error evaluating condition:', error, condition);
+    return false;
   }
 }
 
@@ -246,35 +250,35 @@ export function evaluateConditions(
  */
 export function collectValidationMessages(
   condition: ConditionGroup | ConditionValue | undefined,
-  formValues: FormValues
+  formValues: FormValues,
 ): string[] {
   if (!condition) {
-    return []
+    return [];
   }
 
-  const messages: string[] = []
+  const messages: string[] = [];
 
   function collect(cond: ConditionGroup | ConditionValue): void {
     if (isConditionValue(cond)) {
-      const passed = evaluateConditionValue(cond, formValues)
+      const passed = evaluateConditionValue(cond, formValues);
       if (!passed && cond.message) {
-        messages.push(cond.message)
+        messages.push(cond.message);
       }
     } else if (isConditionGroup(cond)) {
       // For 'and' groups, collect all failing conditions
       // For 'or' groups, only collect if ALL conditions fail
       const allResults = cond.children.map((child) => {
         if (isConditionValue(child)) {
-          return evaluateConditionValue(child, formValues)
+          return evaluateConditionValue(child, formValues);
         } else if (isConditionGroup(child)) {
-          return evaluateConditionGroupInternal(child, formValues)
+          return evaluateConditionGroupInternal(child, formValues);
         }
-        return false
-      })
+        return false;
+      });
 
       const groupPassed = cond.comparisonType === 'and'
         ? allResults.every((r) => r)
-        : allResults.some((r) => r)
+        : allResults.some((r) => r);
 
       if (!groupPassed) {
         // Collect messages from children
@@ -282,24 +286,24 @@ export function collectValidationMessages(
           if (cond.comparisonType === 'and') {
             // For 'and', collect from failed conditions
             if (!allResults[index]) {
-              collect(child)
+              collect(child);
             }
           } else {
             // For 'or', collect from all if group failed
-            collect(child)
+            collect(child);
           }
-        })
+        });
       }
     }
   }
 
   try {
-    collect(condition)
+    collect(condition);
   } catch (error) {
-    console.error('[Form Generator] Error collecting validation messages:', error)
+    console.error('[Form Generator] Error collecting validation messages:', error);
   }
 
-  return messages
+  return messages;
 }
 
 /**
@@ -310,39 +314,39 @@ export function collectValidationMessages(
  * @returns Array of field names referenced in the condition
  */
 export function collectFieldsFromCondition(
-  condition: ConditionGroup | ConditionValue | undefined
+  condition: ConditionGroup | ConditionValue | undefined,
 ): string[] {
   if (!condition) {
-    return []
+    return [];
   }
 
-  const fieldNames: string[] = []
+  const fieldNames: string[] = [];
 
   function collect(cond: ConditionGroup | ConditionValue): void {
     if (isConditionValue(cond)) {
       // Add the field name
       if (cond.field) {
-        fieldNames.push(cond.field)
+        fieldNames.push(cond.field);
       }
       // Also check if the value references another field (starts with $)
       if (typeof cond.value === 'string' && cond.value.startsWith('$')) {
-        const referencedField = cond.value.substring(1)
-        fieldNames.push(referencedField)
+        const referencedField = cond.value.substring(1);
+        fieldNames.push(referencedField);
       }
     } else if (isConditionGroup(cond)) {
       // Recursively collect from children
       cond.children.forEach((child) => {
-        collect(child)
-      })
+        collect(child);
+      });
     }
   }
 
   try {
-    collect(condition)
+    collect(condition);
     // Return unique field names
-    return [...new Set(fieldNames)]
+    return [...new Set(fieldNames)];
   } catch (error) {
-    console.error('[Form Generator] Error collecting fields from condition:', error)
-    return []
+    console.error('[Form Generator] Error collecting fields from condition:', error);
+    return [];
   }
 }

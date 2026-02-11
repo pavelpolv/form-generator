@@ -1,13 +1,16 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import { useForm } from 'react-hook-form'
-import { InputField } from './InputField'
-import { InputField as InputFieldConfig } from '@/types'
+import type { Meta, StoryObj } from '@storybook/react';
+import { useForm } from 'react-hook-form';
+import { InputField } from './InputField';
+import { InputField as InputFieldConfig } from '@/types';
 
 // Wrapper component to provide react-hook-form context
 const InputFieldWrapper = ({ config }: { config: InputFieldConfig }) => {
-  const { control } = useForm()
-  return <InputField config={config} control={control} />
-}
+  const { control } = useForm();
+
+  return <InputField
+    config={config}
+    control={control} />;
+};
 
 const meta: Meta<typeof InputFieldWrapper> = {
   title: 'Fields/InputField',
@@ -15,9 +18,9 @@ const meta: Meta<typeof InputFieldWrapper> = {
   parameters: {
     layout: 'padded',
   },
-}
+};
 
-export default meta
+export default meta;
 type Story = StoryObj<typeof InputFieldWrapper>
 
 export const Basic: Story = {
@@ -30,7 +33,7 @@ export const Basic: Story = {
       inputType: 'text',
     },
   },
-}
+};
 
 export const Password: Story = {
   args: {
@@ -42,18 +45,19 @@ export const Password: Story = {
       inputType: 'password',
     },
   },
-}
+};
 
 export const WithError: Story = {
   render: (args) => {
-    const { control } = useForm()
+    const { control } = useForm();
+
     return (
       <InputField
         config={args.config}
         control={control}
         error="This field is required"
       />
-    )
+    );
   },
   args: {
     config: {
@@ -64,18 +68,19 @@ export const WithError: Story = {
       inputType: 'text',
     },
   },
-}
+};
 
 export const Disabled: Story = {
   render: (args) => {
-    const { control } = useForm()
+    const { control } = useForm();
+
     return (
       <InputField
         config={args.config}
         control={control}
         disabled={true}
       />
-    )
+    );
   },
   args: {
     config: {
@@ -87,4 +92,4 @@ export const Disabled: Story = {
       defaultValue: 'Cannot edit this',
     },
   },
-}
+};

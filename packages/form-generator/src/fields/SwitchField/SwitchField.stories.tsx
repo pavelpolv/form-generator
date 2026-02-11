@@ -1,13 +1,16 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import { useForm } from 'react-hook-form'
-import { SwitchField } from './SwitchField'
-import { SwitchField as SwitchFieldConfig } from '@/types'
+import type { Meta, StoryObj } from '@storybook/react';
+import { useForm } from 'react-hook-form';
+import { SwitchField } from './SwitchField';
+import { SwitchField as SwitchFieldConfig } from '@/types';
 
 // Wrapper component to provide react-hook-form context
 const SwitchFieldWrapper = ({ config }: { config: SwitchFieldConfig }) => {
-  const { control } = useForm()
-  return <SwitchField config={config} control={control} />
-}
+  const { control } = useForm();
+
+  return <SwitchField
+    config={config}
+    control={control} />;
+};
 
 const meta: Meta<typeof SwitchFieldWrapper> = {
   title: 'Fields/SwitchField',
@@ -15,9 +18,9 @@ const meta: Meta<typeof SwitchFieldWrapper> = {
   parameters: {
     layout: 'padded',
   },
-}
+};
 
-export default meta
+export default meta;
 type Story = StoryObj<typeof SwitchFieldWrapper>
 
 export const BasicSwitch: Story = {
@@ -28,7 +31,7 @@ export const BasicSwitch: Story = {
       label: 'Enable Feature',
     },
   },
-}
+};
 
 export const WithCheckedText: Story = {
   args: {
@@ -40,7 +43,7 @@ export const WithCheckedText: Story = {
       uncheckedText: 'No',
     },
   },
-}
+};
 
 export const DefaultChecked: Story = {
   args: {
@@ -53,18 +56,19 @@ export const DefaultChecked: Story = {
       uncheckedText: 'No',
     },
   },
-}
+};
 
 export const WithError: Story = {
   render: (args) => {
-    const { control } = useForm()
+    const { control } = useForm();
+
     return (
       <SwitchField
         config={args.config}
         control={control}
         error="You must agree to continue"
       />
-    )
+    );
   },
   args: {
     config: {
@@ -75,18 +79,19 @@ export const WithError: Story = {
       uncheckedText: 'Disagree',
     },
   },
-}
+};
 
 export const Disabled: Story = {
   render: (args) => {
-    const { control } = useForm()
+    const { control } = useForm();
+
     return (
       <SwitchField
         config={args.config}
         control={control}
         disabled={true}
       />
-    )
+    );
   },
   args: {
     config: {
@@ -98,4 +103,4 @@ export const Disabled: Story = {
       uncheckedText: 'OFF',
     },
   },
-}
+};

@@ -1,9 +1,9 @@
-import React, { useMemo } from 'react'
-import { Card } from 'antd'
-import { Control } from 'react-hook-form'
-import { GroupField, FormValues, Field } from '@/types'
-import { evaluateConditions, collectValidationMessages, collectFieldsFromCondition } from '@/utils'
-import { FieldRenderer } from '@/components/FieldRenderer'
+import React, { useMemo } from 'react';
+import { Card } from 'antd';
+import { Control } from 'react-hook-form';
+import { GroupField, FormValues, Field } from '@/types';
+import { evaluateConditions, collectValidationMessages, collectFieldsFromCondition } from '@/utils';
+import { FieldRenderer } from '@/components/FieldRenderer';
 
 /**
  * Memoized field wrapper to prevent unnecessary re-calculations of conditions
@@ -16,41 +16,43 @@ interface MemoizedFieldProps {
 }
 
 const MemoizedField: React.FC<MemoizedFieldProps> = React.memo(
-  ({ field, control, formValues, touchedFields }) => {
+  ({
+    field,
+    control,
+    formValues,
+    touchedFields,
+  }) => {
     // Memoize visibility check
     const isFieldVisible = useMemo(
       () => evaluateConditions(field.visibleCondition, formValues),
-      [field.visibleCondition, formValues]
-    )
+      [field.visibleCondition, formValues],
+    );
 
     // Memoize validation check
     const isFieldValid = useMemo(
       () => evaluateConditions(field.validateCondition, formValues),
-      [field.validateCondition, formValues]
-    )
-
+      [field.validateCondition, formValues],
+    );
     // Memoize disabled check
     const isFieldDisabled = useMemo(
       () => field.disabledCondition
         ? evaluateConditions(field.disabledCondition, formValues)
         : false,
-      [field.disabledCondition, formValues]
-    )
+      [field.disabledCondition, formValues],
+    );
 
     // Memoize validation messages
-    const isFieldTouched = touchedFields[field.name]
+    const isFieldTouched = touchedFields[field.name];
     const fieldValidationMessages = useMemo(
       () => {
-        if (isFieldValid || !isFieldTouched) return undefined
-        return collectValidationMessages(field.validateCondition, formValues).join(', ')
+        if (isFieldValid || !isFieldTouched) return undefined;
+        return collectValidationMessages(field.validateCondition, formValues).join(', ');
       },
-      [isFieldValid, isFieldTouched, field.validateCondition, formValues]
-    )
-
+      [isFieldValid, isFieldTouched, field.validateCondition, formValues],
+    );
     if (!isFieldVisible) {
-      return null
+      return null;
     }
-
     return (
       <FieldRenderer
         key={field.name}
@@ -59,25 +61,25 @@ const MemoizedField: React.FC<MemoizedFieldProps> = React.memo(
         error={fieldValidationMessages}
         disabled={isFieldDisabled}
       />
-    )
+    );
   },
   (prevProps, nextProps) => {
     // Custom comparison - only re-render if relevant data changed
-    if (prevProps.field !== nextProps.field) return false
-    if (prevProps.control !== nextProps.control) return false
-    if (prevProps.formValues !== nextProps.formValues) return false
+    if (prevProps.field !== nextProps.field) return false;
+    if (prevProps.control !== nextProps.control) return false;
+    if (prevProps.formValues !== nextProps.formValues) return false;
 
     // Only compare touched state for this specific field
-    const fieldName = prevProps.field.name
+    const fieldName = prevProps.field.name;
     if (Boolean(prevProps.touchedFields[fieldName]) !== Boolean(nextProps.touchedFields[fieldName])) {
-      return false
+      return false;
     }
 
-    return true
-  }
-)
+    return true;
+  },
+);
 
-MemoizedField.displayName = 'MemoizedField'
+MemoizedField.displayName = 'MemoizedField';
 
 interface FieldGroupProps {
   group: GroupField
@@ -91,66 +93,67 @@ interface FieldGroupProps {
  */
 const arePropsEqual = (
   prevProps: FieldGroupProps,
-  nextProps: FieldGroupProps
+  nextProps: FieldGroupProps,
 ): boolean => {
-  if (prevProps.group !== nextProps.group) return false
-  if (prevProps.control !== nextProps.control) return false
-  if (prevProps.formValues !== nextProps.formValues) return false
+  if (prevProps.group !== nextProps.group) return false;
+  if (prevProps.control !== nextProps.control) return false;
+  if (prevProps.formValues !== nextProps.formValues) return false;
 
-  const prevTouched = prevProps.touchedFields
-  const nextTouched = nextProps.touchedFields
+  const prevTouched = prevProps.touchedFields;
+  const nextTouched = nextProps.touchedFields;
   const allKeys = new Set([
     ...Object.keys(prevTouched),
     ...Object.keys(nextTouched),
-  ])
+  ]);
 
   for (const key of allKeys) {
     if (Boolean(prevTouched[key]) !== Boolean(nextTouched[key])) {
-      return false
+      return false;
     }
   }
 
-  return true
-}
+  return true;
+};
 
 /**
  * Field group component with optimized field rendering
  */
 export const FieldGroup: React.FC<FieldGroupProps> = React.memo(
   ({ group, control, formValues, touchedFields }) => {
-    const { name, showTitle = true, showBorder = true, visibleCondition, validateCondition, fields } = group
+    const { name, showTitle = true, showBorder = true, visibleCondition, validateCondition, fields } = group;
 
     const sortedFields = useMemo(
       () => [...fields].sort((a, b) => (a.order ?? 0) - (b.order ?? 0)),
-      [fields]
-    )
+      [fields],
+    );
 
     const isVisible = useMemo(
       () => evaluateConditions(visibleCondition, formValues),
-      [visibleCondition, formValues]
-    )
+      [visibleCondition, formValues],
+    );
 
     const isValid = useMemo(
       () => evaluateConditions(validateCondition, formValues),
-      [validateCondition, formValues]
-    )
+      [validateCondition, formValues],
+    );
 
     const validationMessages = useMemo(
       () => {
-        if (isValid) return []
-        return collectValidationMessages(validateCondition, formValues)
+        if (isValid) return [];
+        return collectValidationMessages(validateCondition, formValues);
       },
-      [isValid, validateCondition, formValues]
-    )
+      [isValid, validateCondition, formValues],
+    );
 
     const allValidationFieldsTouched = useMemo(() => {
-      if (!validateCondition) return true
-      const fieldsInValidation = collectFieldsFromCondition(validateCondition)
-      return fieldsInValidation.every(fieldName => touchedFields[fieldName])
-    }, [validateCondition, touchedFields])
+      if (!validateCondition) return true;
+      const fieldsInValidation = collectFieldsFromCondition(validateCondition);
+
+      return fieldsInValidation.every(fieldName => touchedFields[fieldName]);
+    }, [validateCondition, touchedFields]);
 
     if (!isVisible) {
-      return null
+      return null;
     }
 
     const groupContent = (
@@ -171,7 +174,7 @@ export const FieldGroup: React.FC<FieldGroupProps> = React.memo(
             color: '#ff4d4f',
             fontSize: '12px',
             marginTop: '8px',
-            lineHeight: '1.5'
+            lineHeight: '1.5',
           }}>
             {validationMessages.map((msg, idx) => (
               <div key={idx}>{msg}</div>
@@ -179,9 +182,9 @@ export const FieldGroup: React.FC<FieldGroupProps> = React.memo(
           </div>
         )}
       </>
-    )
+    );
 
-    const showGroupError = !isValid && allValidationFieldsTouched
+    const showGroupError = !isValid && allValidationFieldsTouched;
 
     if (showBorder) {
       return (
@@ -195,7 +198,7 @@ export const FieldGroup: React.FC<FieldGroupProps> = React.memo(
         >
           {groupContent}
         </Card>
-      )
+      );
     }
 
     return (
@@ -212,9 +215,9 @@ export const FieldGroup: React.FC<FieldGroupProps> = React.memo(
         )}
         {groupContent}
       </div>
-    )
+    );
   },
-  arePropsEqual
-)
+  arePropsEqual,
+);
 
-FieldGroup.displayName = 'FieldGroup'
+FieldGroup.displayName = 'FieldGroup';

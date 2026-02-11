@@ -1,1 +1,1 @@
-export { SwitchField } from './SwitchField'
+export { SwitchField } from './SwitchField';
