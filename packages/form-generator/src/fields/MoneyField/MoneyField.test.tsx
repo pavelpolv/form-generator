@@ -40,15 +40,15 @@ describe('MoneyField', () => {
     expect(input).toHaveAttribute('type', 'text');
   });
 
-  it('should allow numeric input and format on blur', async () => {
+  it('should format with spaces immediately while typing', async () => {
     const user = userEvent.setup();
     render(<TestWrapper config={baseConfig} />);
 
     const input = screen.getByPlaceholderText('Enter amount');
     await user.type(input, '12345');
-    await user.tab(); // trigger blur for formatting
 
-    expect(input).toHaveValue('12 345,00');
+    // Spaces are added during typing, not only on blur
+    expect(input).toHaveValue('12 345');
   });
 
   it('should format with space thousand separators on blur', async () => {
