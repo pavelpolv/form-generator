@@ -190,6 +190,7 @@ export const FieldGroup: React.FC<FieldGroupProps> = React.memo(
       return (
         <Card
           title={showTitle ? name : undefined}
+          headStyle={{ fontSize: '14px' }}
           style={{
             marginBottom: 24,
             borderColor: showGroupError ? '#ff4d4f' : undefined,
@@ -205,7 +206,7 @@ export const FieldGroup: React.FC<FieldGroupProps> = React.memo(
       <div style={{ marginBottom: 24 }}>
         {showTitle && (
           <div style={{
-            fontSize: '16px',
+            fontSize: '14px',
             fontWeight: 600,
             marginBottom: '16px',
             color: showGroupError ? '#ff4d4f' : undefined,
