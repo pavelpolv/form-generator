@@ -15,6 +15,7 @@
     "type-check": "turbo run type-check",
     "bench": "turbo run bench --filter=@form-generator/core",
     "playground": "npm run dev --workspace=@form-generator/playground",
+    "storybook": "npm run storybook --workspace=@form-generator/core",
     "clean": "turbo run clean && rm -rf node_modules"
   },
   "devDependencies": {
