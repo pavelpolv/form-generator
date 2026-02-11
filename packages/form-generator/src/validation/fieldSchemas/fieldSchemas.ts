@@ -70,6 +70,19 @@ export const dateFieldSchema = baseFieldSchema.extend({
 });
 
 /**
+ * Money field validation schema
+ */
+export const moneyFieldSchema = baseFieldSchema.extend({
+  type: z.literal('money'),
+  decimalPlaces: z.number().int().min(0).optional(),
+  prefix: z.string().optional(),
+  suffix: z.string().optional(),
+  allowNegative: z.boolean().optional(),
+  min: z.number().optional(),
+  max: z.number().optional(),
+});
+
+/**
  * Validate field config and return error message if invalid
  * Accepts unknown input for runtime validation
  */
@@ -99,6 +112,9 @@ export function validateFieldConfig(config: unknown): string | null {
       break;
     case 'date':
       dateFieldSchema.parse(config);
+      break;
+    case 'money':
+      moneyFieldSchema.parse(config);
       break;
     default:
       return `Unknown field type: ${fieldConfig.type}`;
