@@ -1,13 +1,16 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import { useForm } from 'react-hook-form'
-import { InputNumberField } from './InputNumberField'
-import { InputNumberField as InputNumberFieldConfig } from '@/types'
+import type { Meta, StoryObj } from '@storybook/react';
+import { useForm } from 'react-hook-form';
+import { InputNumberField } from './InputNumberField';
+import { InputNumberField as InputNumberFieldConfig } from '@/types';
 
 // Wrapper component to provide react-hook-form context
 const InputNumberFieldWrapper = ({ config }: { config: InputNumberFieldConfig }) => {
-  const { control } = useForm()
-  return <InputNumberField config={config} control={control} />
-}
+  const { control } = useForm();
+
+  return <InputNumberField
+    config={config}
+    control={control} />;
+};
 
 const meta: Meta<typeof InputNumberFieldWrapper> = {
   title: 'Fields/InputNumberField',
@@ -15,9 +18,9 @@ const meta: Meta<typeof InputNumberFieldWrapper> = {
   parameters: {
     layout: 'padded',
   },
-}
+};
 
-export default meta
+export default meta;
 type Story = StoryObj<typeof InputNumberFieldWrapper>
 
 export const Basic: Story = {
@@ -29,7 +32,7 @@ export const Basic: Story = {
       placeholder: 'Enter your age',
     },
   },
-}
+};
 
 export const WithMinMax: Story = {
   args: {
@@ -42,7 +45,7 @@ export const WithMinMax: Story = {
       max: 120,
     },
   },
-}
+};
 
 export const WithStep: Story = {
   args: {
@@ -55,18 +58,19 @@ export const WithStep: Story = {
       min: 0,
     },
   },
-}
+};
 
 export const WithError: Story = {
   render: (args) => {
-    const { control } = useForm()
+    const { control } = useForm();
+
     return (
       <InputNumberField
         config={args.config}
         control={control}
         error="Value must be between 0 and 100"
       />
-    )
+    );
   },
   args: {
     config: {
@@ -78,18 +82,19 @@ export const WithError: Story = {
       max: 100,
     },
   },
-}
+};
 
 export const Disabled: Story = {
   render: (args) => {
-    const { control } = useForm()
+    const { control } = useForm();
+
     return (
       <InputNumberField
         config={args.config}
         control={control}
         disabled={true}
       />
-    )
+    );
   },
   args: {
     config: {
@@ -100,4 +105,4 @@ export const Disabled: Story = {
       defaultValue: 100,
     },
   },
-}
+};

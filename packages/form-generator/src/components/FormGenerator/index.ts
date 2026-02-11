@@ -1,2 +1,2 @@
-export { FormGenerator } from './FormGenerator'
-export type { FormGeneratorProps } from './FormGenerator'
+export type { FormGeneratorProps } from './FormGenerator';
+export { FormGenerator } from './FormGenerator';

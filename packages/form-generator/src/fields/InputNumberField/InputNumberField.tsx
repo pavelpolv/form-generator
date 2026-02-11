@@ -1,8 +1,8 @@
-import React, { useMemo, useCallback } from 'react'
-import { Input, Form } from 'antd'
-import { Controller, Control, ControllerRenderProps } from 'react-hook-form'
-import { InputNumberField as InputNumberFieldConfig, FormValues } from '@/types'
-import { validateFieldConfig } from '@/validation/fieldSchemas'
+import React, { useMemo, useCallback } from 'react';
+import { Input, Form } from 'antd';
+import { Controller, Control, ControllerRenderProps } from 'react-hook-form';
+import { InputNumberField as InputNumberFieldConfig, FormValues } from '@/types';
+import { validateFieldConfig } from '@/validation/fieldSchemas';
 
 interface InputNumberFieldProps {
   config: InputNumberFieldConfig
@@ -23,13 +23,13 @@ const InputNumberInner: React.FC<{
   error?: string
 }> = React.memo(({ field, label, placeholder, disabled, min, max, step, error }) => {
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    field.onChange(value === '' ? undefined : Number(value))
-  }, [field])
+    const value = e.target.value;
+    field.onChange(value === '' ? undefined : Number(value));
+  }, [field]);
 
   const handleBlur = useCallback(() => {
-    field.onBlur()
-  }, [field])
+    field.onBlur();
+  }, [field]);
 
   return (
     <Form.Item
@@ -49,10 +49,10 @@ const InputNumberInner: React.FC<{
         onBlur={handleBlur}
       />
     </Form.Item>
-  )
-})
+  );
+});
 
-InputNumberInner.displayName = 'InputNumberInner'
+InputNumberInner.displayName = 'InputNumberInner';
 
 /**
  * Input number field component
@@ -65,14 +65,14 @@ export const InputNumberField: React.FC<InputNumberFieldProps> = React.memo(({
   disabled = false,
 }) => {
   // Validate config - memoized since config doesn't change after initialization
-  const configError = useMemo(() => validateFieldConfig(config), [config])
+  const configError = useMemo(() => validateFieldConfig(config), [config]);
   if (configError) {
     return (
       <div style={{ color: '#ff4d4f', marginBottom: 16 }}>
         <div style={{ fontWeight: 600 }}>Невозможно отобразить поле</div>
         <div style={{ fontSize: 12, marginTop: 4 }}>{configError}</div>
       </div>
-    )
+    );
   }
 
   const {
@@ -83,7 +83,7 @@ export const InputNumberField: React.FC<InputNumberFieldProps> = React.memo(({
     min,
     max,
     step,
-  } = config
+  } = config;
 
   return (
     <Controller
@@ -103,7 +103,7 @@ export const InputNumberField: React.FC<InputNumberFieldProps> = React.memo(({
         />
       )}
     />
-  )
-})
+  );
+});
 
-InputNumberField.displayName = 'InputNumberField'
+InputNumberField.displayName = 'InputNumberField';

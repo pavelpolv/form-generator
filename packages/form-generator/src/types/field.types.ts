@@ -1,4 +1,4 @@
-import { ConditionGroup } from './condition.types'
+import { ConditionGroup } from './condition.types';
 
 /**
  * Available field types

@@ -1,7 +1,7 @@
-import React from 'react'
-import { Control } from 'react-hook-form'
-import { Field, FormValues } from '@/types'
-import { InputField, InputNumberField, SelectField, SwitchField, DateField } from '@/fields'
+import React from 'react';
+import { Control } from 'react-hook-form';
+import { Field, FormValues } from '@/types';
+import { InputField, InputNumberField, SelectField, SwitchField, DateField } from '@/fields';
 
 interface FieldRendererProps {
   field: Field
@@ -16,15 +16,15 @@ interface FieldRendererProps {
  */
 const arePropsEqual = (
   prevProps: FieldRendererProps,
-  nextProps: FieldRendererProps
+  nextProps: FieldRendererProps,
 ): boolean => {
   return (
     prevProps.field === nextProps.field &&
     prevProps.control === nextProps.control &&
     prevProps.error === nextProps.error &&
     prevProps.disabled === nextProps.disabled
-  )
-}
+  );
+};
 
 /**
  * Dynamic field renderer
@@ -37,60 +37,60 @@ export const FieldRenderer: React.FC<FieldRendererProps> = React.memo(({
   disabled,
 }) => {
   switch (field.type) {
-    case 'input':
-      return (
-        <InputField
-          config={field}
-          control={control}
-          error={error}
-          disabled={disabled}
-        />
-      )
+  case 'input':
+    return (
+      <InputField
+        config={field}
+        control={control}
+        error={error}
+        disabled={disabled}
+      />
+    );
 
-    case 'inputNumber':
-      return (
-        <InputNumberField
-          config={field}
-          control={control}
-          error={error}
-          disabled={disabled}
-        />
-      )
+  case 'inputNumber':
+    return (
+      <InputNumberField
+        config={field}
+        control={control}
+        error={error}
+        disabled={disabled}
+      />
+    );
 
-    case 'select':
-      return (
-        <SelectField
-          config={field}
-          control={control}
-          error={error}
-          disabled={disabled}
-        />
-      )
+  case 'select':
+    return (
+      <SelectField
+        config={field}
+        control={control}
+        error={error}
+        disabled={disabled}
+      />
+    );
 
-    case 'switch':
-      return (
-        <SwitchField
-          config={field}
-          control={control}
-          error={error}
-          disabled={disabled}
-        />
-      )
+  case 'switch':
+    return (
+      <SwitchField
+        config={field}
+        control={control}
+        error={error}
+        disabled={disabled}
+      />
+    );
 
-    case 'date':
-      return (
-        <DateField
-          config={field}
-          control={control}
-          error={error}
-          disabled={disabled}
-        />
-      )
+  case 'date':
+    return (
+      <DateField
+        config={field}
+        control={control}
+        error={error}
+        disabled={disabled}
+      />
+    );
 
-    default:
-      console.error(`[Form Generator] Unknown field type: ${(field as Field).type}`)
-      return null
+  default:
+    console.error(`[Form Generator] Unknown field type: ${(field as Field).type}`);
+    return null;
   }
-}, arePropsEqual)
+}, arePropsEqual);
 
-FieldRenderer.displayName = 'FieldRenderer'
+FieldRenderer.displayName = 'FieldRenderer';

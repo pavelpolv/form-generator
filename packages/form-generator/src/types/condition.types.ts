@@ -102,19 +102,19 @@ export interface ConditionGroup {
   /**
    * Child conditions or nested groups
    */
-  children: (ConditionGroup | ConditionValue)[]
+  children: Array<ConditionGroup | ConditionValue>
 }
 
 /**
  * Type guard to check if a condition is a ConditionValue
  */
 export function isConditionValue(condition: ConditionGroup | ConditionValue): condition is ConditionValue {
-  return 'field' in condition && 'condition' in condition
+  return 'field' in condition && 'condition' in condition;
 }
 
 /**
  * Type guard to check if a condition is a ConditionGroup
  */
 export function isConditionGroup(condition: ConditionGroup | ConditionValue): condition is ConditionGroup {
-  return 'comparisonType' in condition && 'children' in condition
+  return 'comparisonType' in condition && 'children' in condition;
 }
