@@ -18,6 +18,7 @@ export type {
   GroupField,
   InputField,
   InputNumberField,
+  MoneyField,
   SelectField,
   SelectOption,
   SwitchField,

@@ -22,6 +22,8 @@ export type {
   InputNumberField,
   InputNumberFieldProps,
   InputType,
+  MoneyField,
+  MoneyFieldProps,
   SelectField,
   SelectFieldProps,
   SelectOption,

@@ -1,7 +1,7 @@
 import { FC, memo } from 'react';
 import { Control } from 'react-hook-form';
 import { Field, FormValues } from '@/types';
-import { InputField, InputNumberField, SelectField, SwitchField, DateField } from '@/fields';
+import { InputField, InputNumberField, MoneyField, SelectField, SwitchField, DateField } from '@/fields';
 
 interface FieldRendererProps {
   field: Field
@@ -80,6 +80,16 @@ export const FieldRenderer: FC<FieldRendererProps> = memo(({
   case 'date':
     return (
       <DateField
+        config={field}
+        control={control}
+        error={error}
+        disabled={disabled}
+      />
+    );
+
+  case 'money':
+    return (
+      <MoneyField
         config={field}
         control={control}
         error={error}

@@ -4,7 +4,7 @@ import { ConditionGroup } from './condition.types';
  * Available field types
  * Each type corresponds to a specific field component
  */
-export type FieldType = 'input' | 'inputNumber' | 'select' | 'switch' | 'date'
+export type FieldType = 'input' | 'inputNumber' | 'select' | 'switch' | 'date' | 'money'
 
 /**
  * Base field configuration shared by all field types
@@ -171,6 +171,43 @@ export interface DateFieldProps {
 }
 
 /**
+ * Money field specific props
+ */
+export interface MoneyFieldProps {
+  /**
+   * Number of decimal places
+   * @default 2
+   */
+  decimalPlaces?: number
+
+  /**
+   * Prefix displayed before the input (e.g. currency symbol)
+   */
+  prefix?: string
+
+  /**
+   * Suffix displayed after the input (e.g. currency code)
+   */
+  suffix?: string
+
+  /**
+   * Allow negative values
+   * @default false
+   */
+  allowNegative?: boolean
+
+  /**
+   * Minimum value
+   */
+  min?: number
+
+  /**
+   * Maximum value
+   */
+  max?: number
+}
+
+/**
  * Input field configuration
  */
 export interface InputField extends BaseField, InputFieldProps {
@@ -206,6 +243,13 @@ export interface DateField extends BaseField, DateFieldProps {
 }
 
 /**
+ * Money field configuration
+ */
+export interface MoneyField extends BaseField, MoneyFieldProps {
+  type: 'money'
+}
+
+/**
  * Union type of all field configurations
  */
-export type Field = InputField | InputNumberField | SelectField | SwitchField | DateField
+export type Field = InputField | InputNumberField | SelectField | SwitchField | DateField | MoneyField
