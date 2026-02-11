@@ -22,7 +22,9 @@
     "bench": "vitest bench",
     "lint": "eslint . --max-warnings 0",
     "type-check": "tsc --noEmit",
-    "clean": "rm -rf dist coverage .turbo"
+    "clean": "rm -rf dist coverage .turbo",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "peerDependencies": {
     "antd": "^4.24.15",
@@ -47,6 +49,14 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.43.0",
+    "@storybook/addon-essentials": "^8.6.14",
+    "@storybook/addon-interactions": "^8.6.14",
+    "@storybook/addon-links": "^8.6.15",
+    "@storybook/blocks": "^8.6.14",
+    "@storybook/react": "^8.6.15",
+    "@storybook/react-vite": "^8.6.15",
+    "@storybook/test": "^8.6.15",
+    "storybook": "^8.6.15",
     "typescript": "^5.3.3",
     "vite": "^6.4.1",
     "vitest": "^4.0.18"
