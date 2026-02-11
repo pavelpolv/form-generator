@@ -36,6 +36,11 @@ export interface GroupField {
   validateCondition?: ConditionGroup
 
   /**
+   * Display order (lower values rendered first, default 0)
+   */
+  order?: number
+
+  /**
    * Fields contained in this group
    */
   fields: Field[]

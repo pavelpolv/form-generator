@@ -258,6 +258,38 @@ describe('FieldGroup', () => {
     })
   })
 
+  describe('order sorting', () => {
+    it('should render fields sorted by order property', () => {
+      const group: GroupField = {
+        name: 'Ordered Group',
+        fields: [
+          { type: 'input', name: 'c', label: 'Field C', order: 3 },
+          { type: 'input', name: 'a', label: 'Field A', order: 1 },
+          { type: 'input', name: 'b', label: 'Field B', order: 2 },
+        ],
+      }
+      render(<TestWrapper group={group} />)
+      const labels = screen.getAllByText(/^Field [ABC]$/)
+      expect(labels[0].textContent).toBe('Field A')
+      expect(labels[1].textContent).toBe('Field B')
+      expect(labels[2].textContent).toBe('Field C')
+    })
+
+    it('should default order to 0 when not specified', () => {
+      const group: GroupField = {
+        name: 'Mixed Order',
+        fields: [
+          { type: 'input', name: 'b', label: 'Field B', order: 1 },
+          { type: 'input', name: 'a', label: 'Field A' },
+        ],
+      }
+      render(<TestWrapper group={group} />)
+      const labels = screen.getAllByText(/^Field [AB]$/)
+      expect(labels[0].textContent).toBe('Field A')
+      expect(labels[1].textContent).toBe('Field B')
+    })
+  })
+
   describe('MemoizedField', () => {
     it('should not render field when visibleCondition is false', () => {
       const group: GroupField = {

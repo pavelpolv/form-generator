@@ -11,6 +11,7 @@ const baseFieldSchema = z.object({
   visibleCondition: z.any().optional(),
   validateCondition: z.any().optional(),
   disabledCondition: z.any().optional(),
+  order: z.number().optional(),
 })
 
 /**

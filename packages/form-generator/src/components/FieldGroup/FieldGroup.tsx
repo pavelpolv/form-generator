@@ -120,6 +120,11 @@ export const FieldGroup: React.FC<FieldGroupProps> = React.memo(
   ({ group, control, formValues, touchedFields }) => {
     const { name, showTitle = true, showBorder = true, visibleCondition, validateCondition, fields } = group
 
+    const sortedFields = useMemo(
+      () => [...fields].sort((a, b) => (a.order ?? 0) - (b.order ?? 0)),
+      [fields]
+    )
+
     const isVisible = useMemo(
       () => evaluateConditions(visibleCondition, formValues),
       [visibleCondition, formValues]
@@ -151,7 +156,7 @@ export const FieldGroup: React.FC<FieldGroupProps> = React.memo(
     const groupContent = (
       <>
         {/* Render fields using MemoizedField for better performance */}
-        {fields.map((field) => (
+        {sortedFields.map((field) => (
           <MemoizedField
             key={field.name}
             field={field}

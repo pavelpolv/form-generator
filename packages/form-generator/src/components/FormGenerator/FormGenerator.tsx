@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useForm, useFormState } from 'react-hook-form'
 import { Button, Space, Form } from 'antd'
 import { FormConfig, FormValues } from '@/types'
@@ -142,10 +142,15 @@ export const FormGenerator = React.forwardRef<FormGeneratorRef, FormGeneratorPro
       reset(initialValues)
     }
 
+    const sortedGroups = useMemo(
+      () => [...config.groups].sort((a, b) => (a.order ?? 0) - (b.order ?? 0)),
+      [config.groups]
+    )
+
     return (
       <Form layout="vertical" onFinish={handleSubmit(handleFormSubmit)}>
         {/* Render groups */}
-        {config.groups.map((group, index) => (
+        {sortedGroups.map((group, index) => (
           <FieldGroup
             key={`${group.name}-${index}`}
             group={group}
