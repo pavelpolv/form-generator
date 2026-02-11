@@ -1,4 +1,4 @@
-import React from 'react';
+import { createRef } from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -180,7 +180,7 @@ describe('FormGenerator', () => {
 
   describe('imperative handle ref', () => {
     it('should expose getValues method', () => {
-      const ref = React.createRef<FormGeneratorRef>();
+      const ref = createRef<FormGeneratorRef>();
       render(
         <FormGenerator
           ref={ref}
@@ -195,7 +195,7 @@ describe('FormGenerator', () => {
     });
 
     it('should expose reset method', async () => {
-      const ref = React.createRef<FormGeneratorRef>();
+      const ref = createRef<FormGeneratorRef>();
       render(
         <FormGenerator
           ref={ref}
@@ -214,7 +214,7 @@ describe('FormGenerator', () => {
 
     it('should expose submit method', async () => {
       const onSubmit = vi.fn();
-      const ref = React.createRef<FormGeneratorRef>();
+      const ref = createRef<FormGeneratorRef>();
       render(
         <FormGenerator
           ref={ref}
@@ -231,7 +231,7 @@ describe('FormGenerator', () => {
     });
 
     it('should reset with custom values', async () => {
-      const ref = React.createRef<FormGeneratorRef>();
+      const ref = createRef<FormGeneratorRef>();
       render(
         <FormGenerator
           ref={ref}
@@ -300,7 +300,7 @@ describe('FormGenerator', () => {
 
   describe('initialValues', () => {
     it('should default to empty object when no initialValues provided', () => {
-      const ref = React.createRef<FormGeneratorRef>();
+      const ref = createRef<FormGeneratorRef>();
       render(<FormGenerator
         ref={ref}
         config={simpleConfig} />);
@@ -310,7 +310,7 @@ describe('FormGenerator', () => {
     });
 
     it('should use provided initialValues', () => {
-      const ref = React.createRef<FormGeneratorRef>();
+      const ref = createRef<FormGeneratorRef>();
       render(
         <FormGenerator
           ref={ref}

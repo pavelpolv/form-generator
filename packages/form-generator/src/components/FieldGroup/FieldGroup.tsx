@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { FC, memo, useMemo } from 'react';
 import { Card } from 'antd';
 import { Control } from 'react-hook-form';
 import { GroupField, FormValues, Field } from '@/types';
@@ -15,7 +15,7 @@ interface MemoizedFieldProps {
   touchedFields: Record<string, boolean | undefined>
 }
 
-const MemoizedField: React.FC<MemoizedFieldProps> = React.memo(
+const MemoizedField: FC<MemoizedFieldProps> = memo(
   ({
     field,
     control,
@@ -89,7 +89,7 @@ interface FieldGroupProps {
 }
 
 /**
- * Custom comparison function for React.memo
+ * Custom comparison function for memo
  */
 const arePropsEqual = (
   prevProps: FieldGroupProps,
@@ -118,7 +118,7 @@ const arePropsEqual = (
 /**
  * Field group component with optimized field rendering
  */
-export const FieldGroup: React.FC<FieldGroupProps> = React.memo(
+export const FieldGroup: FC<FieldGroupProps> = memo(
   ({ group, control, formValues, touchedFields }) => {
     const { name, showTitle = true, showBorder = true, visibleCondition, validateCondition, fields } = group;
 
