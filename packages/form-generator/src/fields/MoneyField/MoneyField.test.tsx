@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useForm } from 'react-hook-form';
 import { MoneyField } from './MoneyField';
@@ -277,5 +277,36 @@ describe('MoneyField', () => {
 
     // No minus sign, should still work normally
     expect(input).toHaveValue('500,00');
+  });
+
+  it('should handle cursor in the middle of value (break in cursor loop)', async () => {
+    const user = userEvent.setup();
+    render(<TestWrapper config={baseConfig} />);
+
+    const input = screen.getByPlaceholderText('Enter amount') as HTMLInputElement;
+    await user.type(input, '1234');
+
+    // Simulate editing in the middle: set selectionStart before firing change
+    // Value is "1 234", simulate inserting "5" at position 1 → "15 234"
+    Object.defineProperty(input, 'selectionStart', { value: 2, writable: true, configurable: true });
+    fireEvent.change(input, { target: { value: '15 234' } });
+
+    // The cursor break branch should have been hit
+    expect(input).toHaveValue('15 234');
+  });
+
+  it('should handle null selectionStart gracefully', async () => {
+    const user = userEvent.setup();
+    render(<TestWrapper config={baseConfig} />);
+
+    const input = screen.getByPlaceholderText('Enter amount') as HTMLInputElement;
+
+    // Set selectionStart to null to trigger ?? 0 fallback
+    Object.defineProperty(input, 'selectionStart', { value: null, writable: true, configurable: true });
+    fireEvent.change(input, { target: { value: '999' } });
+
+    // With selectionStart=null, sigCharsBefore=0, cursor stays at 0
+    // Value should still be formatted
+    expect(input).toHaveValue('999');
   });
 });
