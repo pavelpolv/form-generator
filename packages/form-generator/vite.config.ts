@@ -1,18 +1,15 @@
 import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
-import path from 'path'
-import { createRequire } from 'module'
+import * as path from 'path'
+import { fileURLToPath } from 'url'
 
-const require = createRequire(import.meta.url)
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      'react-dom/test-utils': path.dirname(require.resolve('react-dom/package.json')) + '/test-utils',
-      'react-dom': path.dirname(require.resolve('react-dom/package.json')),
-      'react': path.dirname(require.resolve('react/package.json')),
     },
   },
   build: {
