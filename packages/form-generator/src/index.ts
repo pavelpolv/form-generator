@@ -6,6 +6,8 @@ export { FormGenerator } from './components/FormGenerator';
 
 // Types
 export type {
+  ButtonConfig,
+  ButtonType,
   ComparisonOperator,
   ComparisonType,
   ConditionGroup,
@@ -16,13 +18,19 @@ export type {
   FormConfig,
   FormValues,
   GroupField,
+  HttpMethod,
   InputField,
   InputNumberField,
   MoneyField,
+  ResetButtonConfig,
   SelectField,
   SelectOption,
+  SubmitButtonConfig,
   SwitchField,
 } from './types';
+
+// Validation
+export { validateButtonsConfig } from './validation/buttonSchemas';
 
 // Utils
 export { collectValidationMessages,evaluateConditions } from './utils';

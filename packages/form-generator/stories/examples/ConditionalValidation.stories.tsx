@@ -137,9 +137,13 @@ const validationConfig: FormConfig = {
 
 export const RequiredFields: Story = {
   args: {
-    config: validationConfig,
-    showSubmitButton: true,
-    showResetButton: true,
+    config: {
+      ...validationConfig,
+      buttons: [
+        { key: 'submit', label: 'Submit', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+        { key: 'reset', label: 'Reset', action: 'reset' },
+      ],
+    },
   },
 }
 
@@ -236,9 +240,13 @@ const complexValidationConfig: FormConfig = {
 
 export const ComplexValidation: Story = {
   args: {
-    config: complexValidationConfig,
-    showSubmitButton: true,
-    showResetButton: true,
+    config: {
+      ...complexValidationConfig,
+      buttons: [
+        { key: 'submit', label: 'Submit', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+        { key: 'reset', label: 'Reset', action: 'reset' },
+      ],
+    },
   },
 }
 
@@ -280,8 +288,12 @@ const switchRequiredConfig: FormConfig = {
 
 export const SwitchRequiredField: Story = {
   args: {
-    config: switchRequiredConfig,
-    showSubmitButton: true,
-    showResetButton: true,
+    config: {
+      ...switchRequiredConfig,
+      buttons: [
+        { key: 'submit', label: 'Submit', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+        { key: 'reset', label: 'Reset', action: 'reset' },
+      ],
+    },
   },
 }

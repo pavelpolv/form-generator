@@ -2,6 +2,7 @@ import { Profiler, useState, useCallback, useRef, useEffect, useMemo } from 'rea
 import { Typography, Card, Row, Col, Statistic, Divider, Button, Space } from 'antd'
 import { FormGenerator } from '@form-generator/core'
 import { orderFormConfig } from './orderFormConfig'
+import type { FormConfig } from '@form-generator/core'
 
 const { Title, Text } = Typography
 
@@ -17,6 +18,25 @@ declare global {
   interface Window {
     __RENDER_EVENTS__?: RenderEvent[]
   }
+}
+
+const configWithButtons: FormConfig = {
+  ...orderFormConfig,
+  buttons: [
+    {
+      key: 'submit',
+      label: 'Оформить заказ',
+      type: 'primary',
+      action: 'submit',
+      requiresValidation: true,
+      url: 'https://httpbin.org/post',
+    },
+    {
+      key: 'reset',
+      label: 'Очистить',
+      action: 'reset',
+    },
+  ],
 }
 
 export default function OrderForm() {
@@ -154,12 +174,8 @@ export default function OrderForm() {
           <Card title="Форма заказа" size="small">
             <Profiler id="OrderForm" onRender={handleProfilerRender}>
               <FormGenerator
-                config={orderFormConfig}
+                config={configWithButtons}
                 onSubmit={handleSubmit}
-                showSubmitButton={true}
-                submitButtonText="Оформить заказ"
-                showResetButton={true}
-                resetButtonText="Очистить"
               />
             </Profiler>
           </Card>

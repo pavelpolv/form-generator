@@ -1,3 +1,4 @@
+import { ButtonConfig } from './button.types';
 import { ConditionGroup } from './condition.types';
 import { Field } from './field.types';
 
@@ -55,6 +56,12 @@ export interface FormConfig {
    * Groups are rendered vertically in order
    */
   groups: GroupField[]
+
+  /**
+   * Button configurations
+   * If not provided, a default submit button is rendered
+   */
+  buttons?: ButtonConfig[]
 }
 
 /**

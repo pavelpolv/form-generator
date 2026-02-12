@@ -131,9 +131,13 @@ const conditionalVisibilityConfig: FormConfig = {
 
 export const ConditionalGroups: Story = {
   args: {
-    config: conditionalVisibilityConfig,
-    showSubmitButton: true,
-    showResetButton: true,
+    config: {
+      ...conditionalVisibilityConfig,
+      buttons: [
+        { key: 'submit', label: 'Submit', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+        { key: 'reset', label: 'Reset', action: 'reset' },
+      ],
+    },
   },
 }
 
@@ -207,8 +211,12 @@ const nestedConditionsConfig: FormConfig = {
 
 export const NestedConditions: Story = {
   args: {
-    config: nestedConditionsConfig,
-    showSubmitButton: true,
-    showResetButton: true,
+    config: {
+      ...nestedConditionsConfig,
+      buttons: [
+        { key: 'submit', label: 'Submit', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+        { key: 'reset', label: 'Reset', action: 'reset' },
+      ],
+    },
   },
 }
