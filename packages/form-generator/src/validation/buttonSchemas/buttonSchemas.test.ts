@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import {
   submitButtonSchema,
   resetButtonSchema,
@@ -266,6 +266,15 @@ describe('buttonSchemas', () => {
       const error = validateButtonsConfig(config);
       expect(error).not.toBeNull();
       expect(error).toContain('unique');
+    });
+
+    it('should handle non-ZodError exceptions', () => {
+      const spy = vi.spyOn(buttonsArraySchema, 'parse').mockImplementation(() => {
+        throw new Error('unexpected error');
+      });
+      const result = validateButtonsConfig([]);
+      expect(result).toBe('Error: unexpected error');
+      spy.mockRestore();
     });
   });
 });
