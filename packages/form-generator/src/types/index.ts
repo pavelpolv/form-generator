@@ -1,3 +1,12 @@
+// Button types
+export type {
+  ButtonConfig,
+  ButtonType,
+  HttpMethod,
+  ResetButtonConfig,
+  SubmitButtonConfig,
+} from './button.types';
+
 // Condition types
 export type {
   ComparisonOperator,

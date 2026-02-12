@@ -1,8 +1,9 @@
-import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef } from 'react';
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { useForm, useFormState } from 'react-hook-form';
-import { Button, Space, Form } from 'antd';
-import { FormConfig, FormValues } from '@/types';
+import { Button, Form, Space, message } from 'antd';
+import { FormConfig, FormValues, SubmitButtonConfig } from '@/types';
 import { FieldGroup } from '@/components/FieldGroup';
+import { FormButtons } from '@/components/FormButtons';
 
 export interface FormGeneratorRef {
   getValues: () => FormValues
@@ -30,30 +31,6 @@ export interface FormGeneratorProps {
    * Callback when form is submitted
    */
   onSubmit?: (values: FormValues) => void
-
-  /**
-   * Show submit button
-   * @default true
-   */
-  showSubmitButton?: boolean
-
-  /**
-   * Submit button text
-   * @default 'Submit'
-   */
-  submitButtonText?: string
-
-  /**
-   * Show reset button
-   * @default false
-   */
-  showResetButton?: boolean
-
-  /**
-   * Reset button text
-   * @default 'Reset'
-   */
-  resetButtonText?: string
 }
 
 /**
@@ -67,18 +44,16 @@ export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
       initialValues = {},
       onChange,
       onSubmit,
-      showSubmitButton = true,
-      submitButtonText = 'Submit',
-      showResetButton = false,
-      resetButtonText = 'Reset',
     },
     ref,
   ) => {
-    const { control, handleSubmit, watch, reset } = useForm({
+    const { control, handleSubmit, watch, reset, getValues } = useForm({
       defaultValues: initialValues,
       mode: 'onBlur', // Validate on blur (first error)
       reValidateMode: 'onChange', // Re-validate on change (if already has error)
     });
+
+    const [loadingKey, setLoadingKey] = useState<string | null>(null);
 
     // Subscribe to touchedFields changes using useFormState
     // This creates a proper subscription and triggers re-renders when touchedFields change
@@ -131,6 +106,39 @@ export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
       }
     };
 
+    const handleButtonSubmit = useCallback(async (button: SubmitButtonConfig, values: FormValues) => {
+      setLoadingKey(button.key);
+      try {
+        const response = await fetch(button.url, {
+          method: button.method ?? 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(values),
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+        message.success('Данные отправлены');
+        if (button.resetAfterSubmit) {
+          reset(initialValues);
+        }
+        onSubmit?.(values);
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        message.error(`Ошибка отправки: ${errorMessage}`);
+      } finally {
+        setLoadingKey(null);
+      }
+    }, [initialValues, onSubmit, reset]);
+
+    const handleSubmitButtonClick = useCallback((button: SubmitButtonConfig) => {
+      if (button.requiresValidation) {
+        handleSubmit((values) => handleButtonSubmit(button, values))();
+      } else {
+        const values = getValues();
+        handleButtonSubmit(button, values);
+      }
+    }, [getValues, handleButtonSubmit, handleSubmit]);
+
     // Expose form methods via ref
     useImperativeHandle(ref, () => ({
       getValues: () => formValues,
@@ -138,19 +146,21 @@ export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
       submit: () => handleSubmit(handleFormSubmit)(),
     }));
 
-    const handleReset = () => {
+    const handleReset = useCallback(() => {
       reset(initialValues);
-    };
+    }, [initialValues, reset]);
 
     const sortedGroups = useMemo(
       () => [...config.groups].sort((a, b) => (a.order ?? 0) - (b.order ?? 0)),
       [config.groups],
     );
 
+    const hasButtons = config.buttons !== undefined;
+
     return (
       <Form
         layout="vertical"
-        onFinish={handleSubmit(handleFormSubmit)}>
+        onFinish={hasButtons ? undefined : handleSubmit(handleFormSubmit)}>
         {/* Render groups */}
         {sortedGroups.map((group, index) => (
           <FieldGroup
@@ -163,20 +173,20 @@ export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
         ))}
 
         {/* Action buttons */}
-        {(showSubmitButton || showResetButton) && (
+        {hasButtons ? (
+          <FormButtons
+            buttons={config.buttons!}
+            loadingKey={loadingKey}
+            onSubmitClick={handleSubmitButtonClick}
+            onResetClick={handleReset}
+          />
+        ) : (
           <Space style={{ marginTop: 16 }}>
-            {showSubmitButton && (
-              <Button
-                type="primary"
-                htmlType="submit">
-                {submitButtonText}
-              </Button>
-            )}
-            {showResetButton && (
-              <Button onClick={handleReset}>
-                {resetButtonText}
-              </Button>
-            )}
+            <Button
+              type="primary"
+              htmlType="submit">
+              Submit
+            </Button>
           </Space>
         )}
       </Form>

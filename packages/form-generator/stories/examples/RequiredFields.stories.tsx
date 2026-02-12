@@ -130,11 +130,13 @@ const requiredFieldsConfig: FormConfig = {
 
 export const BasicRequiredFields: Story = {
   args: {
-    config: requiredFieldsConfig,
-    showSubmitButton: true,
-    showResetButton: true,
-    submitButtonText: 'Submit Form',
-    resetButtonText: 'Clear Form',
+    config: {
+      ...requiredFieldsConfig,
+      buttons: [
+        { key: 'submit', label: 'Submit Form', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+        { key: 'reset', label: 'Clear Form', action: 'reset' },
+      ],
+    },
   },
 }
 
@@ -281,8 +283,12 @@ const conditionalRequiredConfig: FormConfig = {
 
 export const ConditionalRequired: Story = {
   args: {
-    config: conditionalRequiredConfig,
-    showSubmitButton: true,
-    showResetButton: true,
+    config: {
+      ...conditionalRequiredConfig,
+      buttons: [
+        { key: 'submit', label: 'Submit', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+        { key: 'reset', label: 'Reset', action: 'reset' },
+      ],
+    },
   },
 }

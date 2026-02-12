@@ -33,6 +33,16 @@ const simpleConfig: FormConfig = {
       ],
     },
   ],
+  buttons: [
+    {
+      key: 'submit',
+      label: 'Отправить',
+      type: 'primary',
+      action: 'submit',
+      requiresValidation: true,
+      url: 'https://httpbin.org/post',
+    },
+  ],
 }
 
 export default function SimpleForm() {
@@ -47,8 +57,6 @@ export default function SimpleForm() {
         <FormGenerator
           config={simpleConfig}
           onSubmit={handleSubmit}
-          showSubmitButton={true}
-          submitButtonText="Отправить"
         />
       </Card>
     </div>

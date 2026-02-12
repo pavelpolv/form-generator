@@ -169,7 +169,7 @@ function generateFormConfig(groupCount: number, fieldsPerGroup: number, withCond
   for (let i = 0; i < groupCount; i++) {
     groups.push(generateGroup(i, fieldsPerGroup, withConditions))
   }
-  return { groups }
+  return { groups, buttons: [] }
 }
 
 export default function StressTest() {
@@ -417,7 +417,7 @@ export default function StressTest() {
           <Card title={`Форма (${totalFields} полей)`} size="small">
             {isRunning ? (
               <Profiler id="FormGenerator" onRender={handleProfilerRender}>
-                <FormGenerator config={config} showSubmitButton={false} showResetButton={false} />
+                <FormGenerator config={config} />
               </Profiler>
             ) : (
               <div style={{ padding: 40, textAlign: 'center' }}>

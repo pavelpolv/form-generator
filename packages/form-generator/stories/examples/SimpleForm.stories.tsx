@@ -93,10 +93,14 @@ const simpleFormConfig: FormConfig = {
 
 export const BasicForm: Story = {
   args: {
-    config: simpleFormConfig,
+    config: {
+      ...simpleFormConfig,
+      buttons: [
+        { key: 'submit', label: 'Submit', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+        { key: 'reset', label: 'Reset', action: 'reset' },
+      ],
+    },
     initialValues: {},
-    showSubmitButton: true,
-    showResetButton: true,
   },
 }
 
@@ -135,15 +139,25 @@ const noTitleNoBorderConfig: FormConfig = {
 
 export const NoTitleNoBorder: Story = {
   args: {
-    config: noTitleNoBorderConfig,
+    config: {
+      ...noTitleNoBorderConfig,
+      buttons: [
+        { key: 'submit', label: 'Submit', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+      ],
+    },
     initialValues: {},
-    showSubmitButton: true,
   },
 }
 
 export const WithInitialValues: Story = {
   args: {
-    config: simpleFormConfig,
+    config: {
+      ...simpleFormConfig,
+      buttons: [
+        { key: 'submit', label: 'Submit', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+        { key: 'reset', label: 'Reset', action: 'reset' },
+      ],
+    },
     initialValues: {
       firstName: 'John',
       lastName: 'Doe',
@@ -152,7 +166,5 @@ export const WithInitialValues: Story = {
       country: 'US',
       newsletter: true,
     },
-    showSubmitButton: true,
-    showResetButton: true,
   },
 }
