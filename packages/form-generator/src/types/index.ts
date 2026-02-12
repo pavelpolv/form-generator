@@ -3,6 +3,7 @@ export type {
   ButtonConfig,
   ButtonType,
   HttpMethod,
+  NotificationConfig,
   ResetButtonConfig,
   SubmitButtonConfig,
 } from './button.types';

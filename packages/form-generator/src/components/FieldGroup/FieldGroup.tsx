@@ -13,6 +13,7 @@ interface MemoizedFieldProps {
   control: Control<FormValues>
   formValues: FormValues
   touchedFields: Record<string, boolean | undefined>
+  forceShowErrors: boolean
 }
 
 const MemoizedField: FC<MemoizedFieldProps> = memo(
@@ -21,6 +22,7 @@ const MemoizedField: FC<MemoizedFieldProps> = memo(
     control,
     formValues,
     touchedFields,
+    forceShowErrors,
   }) => {
     // Memoize visibility check
     const isFieldVisible = useMemo(
@@ -43,12 +45,13 @@ const MemoizedField: FC<MemoizedFieldProps> = memo(
 
     // Memoize validation messages
     const isFieldTouched = touchedFields[field.name];
+    const shouldShowErrors = isFieldTouched || forceShowErrors;
     const fieldValidationMessages = useMemo(
       () => {
-        if (isFieldValid || !isFieldTouched) return undefined;
+        if (isFieldValid || !shouldShowErrors) return undefined;
         return collectValidationMessages(field.validateCondition, formValues).join(', ');
       },
-      [isFieldValid, isFieldTouched, field.validateCondition, formValues],
+      [isFieldValid, shouldShowErrors, field.validateCondition, formValues],
     );
     if (!isFieldVisible) {
       return null;
@@ -68,6 +71,7 @@ const MemoizedField: FC<MemoizedFieldProps> = memo(
     if (prevProps.field !== nextProps.field) return false;
     if (prevProps.control !== nextProps.control) return false;
     if (prevProps.formValues !== nextProps.formValues) return false;
+    if (prevProps.forceShowErrors !== nextProps.forceShowErrors) return false;
 
     // Only compare touched state for this specific field
     const fieldName = prevProps.field.name;
@@ -86,6 +90,7 @@ interface FieldGroupProps {
   control: Control<FormValues>
   formValues: FormValues
   touchedFields: Record<string, boolean | undefined>
+  forceShowErrors: boolean
 }
 
 /**
@@ -98,6 +103,7 @@ const arePropsEqual = (
   if (prevProps.group !== nextProps.group) return false;
   if (prevProps.control !== nextProps.control) return false;
   if (prevProps.formValues !== nextProps.formValues) return false;
+  if (prevProps.forceShowErrors !== nextProps.forceShowErrors) return false;
 
   const prevTouched = prevProps.touchedFields;
   const nextTouched = nextProps.touchedFields;
@@ -119,7 +125,7 @@ const arePropsEqual = (
  * Field group component with optimized field rendering
  */
 export const FieldGroup: FC<FieldGroupProps> = memo(
-  ({ group, control, formValues, touchedFields }) => {
+  ({ group, control, formValues, touchedFields, forceShowErrors }) => {
     const { name, showTitle = true, showBorder = true, visibleCondition, validateCondition, fields } = group;
 
     const sortedFields = useMemo(
@@ -166,10 +172,11 @@ export const FieldGroup: FC<FieldGroupProps> = memo(
             control={control}
             formValues={formValues}
             touchedFields={touchedFields}
+            forceShowErrors={forceShowErrors}
           />
         ))}
 
-        {!isValid && validationMessages.length > 0 && allValidationFieldsTouched && (
+        {!isValid && validationMessages.length > 0 && (allValidationFieldsTouched || forceShowErrors) && (
           <div style={{
             color: '#ff4d4f',
             fontSize: '12px',
@@ -184,7 +191,7 @@ export const FieldGroup: FC<FieldGroupProps> = memo(
       </>
     );
 
-    const showGroupError = !isValid && allValidationFieldsTouched;
+    const showGroupError = !isValid && (allValidationFieldsTouched || forceShowErrors);
 
     if (showBorder) {
       return (

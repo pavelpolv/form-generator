@@ -9,6 +9,14 @@ export type ButtonType = 'primary' | 'default' | 'dashed' | 'link' | 'text'
 export type HttpMethod = 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 
 /**
+ * Notification configuration for submit results
+ */
+export interface NotificationConfig {
+  message: string
+  description?: string
+}
+
+/**
  * Submit button configuration
  * Sends form data to a URL via fetch
  */
@@ -21,6 +29,8 @@ export interface SubmitButtonConfig {
   url: string
   method?: HttpMethod
   resetAfterSubmit?: boolean
+  successNotification?: NotificationConfig
+  errorNotification?: NotificationConfig
 }
 
 /**
