@@ -1,7 +1,8 @@
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { useForm, useFormState } from 'react-hook-form';
-import { Button, Form, Space, message } from 'antd';
+import { Button, Form, Space, notification } from 'antd';
 import { FormConfig, FormValues, SubmitButtonConfig } from '@/types';
+import { evaluateConditions } from '@/utils';
 import { FieldGroup } from '@/components/FieldGroup';
 import { FormButtons } from '@/components/FormButtons';
 
@@ -54,6 +55,7 @@ export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
     });
 
     const [loadingKey, setLoadingKey] = useState<string | null>(null);
+    const [forceShowErrors, setForceShowErrors] = useState(false);
 
     // Subscribe to touchedFields changes using useFormState
     // This creates a proper subscription and triggers re-renders when touchedFields change
@@ -117,14 +119,20 @@ export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}`);
         }
-        message.success('Данные отправлены');
+        notification.success({
+          message: button.successNotification?.message ?? 'Данные отправлены',
+          description: button.successNotification?.description,
+        });
         if (button.resetAfterSubmit) {
           reset(initialValues);
         }
         onSubmit?.(values);
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-        message.error(`Ошибка отправки: ${errorMessage}`);
+        notification.error({
+          message: button.errorNotification?.message ?? 'Ошибка отправки',
+          description: button.errorNotification?.description ?? errorMessage,
+        });
       } finally {
         setLoadingKey(null);
       }
@@ -132,12 +140,31 @@ export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
 
     const handleSubmitButtonClick = useCallback((button: SubmitButtonConfig) => {
       if (button.requiresValidation) {
-        handleSubmit((values) => handleButtonSubmit(button, values))();
+        const values = getValues();
+        let hasValidationErrors = false;
+
+        for (const group of config.groups) {
+          if (!evaluateConditions(group.validateCondition, values)) {
+            hasValidationErrors = true;
+          }
+          for (const field of group.fields) {
+            if (!evaluateConditions(field.validateCondition, values)) {
+              hasValidationErrors = true;
+            }
+          }
+        }
+
+        if (hasValidationErrors) {
+          setForceShowErrors(true);
+          return;
+        }
+
+        handleButtonSubmit(button, values);
       } else {
         const values = getValues();
         handleButtonSubmit(button, values);
       }
-    }, [getValues, handleButtonSubmit, handleSubmit]);
+    }, [config.groups, getValues, handleButtonSubmit]);
 
     // Expose form methods via ref
     useImperativeHandle(ref, () => ({
@@ -169,6 +196,7 @@ export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
             control={control}
             formValues={formValues}
             touchedFields={touchedFieldsSnapshot}
+            forceShowErrors={forceShowErrors}
           />
         ))}
 
