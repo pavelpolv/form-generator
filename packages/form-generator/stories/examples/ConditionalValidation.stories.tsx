@@ -140,7 +140,12 @@ export const RequiredFields: Story = {
     config: {
       ...validationConfig,
       buttons: [
-        { key: 'submit', label: 'Submit', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+        {
+          key: 'submit', label: 'Submit', type: 'primary', action: 'submit',
+          requiresValidation: true, url: 'https://httpbin.org/post',
+          successNotification: { message: 'Успешно', description: 'Данные успешно отправлены' },
+          errorNotification: { message: 'Ошибка', description: 'Не удалось отправить данные' },
+        },
         { key: 'reset', label: 'Reset', action: 'reset' },
       ],
     },
