@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { evaluateConditions, collectValidationMessages, collectFieldsFromCondition } from './evaluateConditions';
 import { ConditionGroup, ConditionValue, FormValues } from '@/types';
 
@@ -124,8 +124,10 @@ describe('evaluateConditions', () => {
     });
 
     it('should return false for unknown operator', () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       const condition = { field: 'age', condition: 'unknown' as any, value: 25 };
       expect(evaluateConditions(condition, formValues)).toBe(false);
+      consoleSpy.mockRestore();
     });
 
     it('should handle !∅ (not empty) operator', () => {
@@ -285,6 +287,16 @@ describe('evaluateConditions', () => {
   });
 
   describe('Edge cases and error handling', () => {
+    let consoleSpy: ReturnType<typeof vi.spyOn>;
+
+    beforeEach(() => {
+      consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+      consoleSpy.mockRestore();
+    });
+
     it('should return true when condition is undefined', () => {
       expect(evaluateConditions(undefined, {})).toBe(true);
     });
@@ -566,6 +578,7 @@ describe('evaluateConditions', () => {
     });
 
     it('should handle invalid child in group during message collection', () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       const condition: ConditionGroup = {
         comparisonType: 'and',
         children: [
@@ -575,6 +588,7 @@ describe('evaluateConditions', () => {
       };
       const messages = collectValidationMessages(condition, formValues);
       expect(messages).toContain('Must be 18 or older');
+      consoleSpy.mockRestore();
     });
   });
 
@@ -690,6 +704,7 @@ describe('evaluateConditions', () => {
     });
 
     it('should handle error during field collection (catch block)', () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       // Create a condition group that passes type guard but throws during iteration
       const badGroup = {
         comparisonType: 'and',
@@ -702,10 +717,21 @@ describe('evaluateConditions', () => {
       } as any;
       const fields = collectFieldsFromCondition(condition);
       expect(fields).toEqual([]);
+      consoleSpy.mockRestore();
     });
   });
 
   describe('error handling - catch blocks', () => {
+    let consoleSpy: ReturnType<typeof vi.spyOn>;
+
+    beforeEach(() => {
+      consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+      consoleSpy.mockRestore();
+    });
+
     it('should catch error in evaluateConditions main try-catch', () => {
       // Create a condition that passes type guard but throws during evaluation
       const condition = {

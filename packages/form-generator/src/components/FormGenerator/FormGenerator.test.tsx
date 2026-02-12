@@ -277,6 +277,33 @@ describe('FormGenerator', () => {
       expect(onSubmit).not.toHaveBeenCalled();
     });
 
+    it('should handle non-Error exception during fetch', async () => {
+      const fetchMock = vi.fn().mockRejectedValue('string error');
+      vi.stubGlobal('fetch', fetchMock);
+
+      const config: FormConfig = {
+        ...simpleConfig,
+        buttons: [
+          {
+            key: 'save',
+            label: 'Save',
+            action: 'submit',
+            requiresValidation: false,
+            url: 'https://api.example.com/save',
+          },
+        ],
+      };
+
+      const user = userEvent.setup();
+      render(<FormGenerator config={config} />);
+
+      await user.click(screen.getByText('Save'));
+
+      await waitFor(() => {
+        expect(fetchMock).toHaveBeenCalled();
+      });
+    });
+
     it('should reset form after submit when resetAfterSubmit is true', async () => {
       const fetchMock = vi.fn().mockResolvedValue({ ok: true });
       vi.stubGlobal('fetch', fetchMock);
@@ -512,6 +539,142 @@ describe('FormGenerator', () => {
       const titles = container.querySelectorAll('.ant-card-head-title');
       expect(titles[0].textContent).toBe('Group A');
       expect(titles[1].textContent).toBe('Group B');
+    });
+  });
+
+  describe('submit with requiresValidation', () => {
+    beforeEach(() => {
+      vi.restoreAllMocks();
+    });
+
+    it('should show validation errors and prevent submit when validation fails', async () => {
+      const fetchMock = vi.fn().mockResolvedValue({ ok: true });
+      vi.stubGlobal('fetch', fetchMock);
+
+      const config: FormConfig = {
+        groups: [
+          {
+            name: 'Group',
+            fields: [
+              {
+                type: 'input',
+                name: 'email',
+                label: 'Email',
+                placeholder: 'Enter email',
+                validateCondition: {
+                  comparisonType: 'and',
+                  children: [{ field: 'email', condition: '!∅', message: 'Email required' }],
+                },
+              },
+            ],
+          },
+        ],
+        buttons: [
+          {
+            key: 'save',
+            label: 'Save',
+            type: 'primary',
+            action: 'submit',
+            requiresValidation: true,
+            url: 'https://api.example.com/save',
+          },
+        ],
+      };
+
+      const user = userEvent.setup();
+      render(<FormGenerator config={config} />);
+
+      await user.click(screen.getByText('Save'));
+
+      // Validation failed so fetch should NOT be called
+      expect(fetchMock).not.toHaveBeenCalled();
+      // Error message should be shown (forceShowErrors=true)
+      expect(screen.getByText('Email required')).toBeInTheDocument();
+    });
+
+    it('should show group validation errors and prevent submit', async () => {
+      const fetchMock = vi.fn().mockResolvedValue({ ok: true });
+      vi.stubGlobal('fetch', fetchMock);
+
+      const config: FormConfig = {
+        groups: [
+          {
+            name: 'Group',
+            validateCondition: {
+              comparisonType: 'and',
+              children: [{ field: 'name', condition: '!∅', message: 'Name required' }],
+            },
+            fields: [
+              { type: 'input', name: 'name', label: 'Name', placeholder: 'Enter name' },
+            ],
+          },
+        ],
+        buttons: [
+          {
+            key: 'save',
+            label: 'Save',
+            type: 'primary',
+            action: 'submit',
+            requiresValidation: true,
+            url: 'https://api.example.com/save',
+          },
+        ],
+      };
+
+      const user = userEvent.setup();
+      render(<FormGenerator config={config} />);
+
+      await user.click(screen.getByText('Save'));
+
+      expect(fetchMock).not.toHaveBeenCalled();
+    });
+
+    it('should submit when validation passes with requiresValidation', async () => {
+      const fetchMock = vi.fn().mockResolvedValue({ ok: true });
+      vi.stubGlobal('fetch', fetchMock);
+
+      const config: FormConfig = {
+        groups: [
+          {
+            name: 'Group',
+            fields: [
+              {
+                type: 'input',
+                name: 'email',
+                label: 'Email',
+                validateCondition: {
+                  comparisonType: 'and',
+                  children: [{ field: 'email', condition: '!∅' }],
+                },
+              },
+            ],
+          },
+        ],
+        buttons: [
+          {
+            key: 'save',
+            label: 'Save',
+            type: 'primary',
+            action: 'submit',
+            requiresValidation: true,
+            url: 'https://api.example.com/save',
+          },
+        ],
+      };
+
+      const user = userEvent.setup();
+      render(
+        <FormGenerator
+          config={config}
+          initialValues={{ email: 'test@test.com' }}
+        />,
+      );
+
+      await user.click(screen.getByText('Save'));
+
+      await waitFor(() => {
+        expect(fetchMock).toHaveBeenCalled();
+      });
     });
   });
 

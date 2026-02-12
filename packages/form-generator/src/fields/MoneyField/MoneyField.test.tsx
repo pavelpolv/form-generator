@@ -210,4 +210,72 @@ describe('MoneyField', () => {
 
     expect(input).toHaveValue('1 000,00');
   });
+
+  it('should handle non-numeric input gracefully', async () => {
+    const user = userEvent.setup();
+    render(<TestWrapper config={baseConfig} />);
+
+    const input = screen.getByPlaceholderText('Enter amount');
+    await user.type(input, 'abc');
+    await user.tab();
+
+    // Non-numeric characters are filtered out, resulting in empty
+    expect(input).toHaveValue('');
+  });
+
+  it('should strip extra minus signs when allowNegative is true', async () => {
+    const user = userEvent.setup();
+    const config: MoneyFieldConfig = {
+      ...baseConfig,
+      allowNegative: true,
+    };
+    render(<TestWrapper config={config} />);
+
+    const input = screen.getByPlaceholderText('Enter amount');
+    // Type a value with minus in the middle: type normally, extra minus filtered
+    await user.type(input, '-1-2-3');
+    await user.tab();
+
+    // Only leading minus kept, extra minuses removed
+    expect(input).toHaveValue('-123,00');
+  });
+
+  it('should handle only comma input', async () => {
+    const user = userEvent.setup();
+    render(<TestWrapper config={baseConfig} />);
+
+    const input = screen.getByPlaceholderText('Enter amount');
+    await user.type(input, ',');
+    await user.tab();
+
+    expect(input).toHaveValue('');
+  });
+
+  it('should handle multiple commas by keeping only the first', async () => {
+    const user = userEvent.setup();
+    render(<TestWrapper config={baseConfig} />);
+
+    const input = screen.getByPlaceholderText('Enter amount');
+    await user.type(input, '12,34,56');
+    await user.tab();
+
+    // Only one comma allowed, second is stripped → 12,3456 → parsed as 12.3456
+    expect(input).toHaveValue('12,35');
+  });
+
+  it('should handle positive values when allowNegative is true', async () => {
+    const user = userEvent.setup();
+    const config: MoneyFieldConfig = {
+      ...baseConfig,
+      allowNegative: true,
+    };
+    render(<TestWrapper config={config} />);
+
+    const input = screen.getByPlaceholderText('Enter amount');
+    await user.type(input, '500');
+    await user.tab();
+
+    // No minus sign, should still work normally
+    expect(input).toHaveValue('500,00');
+  });
 });

@@ -9,10 +9,12 @@ const TestWrapper = ({
   group,
   formValues = {},
   touchedFields = {},
+  forceShowErrors = false,
 }: {
   group: GroupField
   formValues?: FormValues
   touchedFields?: Record<string, boolean | undefined>
+  forceShowErrors?: boolean
 }) => {
   const { control } = useForm({ defaultValues: formValues });
 
@@ -22,6 +24,7 @@ const TestWrapper = ({
       control={control}
       formValues={formValues}
       touchedFields={touchedFields}
+      forceShowErrors={forceShowErrors}
     />
   );
 };
@@ -40,6 +43,7 @@ const ReRenderWrapper = ({
   const [group, setGroup] = useState(initialGroup);
   const [formValues, setFormValues] = useState(initialFormValues);
   const [touchedFields, setTouchedFields] = useState<Record<string, boolean | undefined>>(initialTouchedFields);
+  const [forceShowErrors, setForceShowErrors] = useState(false);
 
   return (
     <div>
@@ -48,6 +52,7 @@ const ReRenderWrapper = ({
         control={control}
         formValues={formValues}
         touchedFields={touchedFields}
+        forceShowErrors={forceShowErrors}
       />
       <button
         data-testid="update-values"
@@ -64,6 +69,9 @@ const ReRenderWrapper = ({
           ...initialGroup,
           fields: initialGroup.fields.map(f => ({ ...f })),
         })}>Change Group</button>
+      <button
+        data-testid="toggle-force-errors"
+        onClick={() => setForceShowErrors(prev => !prev)}>Toggle Force Errors</button>
     </div>
   );
 };
@@ -81,6 +89,7 @@ const ControlChangeWrapper = ({ group }: { group: GroupField }) => {
         control={useSecond ? form2.control : form1.control}
         formValues={{}}
         touchedFields={{}}
+        forceShowErrors={false}
       />
       <button
         data-testid="switch-control"
@@ -496,6 +505,65 @@ describe('FieldGroup', () => {
         screen.getByTestId('switch-control').click();
       });
       expect(screen.getByText('Test Group')).toBeInTheDocument();
+    });
+
+    it('should re-render when forceShowErrors changes', async () => {
+      render(<ReRenderWrapper initialGroup={baseGroup} />);
+      expect(screen.getByText('Test Group')).toBeInTheDocument();
+
+      await act(async () => {
+        screen.getByTestId('toggle-force-errors').click();
+      });
+      expect(screen.getByText('Test Group')).toBeInTheDocument();
+    });
+  });
+
+  describe('forceShowErrors', () => {
+    it('should show validation errors when forceShowErrors is true even without touched fields', () => {
+      const groupWithValidation: GroupField = {
+        ...baseGroup,
+        validateCondition: {
+          comparisonType: 'and',
+          children: [
+            { field: 'field1', condition: '!∅', message: 'Field 1 is required' },
+          ],
+        },
+      };
+      render(
+        <TestWrapper
+          group={groupWithValidation}
+          formValues={{ field1: '' }}
+          touchedFields={{}}
+          forceShowErrors={true}
+        />,
+      );
+      expect(screen.getByText('Field 1 is required')).toBeInTheDocument();
+    });
+
+    it('should show field validation errors when forceShowErrors is true', () => {
+      const group: GroupField = {
+        name: 'Group',
+        fields: [
+          {
+            type: 'input',
+            name: 'email',
+            label: 'Email',
+            validateCondition: {
+              comparisonType: 'and',
+              children: [{ field: 'email', condition: '!∅', message: 'Email required' }],
+            },
+          },
+        ],
+      };
+      render(
+        <TestWrapper
+          group={group}
+          formValues={{ email: '' }}
+          touchedFields={{}}
+          forceShowErrors={true}
+        />,
+      );
+      expect(screen.getByText('Email required')).toBeInTheDocument();
     });
   });
 });
