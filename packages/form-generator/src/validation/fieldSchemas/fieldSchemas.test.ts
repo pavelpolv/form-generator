@@ -5,6 +5,7 @@ import {
   selectFieldSchema,
   switchFieldSchema,
   dateFieldSchema,
+  textareaFieldSchema,
   validateFieldConfig,
 } from './fieldSchemas';
 
@@ -302,6 +303,88 @@ describe('fieldSchemas', () => {
     });
   });
 
+  describe('textareaFieldSchema', () => {
+    it('should validate valid textarea config', () => {
+      const config = {
+        type: 'textarea',
+        name: 'description',
+        label: 'Description',
+        placeholder: 'Enter description',
+      };
+      expect(() => textareaFieldSchema.parse(config)).not.toThrow();
+    });
+
+    it('should validate textarea with rows', () => {
+      const config = {
+        type: 'textarea',
+        name: 'notes',
+        label: 'Notes',
+        rows: 6,
+      };
+      expect(() => textareaFieldSchema.parse(config)).not.toThrow();
+    });
+
+    it('should validate textarea with maxLength', () => {
+      const config = {
+        type: 'textarea',
+        name: 'bio',
+        label: 'Bio',
+        maxLength: 500,
+      };
+      expect(() => textareaFieldSchema.parse(config)).not.toThrow();
+    });
+
+    it('should validate textarea with boolean autoSize', () => {
+      const config = {
+        type: 'textarea',
+        name: 'comment',
+        label: 'Comment',
+        autoSize: true,
+      };
+      expect(() => textareaFieldSchema.parse(config)).not.toThrow();
+    });
+
+    it('should validate textarea with object autoSize', () => {
+      const config = {
+        type: 'textarea',
+        name: 'comment',
+        label: 'Comment',
+        autoSize: { minRows: 2, maxRows: 6 },
+      };
+      expect(() => textareaFieldSchema.parse(config)).not.toThrow();
+    });
+
+    it('should fail with invalid rows', () => {
+      const config = {
+        type: 'textarea',
+        name: 'notes',
+        label: 'Notes',
+        rows: -1,
+      };
+      expect(() => textareaFieldSchema.parse(config)).toThrow();
+    });
+
+    it('should fail with non-integer rows', () => {
+      const config = {
+        type: 'textarea',
+        name: 'notes',
+        label: 'Notes',
+        rows: 3.5,
+      };
+      expect(() => textareaFieldSchema.parse(config)).toThrow();
+    });
+
+    it('should fail with invalid maxLength', () => {
+      const config = {
+        type: 'textarea',
+        name: 'bio',
+        label: 'Bio',
+        maxLength: -10,
+      };
+      expect(() => textareaFieldSchema.parse(config)).toThrow();
+    });
+  });
+
   describe('validateFieldConfig', () => {
     it('should return null for valid input config', () => {
       const config = {
@@ -346,6 +429,15 @@ describe('fieldSchemas', () => {
         type: 'date',
         name: 'date',
         label: 'Date',
+      };
+      expect(validateFieldConfig(config)).toBeNull();
+    });
+
+    it('should return null for valid textarea config', () => {
+      const config = {
+        type: 'textarea',
+        name: 'description',
+        label: 'Description',
       };
       expect(validateFieldConfig(config)).toBeNull();
     });

@@ -4,7 +4,7 @@ import { ConditionGroup } from './condition.types';
  * Available field types
  * Each type corresponds to a specific field component
  */
-export type FieldType = 'input' | 'inputNumber' | 'select' | 'switch' | 'date' | 'money'
+export type FieldType = 'input' | 'inputNumber' | 'select' | 'switch' | 'date' | 'money' | 'textarea'
 
 /**
  * Base field configuration shared by all field types
@@ -208,6 +208,28 @@ export interface MoneyFieldProps {
 }
 
 /**
+ * Textarea field specific props
+ */
+export interface TextareaFieldProps {
+  /**
+   * Number of visible text rows
+   */
+  rows?: number
+
+  /**
+   * Maximum length
+   */
+  maxLength?: number
+
+  /**
+   * Auto size configuration
+   * If true, textarea will auto-resize based on content
+   * If object, can specify min and max rows
+   */
+  autoSize?: boolean | { minRows?: number; maxRows?: number }
+}
+
+/**
  * Input field configuration
  */
 export interface InputField extends BaseField, InputFieldProps {
@@ -250,6 +272,13 @@ export interface MoneyField extends BaseField, MoneyFieldProps {
 }
 
 /**
+ * Textarea field configuration
+ */
+export interface TextareaField extends BaseField, TextareaFieldProps {
+  type: 'textarea'
+}
+
+/**
  * Union type of all field configurations
  */
-export type Field = InputField | InputNumberField | SelectField | SwitchField | DateField | MoneyField
+export type Field = InputField | InputNumberField | SelectField | SwitchField | DateField | MoneyField | TextareaField

@@ -39,6 +39,8 @@ export type {
   SelectOption,
   SwitchField,
   SwitchFieldProps,
+  TextareaField,
+  TextareaFieldProps,
 } from './field.types';
 
 // Config types

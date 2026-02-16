@@ -83,6 +83,22 @@ export const moneyFieldSchema = baseFieldSchema.extend({
 });
 
 /**
+ * Textarea field validation schema
+ */
+export const textareaFieldSchema = baseFieldSchema.extend({
+  type: z.literal('textarea'),
+  rows: z.number().int().positive().optional(),
+  maxLength: z.number().int().positive().optional(),
+  autoSize: z.union([
+    z.boolean(),
+    z.object({
+      minRows: z.number().int().positive().optional(),
+      maxRows: z.number().int().positive().optional(),
+    }),
+  ]).optional(),
+});
+
+/**
  * Validate field config and return error message if invalid
  * Accepts unknown input for runtime validation
  */
@@ -115,6 +131,9 @@ export function validateFieldConfig(config: unknown): string | null {
       break;
     case 'money':
       moneyFieldSchema.parse(config);
+      break;
+    case 'textarea':
+      textareaFieldSchema.parse(config);
       break;
     default:
       return `Unknown field type: ${fieldConfig.type}`;

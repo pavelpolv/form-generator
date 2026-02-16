@@ -27,6 +27,7 @@ export type {
   SelectOption,
   SubmitButtonConfig,
   SwitchField,
+  TextareaField,
 } from './types';
 
 // Validation

@@ -98,11 +98,12 @@ const requiredFieldsConfig: FormConfig = {
           },
         },
         {
-          type: 'input',
+          type: 'textarea',
           name: 'message',
           label: 'Message',
           placeholder: 'Your message here...',
-          inputType: 'text',
+          rows: 4,
+          maxLength: 1000,
         },
         {
           type: 'switch',

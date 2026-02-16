@@ -75,6 +75,12 @@ describe('FieldRenderer', () => {
     expect(screen.getByPlaceholderText('Enter')).toBeDisabled();
   });
 
+  it('should render textarea field', () => {
+    const field: Field = { type: 'textarea', name: 'desc', label: 'Description' };
+    render(<TestWrapper field={field} />);
+    expect(screen.getByText('Description')).toBeInTheDocument();
+  });
+
   it('should render money field', () => {
     const field: Field = { type: 'money', name: 'amount', label: 'Amount' };
     render(<TestWrapper field={field} />);

@@ -52,6 +52,14 @@ const simpleFormConfig: FormConfig = {
           min: 0,
           max: 120,
         },
+        {
+          type: 'textarea',
+          name: 'about',
+          label: 'About Me',
+          placeholder: 'Tell us something about yourself...',
+          rows: 4,
+          maxLength: 500,
+        },
       ],
     },
     {
