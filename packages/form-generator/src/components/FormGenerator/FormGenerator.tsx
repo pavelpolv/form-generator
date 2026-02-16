@@ -10,6 +10,7 @@ export interface FormGeneratorRef {
   getValues: () => FormValues
   reset: (values?: FormValues) => void
   submit: () => void
+  setValue: (name: string, value: unknown) => void
 }
 
 export interface FormGeneratorProps {
@@ -48,7 +49,7 @@ export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
     },
     ref,
   ) => {
-    const { control, handleSubmit, watch, reset, getValues } = useForm({
+    const { control, handleSubmit, watch, reset, getValues, setValue } = useForm({
       defaultValues: initialValues,
       mode: 'onBlur', // Validate on blur (first error)
       reValidateMode: 'onChange', // Re-validate on change (if already has error)
@@ -171,6 +172,7 @@ export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
       getValues: () => formValues,
       reset: (values?: FormValues) => reset(values || initialValues),
       submit: () => handleSubmit(handleFormSubmit)(),
+      setValue: (name: string, value: unknown) => setValue(name, value),
     }));
 
     const handleReset = useCallback(() => {
