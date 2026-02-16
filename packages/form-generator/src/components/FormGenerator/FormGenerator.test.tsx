@@ -474,6 +474,42 @@ describe('FormGenerator', () => {
       expect(onSubmit).toHaveBeenCalled();
     });
 
+    it('should expose setValue method to set a single field', async () => {
+      const ref = createRef<FormGeneratorRef>();
+      render(
+        <FormGenerator
+          ref={ref}
+          config={simpleConfig}
+          initialValues={{ firstName: '', lastName: '' }}
+        />,
+      );
+
+      await act(async () => {
+        ref.current!.setValue('firstName', 'Alice');
+      });
+
+      const input = screen.getByPlaceholderText('Enter first name');
+      expect(input).toHaveValue('Alice');
+    });
+
+    it('should return updated value from getValues after setValue', async () => {
+      const ref = createRef<FormGeneratorRef>();
+      render(
+        <FormGenerator
+          ref={ref}
+          config={simpleConfig}
+          initialValues={{ firstName: '', lastName: '' }}
+        />,
+      );
+
+      await act(async () => {
+        ref.current!.setValue('lastName', 'Smith');
+      });
+
+      const values = ref.current!.getValues();
+      expect(values.lastName).toBe('Smith');
+    });
+
     it('should reset with custom values', async () => {
       const ref = createRef<FormGeneratorRef>();
       render(
