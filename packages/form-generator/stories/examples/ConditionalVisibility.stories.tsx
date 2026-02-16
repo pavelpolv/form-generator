@@ -66,6 +66,14 @@ const conditionalVisibilityConfig: FormConfig = {
           min: 2024,
           max: 2030,
         },
+        {
+          type: 'textarea',
+          name: 'researchInterests',
+          label: 'Research Interests',
+          placeholder: 'Describe your research interests...',
+          rows: 3,
+          autoSize: { minRows: 2, maxRows: 6 },
+        },
       ],
     },
     {
@@ -97,6 +105,13 @@ const conditionalVisibilityConfig: FormConfig = {
           label: 'Years of Experience',
           min: 0,
           max: 50,
+        },
+        {
+          type: 'textarea',
+          name: 'jobDescription',
+          label: 'Job Description',
+          placeholder: 'Describe your role and responsibilities...',
+          rows: 3,
         },
       ],
     },

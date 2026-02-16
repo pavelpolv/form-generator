@@ -5,5 +5,6 @@ export {
   moneyFieldSchema,
   selectFieldSchema,
   switchFieldSchema,
+  textareaFieldSchema,
   validateFieldConfig,
 } from './fieldSchemas';
