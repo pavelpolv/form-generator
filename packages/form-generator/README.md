@@ -1,35 +1,34 @@
 # @form-generator/core
 
-Configurable form generator for React with conditional logic, computed values, and dynamic validation. Build complex forms from a plain JSON config — no boilerplate.
+Настраиваемый генератор форм для React с условной логикой, вычисляемыми значениями и динамической валидацией. Сложные формы — из простого JSON-конфига, без boilerplate-кода.
 
-## Tech stack
+## Стек
 
 - React 17 / 18
 - TypeScript
 - Ant Design v4
 - React Hook Form
 
-## Installation
+## Установка
 
 ```bash
 npm install @form-generator/core
-# peer deps
+# peer-зависимости
 npm install antd react react-dom react-hook-form
 ```
 
-## Quick start
+## Быстрый старт
 
 ```tsx
-import { FormGenerator } from '@form-generator/core'
-import { FormConfig } from '@form-generator/core'
+import { FormGenerator, FormConfig } from '@form-generator/core'
 
 const config: FormConfig = {
   groups: [
     {
-      name: 'Personal Info',
+      name: 'Личные данные',
       fields: [
-        { type: 'input', name: 'name', label: 'Name' },
-        { type: 'inputNumber', name: 'age', label: 'Age', min: 0, max: 120 },
+        { type: 'input', name: 'name', label: 'Имя' },
+        { type: 'inputNumber', name: 'age', label: 'Возраст', min: 0, max: 120 },
       ],
     },
   ],
@@ -40,37 +39,37 @@ export default function App() {
 }
 ```
 
-## Field types
+## Типы полей
 
-| Type          | Description                        |
-|---------------|------------------------------------|
-| `input`       | Text input (text, email, password…)|
-| `inputNumber` | Numeric input with min/max/step    |
-| `select`      | Dropdown, supports multi-select    |
-| `switch`      | Boolean toggle                     |
-| `date`        | Date/datetime picker               |
-| `money`       | Currency input with prefix/suffix  |
-| `textarea`    | Multiline text with auto-resize    |
+| Тип           | Описание                                        |
+|---------------|-------------------------------------------------|
+| `input`       | Текстовый ввод (text, email, password и др.)   |
+| `inputNumber` | Числовой ввод с min / max / step               |
+| `select`      | Выпадающий список, поддерживает мультивыбор    |
+| `switch`      | Булев переключатель                             |
+| `date`        | Выбор даты и времени                           |
+| `money`       | Денежный ввод с префиксом/суффиксом            |
+| `textarea`    | Многострочный текст с авторазмером             |
 
-## Conditional logic
+## Условная логика
 
-All conditions can be placed on fields (`visibleCondition`, `validateCondition`, `disabledCondition`) and on groups (`visibleCondition`, `validateCondition`).
+Условия можно задавать на полях (`visibleCondition`, `validateCondition`, `disabledCondition`) и на группах (`visibleCondition`, `validateCondition`).
 
-### Operators
+### Операторы
 
-| Operator     | Meaning                          |
-|--------------|----------------------------------|
-| `===`        | Strict equal                     |
-| `!==`        | Strict not equal                 |
-| `<` `>` `<=` `>=` | Numeric / date comparison  |
-| `∅`          | Empty (null, undefined, `''`, `[]`, `{}`) |
-| `!∅`         | Not empty                        |
-| `includes`   | String/array contains            |
-| `startsWith` | String starts with               |
-| `endsWith`   | String ends with                 |
-| `match`      | Regex match                      |
+| Оператор           | Смысл                                             |
+|--------------------|---------------------------------------------------|
+| `===`              | Строгое равенство                                 |
+| `!==`              | Строгое неравенство                               |
+| `<` `>` `<=` `>=` | Числовое / дата-сравнение                         |
+| `∅`                | Пусто (null, undefined, `''`, `[]`, `{}`)         |
+| `!∅`               | Не пусто                                          |
+| `includes`         | Строка / массив содержит значение                 |
+| `startsWith`       | Строка начинается с                               |
+| `endsWith`         | Строка заканчивается на                           |
+| `match`            | Совпадение с регулярным выражением                |
 
-Use a `$` prefix in `value` to reference another field: `{ field: 'confirm', condition: '===', value: '$password' }`.
+Чтобы сослаться на другое поле, используйте `$` в `value`: `{ field: 'confirm', condition: '===', value: '$password' }`.
 
 ### ConditionValue
 
@@ -80,25 +79,25 @@ Use a `$` prefix in `value` to reference another field: `{ field: 'confirm', con
 
 ### ConditionGroup
 
-Combine multiple conditions with `and` / `or`. Groups can be nested arbitrarily.
+Объединяет несколько условий через `and` / `or`. Группы могут быть вложены произвольно.
 
 ```ts
 {
   comparisonType: 'and',
   children: [
     { field: 'age', condition: '>=', value: 18 },
-    { field: 'country', condition: '===', value: 'US' },
+    { field: 'country', condition: '===', value: 'RU' },
   ],
 }
 ```
 
-### visibleCondition — show / hide
+### visibleCondition — показать / скрыть
 
 ```ts
 {
   type: 'input',
   name: 'licenseNumber',
-  label: 'License Number',
+  label: 'Номер прав',
   visibleCondition: {
     comparisonType: 'and',
     children: [{ field: 'hasLicense', condition: '===', value: true }],
@@ -106,13 +105,13 @@ Combine multiple conditions with `and` / `or`. Groups can be nested arbitrarily.
 }
 ```
 
-### disabledCondition — disable
+### disabledCondition — заблокировать
 
 ```ts
 {
   type: 'input',
-  name: 'code',
-  label: 'Promo Code',
+  name: 'promoCode',
+  label: 'Промокод',
   disabledCondition: {
     comparisonType: 'and',
     children: [{ field: 'isPremium', condition: '===', value: true }],
@@ -120,36 +119,36 @@ Combine multiple conditions with `and` / `or`. Groups can be nested arbitrarily.
 }
 ```
 
-### validateCondition — custom validation
+### validateCondition — кастомная валидация
 
-When the condition evaluates to `false`, the field is invalid. Use `message` on `ConditionValue` to display a custom error.
+Поле считается невалидным, когда условие возвращает `false`. Используйте `message` в `ConditionValue` для текста ошибки.
 
 ```ts
 {
   type: 'input',
   name: 'comment',
-  label: 'Comment',
+  label: 'Комментарий',
   validateCondition: {
     comparisonType: 'or',
     children: [
       { field: 'type', condition: '!==', value: 'complaint' },
-      { field: 'comment', condition: '!∅', message: 'Comment is required for complaints' },
+      { field: 'comment', condition: '!∅', message: 'Комментарий обязателен для жалоб' },
     ],
   },
 }
 ```
 
-## Computed values
+## Вычисляемые значения
 
-`computedValue` automatically sets a field's value based on other fields. The first matching `case` wins; `default` is used as a fallback. Omitting `default` leaves the field unchanged when no case matches.
+`computedValue` автоматически устанавливает значение поля на основе других полей. Побеждает первый совпавший `case`; при отсутствии совпадений используется `default`. Если `default` не задан — поле не изменяется.
 
-### Conditional substitution
+### Условная подстановка
 
 ```ts
 {
   type: 'select',
   name: 'orderType',
-  label: 'Order Type',
+  label: 'Тип заказа',
   computedValue: {
     cases: [
       {
@@ -160,7 +159,7 @@ When the condition evaluates to `false`, the field is invalid. Use `message` on 
             { field: 'enabled', condition: '===', value: true },
           ],
         },
-        value: 'manual',   // literal or '$fieldRef'
+        value: 'manual',   // литерал или '$fieldRef'
       },
     ],
     default: 'auto',
@@ -168,9 +167,9 @@ When the condition evaluates to `false`, the field is invalid. Use `message` on 
 }
 ```
 
-### Arithmetic expressions
+### Арифметические выражения
 
-`value` can be an `ArithmeticExpression` with operator `+` `-` `*` `/`. Operands are literals or `$fieldRef` strings.
+`value` может быть `ArithmeticExpression` с оператором `+` `-` `*` `/`. Операнды — литералы или строки `$fieldRef`.
 
 ```ts
 computedValue: {
@@ -184,31 +183,31 @@ computedValue: {
 }
 ```
 
-> Arithmetic returns `null` for `null`/`undefined` operands, non-numeric values, or division by zero.
+> При `null`/`undefined` операндах, нечисловых значениях или делении на ноль арифметика возвращает `null`.
 
-## Buttons
+## Кнопки
 
 ```ts
 buttons: [
   {
     key: 'submit',
-    label: 'Send',
+    label: 'Отправить',
     type: 'primary',
     action: 'submit',
     requiresValidation: true,
     url: 'https://api.example.com/form',
     method: 'POST',
     resetAfterSubmit: true,
-    successNotification: { message: 'Sent!' },
-    errorNotification: { message: 'Error', description: 'Try again later' },
+    successNotification: { message: 'Данные отправлены!' },
+    errorNotification: { message: 'Ошибка', description: 'Попробуйте позже' },
   },
-  { key: 'reset', label: 'Reset', action: 'reset' },
+  { key: 'reset', label: 'Сбросить', action: 'reset' },
 ]
 ```
 
-If `buttons` is omitted, a default Submit button using the `onSubmit` prop is rendered.
+Если `buttons` не задан, рендерится стандартная кнопка Submit, использующая проп `onSubmit`.
 
-## Programmatic control
+## Программное управление
 
 ```tsx
 import { useRef } from 'react'
@@ -220,31 +219,31 @@ function App() {
   return (
     <>
       <FormGenerator ref={ref} config={config} />
-      <button onClick={() => ref.current?.submit()}>Submit externally</button>
-      <button onClick={() => ref.current?.reset()}>Reset</button>
-      <button onClick={() => console.log(ref.current?.getValues())}>Log values</button>
-      <button onClick={() => ref.current?.setValue('name', 'Alice')}>Set name</button>
+      <button onClick={() => ref.current?.submit()}>Отправить снаружи</button>
+      <button onClick={() => ref.current?.reset()}>Сбросить</button>
+      <button onClick={() => console.log(ref.current?.getValues())}>Получить значения</button>
+      <button onClick={() => ref.current?.setValue('name', 'Алиса')}>Установить значение</button>
     </>
   )
 }
 ```
 
-## Development
+## Разработка
 
 ```bash
-# Run tests
+# Запустить тесты
 npm test
 
-# Run tests with coverage
+# Тесты с покрытием
 npm run test:coverage
 
 # Storybook
 npm run storybook
 
-# Build package
+# Сборка пакета
 npm run build
 ```
 
-## License
+## Лицензия
 
 MIT
