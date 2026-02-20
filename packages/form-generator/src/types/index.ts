@@ -1,3 +1,14 @@
+// Computed types
+export type {
+  ArithmeticExpression,
+  ArithmeticOperator,
+  ComputedCase,
+  ComputedOperand,
+  ComputedResultValue,
+  ComputedValueConfig,
+} from './computed.types';
+export { isArithmeticExpression } from './computed.types';
+
 // Button types
 export type {
   ButtonConfig,

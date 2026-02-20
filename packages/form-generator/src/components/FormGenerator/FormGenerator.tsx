@@ -1,8 +1,8 @@
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { useForm, useFormState } from 'react-hook-form';
 import { Button, Form, Space, notification } from 'antd';
-import { FormConfig, FormValues, SubmitButtonConfig } from '@/types';
-import { evaluateConditions } from '@/utils';
+import { ComputedValueConfig, FormConfig, FormValues, SubmitButtonConfig } from '@/types';
+import { evaluateComputedValue, evaluateConditions } from '@/utils';
 import { FieldGroup } from '@/components/FieldGroup';
 import { FormButtons } from '@/components/FormButtons';
 
@@ -64,6 +64,31 @@ export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
 
     // Watch all form values for conditions
     const formValues = watch();
+
+    // Collect fields with computedValue (memoized, depends only on config)
+    const computedFields = useMemo(() => {
+      const result: Array<{ name: string; config: ComputedValueConfig }> = [];
+      for (const group of config.groups) {
+        for (const field of group.fields) {
+          if (field.computedValue) {
+            result.push({ name: field.name, config: field.computedValue });
+          }
+        }
+      }
+      return result;
+    }, [config.groups]);
+
+    // Compute field values on every form change
+    // Guard against loops: compare with current value before calling setValue
+    useEffect(() => {
+      if (computedFields.length === 0) return;
+      for (const { name, config: cvConfig } of computedFields) {
+        const result = evaluateComputedValue(cvConfig, formValues);
+        if (result.shouldUpdate && formValues[name] !== result.value) {
+          setValue(name, result.value, { shouldValidate: false, shouldDirty: false });
+        }
+      }
+    }, [formValues, computedFields, setValue]);
 
     // Create a plain object copy of touchedFields for child components
     // react-hook-form uses Proxy objects which can cause issues with React's hook dependency comparison

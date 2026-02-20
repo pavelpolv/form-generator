@@ -302,3 +302,74 @@ export const SwitchRequiredField: Story = {
     },
   },
 }
+
+/**
+ * Поле 3 (comment) становится обязательным только тогда,
+ * когда Поле 1 (category) === 'В' И Поле 2 (enabled) === true.
+ *
+ * Логика validateCondition через 'or':
+ *   валидно, если (category !== 'В') ИЛИ (enabled === false) ИЛИ (comment заполнен)
+ *   → ошибка только когда category === 'В' И enabled === true И comment пустой
+ */
+const selectSwitchRequiredConfig: FormConfig = {
+  groups: [
+    {
+      name: 'Условная обязательность поля',
+      fields: [
+        {
+          type: 'select',
+          name: 'category',
+          label: 'Поле 1 — Категория',
+          placeholder: 'Выберите категорию',
+          options: [
+            { label: 'А', value: 'А' },
+            { label: 'Б', value: 'Б' },
+            { label: 'В', value: 'В' },
+          ],
+        },
+        {
+          type: 'switch',
+          name: 'enabled',
+          label: 'Поле 2 — Включить',
+          checkedText: 'Да',
+          uncheckedText: 'Нет',
+          defaultValue: false,
+        },
+        {
+          type: 'input',
+          name: 'comment',
+          label: 'Поле 3 — Комментарий *',
+          placeholder: 'Обязательно при Категория=В и Включить=Да',
+          inputType: 'text',
+          validateCondition: {
+            comparisonType: 'or',
+            children: [
+              // Условие не активно — field1 не равен 'В'
+              { field: 'category', condition: '!==', value: 'В' },
+              // Условие не активно — свитч выключен
+              { field: 'enabled', condition: '===', value: false },
+              // Условие активно — поле должно быть заполнено
+              {
+                field: 'comment',
+                condition: '!∅',
+                message: 'Комментарий обязателен, когда выбрана категория В и свитч включён',
+              },
+            ],
+          },
+        },
+      ],
+    },
+  ],
+}
+
+export const SelectSwitchConditionalRequired: Story = {
+  args: {
+    config: {
+      ...selectSwitchRequiredConfig,
+      buttons: [
+        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+        { key: 'reset', label: 'Сбросить', action: 'reset' },
+      ],
+    },
+  },
+}

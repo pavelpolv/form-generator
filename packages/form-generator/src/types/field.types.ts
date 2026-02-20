@@ -1,4 +1,5 @@
 import { ConditionGroup } from './condition.types';
+import { ComputedValueConfig } from './computed.types';
 
 /**
  * Available field types
@@ -42,6 +43,11 @@ export interface BaseField {
    * If condition evaluates to true, field is disabled
    */
   disabledCondition?: ConditionGroup
+
+  /**
+   * Configuration for automatically computing the field value from other fields
+   */
+  computedValue?: ComputedValueConfig
 
   /**
    * Display order (lower values rendered first, default 0)
