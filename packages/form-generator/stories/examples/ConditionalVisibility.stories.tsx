@@ -153,6 +153,22 @@ export const ConditionalGroups: Story = {
         { key: 'reset', label: 'Reset', action: 'reset' },
       ],
     },
+    // Начальные значения заданы для СКРЫТЫХ полей и групп.
+    // Цель: проверить, применяются ли они, когда поле/группа не видны.
+    initialValues: {
+      // Группа "Student Information" скрыта (userType не выбран)
+      university: 'MIT',
+      studentId: 'S-98765',
+      expectedGraduation: 2027,
+      researchInterests: 'Machine learning & NLP',
+      // Группа "Professional Information" скрыта
+      company: 'Acme Corp',
+      position: 'Senior Engineer',
+      yearsExperience: 8,
+      jobDescription: 'Building scalable systems',
+      // Поле "License Number" скрыто (hasLicense = false по умолчанию)
+      licenseNumber: 'AB 1234 CD',
+    },
   },
 }
 
