@@ -50,6 +50,38 @@ export default function App() {
 | `date`        | Выбор даты и времени                           |
 | `money`       | Денежный ввод с префиксом/суффиксом            |
 | `textarea`    | Многострочный текст с авторазмером             |
+| `dynamicList` | Динамический список вложенных форм             |
+
+## Динамические списки
+
+Тип `dynamicList` позволяет создавать список элементов, где каждый элемент — набор полей. Пользователь может добавлять и удалять элементы.
+
+```typescript
+{
+  type: 'dynamicList',
+  name: 'passengers',
+  label: 'Passengers',
+  addButton: { label: 'Add passenger' },
+  itemFields: [
+    { type: 'input', name: 'name', label: 'Name' },
+    { type: 'inputNumber', name: 'age', label: 'Age', min: 0 },
+    {
+      type: 'select',
+      name: 'class',
+      label: 'Class',
+      defaultValue: 'economy',
+      options: [
+        { label: 'Economy', value: 'economy' },
+        { label: 'Business', value: 'business' },
+      ],
+    },
+  ],
+}
+```
+
+Условия (`visibleCondition`, `disabledCondition`, `validateCondition`) внутри `itemFields` вычисляются в **скоупе item** — относительно значений конкретного элемента.
+
+Подробная документация: [docs/dynamic-list.md](./docs/dynamic-list.md)
 
 ## Условная логика
 
