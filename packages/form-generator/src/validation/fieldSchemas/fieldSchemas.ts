@@ -99,6 +99,21 @@ export const textareaFieldSchema = baseFieldSchema.extend({
 });
 
 /**
+ * Dynamic list field validation schema
+ */
+export const dynamicListFieldSchema = baseFieldSchema.extend({
+  type: z.literal('dynamicList'),
+  itemFields: z.array(z.any()).min(1, 'At least one item field is required'),
+  addButton: z.object({
+    label: z.string().optional(),
+    position: z.enum(['top', 'bottom']).optional(),
+    size: z.enum(['large', 'middle', 'small']).optional(),
+    block: z.boolean().optional(),
+    icon: z.any().optional(),
+  }).optional(),
+});
+
+/**
  * Validate field config and return error message if invalid
  * Accepts unknown input for runtime validation
  */
@@ -134,6 +149,9 @@ export function validateFieldConfig(config: unknown): string | null {
       break;
     case 'textarea':
       textareaFieldSchema.parse(config);
+      break;
+    case 'dynamicList':
+      dynamicListFieldSchema.parse(config);
       break;
     default:
       return `Unknown field type: ${fieldConfig.type}`;

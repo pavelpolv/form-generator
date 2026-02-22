@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { ConditionGroup } from './condition.types';
 import { ComputedValueConfig } from './computed.types';
 
@@ -5,7 +6,7 @@ import { ComputedValueConfig } from './computed.types';
  * Available field types
  * Each type corresponds to a specific field component
  */
-export type FieldType = 'input' | 'inputNumber' | 'select' | 'switch' | 'date' | 'money' | 'textarea'
+export type FieldType = 'input' | 'inputNumber' | 'select' | 'switch' | 'date' | 'money' | 'textarea' | 'dynamicList'
 
 /**
  * Base field configuration shared by all field types
@@ -285,6 +286,56 @@ export interface TextareaField extends BaseField, TextareaFieldProps {
 }
 
 /**
+ * Item field types supported inside dynamicList
+ */
+export type DynamicListItemField =
+  | InputField
+  | InputNumberField
+  | SelectField
+  | SwitchField
+  | DateField
+  | MoneyField
+  | TextareaField
+
+/**
+ * Configuration for the "Add" button in a dynamic list field
+ */
+export interface DynamicListAddButtonConfig {
+  /** Button label text. Default: 'Add item' */
+  label?: string
+  /** Position relative to the list items. Default: 'bottom' */
+  position?: 'top' | 'bottom'
+  /** Button size (Ant Design). Default: 'middle' */
+  size?: 'large' | 'middle' | 'small'
+  /** Stretch to full width. Default: true */
+  block?: boolean
+  /** Custom icon. Default: <PlusOutlined /> */
+  icon?: ReactNode
+}
+
+/**
+ * Dynamic list field specific props
+ */
+export interface DynamicListFieldProps {
+  /**
+   * Fields rendered inside each list item
+   */
+  itemFields: DynamicListItemField[]
+
+  /**
+   * Configuration for the "Add" button
+   */
+  addButton?: DynamicListAddButtonConfig
+}
+
+/**
+ * Dynamic list field configuration
+ */
+export interface DynamicListField extends BaseField, DynamicListFieldProps {
+  type: 'dynamicList'
+}
+
+/**
  * Union type of all field configurations
  */
-export type Field = InputField | InputNumberField | SelectField | SwitchField | DateField | MoneyField | TextareaField
+export type Field = InputField | InputNumberField | SelectField | SwitchField | DateField | MoneyField | TextareaField | DynamicListField

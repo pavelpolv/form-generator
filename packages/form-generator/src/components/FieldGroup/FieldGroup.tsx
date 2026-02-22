@@ -1,9 +1,10 @@
 import { FC, memo, useMemo } from 'react';
 import { Card } from 'antd';
 import { Control } from 'react-hook-form';
-import { GroupField, FormValues, Field } from '@/types';
+import { GroupField, FormValues, Field, DynamicListField as DynamicListFieldConfig } from '@/types';
 import { evaluateConditions, collectValidationMessages, collectFieldsFromCondition } from '@/utils';
 import { FieldRenderer } from '@/components/FieldRenderer';
+import { DynamicListField } from '@/fields/DynamicListField';
 
 /**
  * Memoized field wrapper to prevent unnecessary re-calculations of conditions
@@ -165,16 +166,29 @@ export const FieldGroup: FC<FieldGroupProps> = memo(
     const groupContent = (
       <>
         {/* Render fields using MemoizedField for better performance */}
-        {sortedFields.map((field) => (
-          <MemoizedField
-            key={field.name}
-            field={field}
-            control={control}
-            formValues={formValues}
-            touchedFields={touchedFields}
-            forceShowErrors={forceShowErrors}
-          />
-        ))}
+        {sortedFields.map((field) => {
+          if (field.type === 'dynamicList') {
+            return (
+              <DynamicListField
+                key={field.name}
+                config={field as DynamicListFieldConfig}
+                control={control}
+                formValues={formValues}
+                forceShowErrors={forceShowErrors}
+              />
+            );
+          }
+          return (
+            <MemoizedField
+              key={field.name}
+              field={field}
+              control={control}
+              formValues={formValues}
+              touchedFields={touchedFields}
+              forceShowErrors={forceShowErrors}
+            />
+          );
+        })}
 
         {!isValid && validationMessages.length > 0 && (allValidationFieldsTouched || forceShowErrors) && (
           <div style={{
