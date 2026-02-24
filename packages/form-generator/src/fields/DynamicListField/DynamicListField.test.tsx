@@ -84,7 +84,9 @@ describe('DynamicListField', () => {
         children: [{ field: 'show', condition: '===', value: true }],
       },
     };
-    const { container } = render(<TestWrapper config={config} formValues={{ show: false }} />);
+    const { container } = render(<TestWrapper
+      config={config}
+      formValues={{ show: false }} />);
     expect(container.innerHTML).toBe('');
   });
 
@@ -96,7 +98,9 @@ describe('DynamicListField', () => {
         children: [{ field: 'show', condition: '===', value: true }],
       },
     };
-    render(<TestWrapper config={config} formValues={{ show: true }} />);
+    render(<TestWrapper
+      config={config}
+      formValues={{ show: true }} />);
     expect(screen.getByText('Add item')).toBeInTheDocument();
   });
 
@@ -108,7 +112,9 @@ describe('DynamicListField', () => {
         children: [{ field: 'locked', condition: '===', value: true }],
       },
     };
-    render(<TestWrapper config={config} formValues={{ locked: true }} />);
+    render(<TestWrapper
+      config={config}
+      formValues={{ locked: true }} />);
     const addButton = screen.getByText('Add item').closest('button');
     expect(addButton).toBeDisabled();
   });
@@ -133,7 +139,9 @@ describe('DynamicListField', () => {
       ],
     };
     // Не передаём существующих пассажиров — кликаем «Добавить», получаем элемент с пустым именем
-    render(<TestWrapper config={config} forceShowErrors={true} />);
+    render(<TestWrapper
+      config={config}
+      forceShowErrors={true} />);
     await user.click(screen.getByText('Add item'));
     // Имя элемента пустое в области видимости formValues → validateCondition не проходит → ошибка отображается
     expect(screen.getByText('Name is required')).toBeInTheDocument();
@@ -186,7 +194,9 @@ describe('DynamicListField', () => {
       ],
     };
     // Элемент из defaultValues — кликать «Add item» не нужно
-    render(<TestWrapper config={config} formValues={{ passengers: [{ name: 'locked' }] }} />);
+    render(<TestWrapper
+      config={config}
+      formValues={{ passengers: [{ name: 'locked' }] }} />);
     // useFieldArray инициализируется из defaultValues — элемент уже отрендерен
     expect(screen.getByPlaceholderText('Enter name')).toBeDisabled();
   });

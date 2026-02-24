@@ -1,1 +1,1 @@
-export { evaluateComputedValue } from './evaluateComputedValue'
+export { evaluateComputedValue } from './evaluateComputedValue';

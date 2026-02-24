@@ -1,4 +1,4 @@
-import { ConditionGroup, ConditionValue } from './condition.types'
+import { ConditionGroup, ConditionValue } from './condition.types';
 
 export type ArithmeticOperator = '+' | '-' | '*' | '/'
 
@@ -13,7 +13,7 @@ export interface ArithmeticExpression {
 }
 
 export function isArithmeticExpression(value: ComputedResultValue): value is ArithmeticExpression {
-  return value !== null && typeof value === 'object' && 'operator' in value
+  return value !== null && typeof value === 'object' && 'operator' in value;
 }
 
 // Что присвоить полю: литерал / $fieldRef / арифметика

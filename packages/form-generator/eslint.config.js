@@ -36,6 +36,7 @@ export default [
     rules: {
       // --- ESLint core ---
       'complexity': ['warn', 20],
+      'eol-last': ['error', 'always'],
       'indent': ['error', 2],
       'max-classes-per-file': 'off',
       'max-nested-callbacks': 'warn',

@@ -16,6 +16,7 @@ import { evaluateConditions } from '@/utils/evaluateConditions';
 function resolveOperand(operand: ComputedOperand, formValues: FormValues): unknown {
   if (typeof operand === 'string' && operand.startsWith('$')) {
     const fieldName = operand.substring(1);
+
     return formValues[fieldName];
   }
   return operand;

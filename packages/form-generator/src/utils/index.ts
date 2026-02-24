@@ -1,2 +1,2 @@
-export { collectFieldsFromCondition, collectValidationMessages, evaluateConditions } from './evaluateConditions';
 export { evaluateComputedValue } from './evaluateComputedValue';
+export { collectFieldsFromCondition, collectValidationMessages, evaluateConditions } from './evaluateConditions';

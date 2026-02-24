@@ -33,7 +33,7 @@ export const DynamicListField: FC<DynamicListFieldComponentProps> = ({
 
   const isVisible = useMemo(
     () => evaluateConditions(config.visibleCondition, formValues),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
     [config.visibleCondition, formValues],
   );
 
@@ -41,7 +41,7 @@ export const DynamicListField: FC<DynamicListFieldComponentProps> = ({
     () => config.disabledCondition
       ? evaluateConditions(config.disabledCondition, formValues)
       : false,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
     [config.disabledCondition, formValues],
   );
 
@@ -83,7 +83,7 @@ export const DynamicListField: FC<DynamicListFieldComponentProps> = ({
     <Form.Item label={config.label}>
       {position === 'top' && addBtn}
       {items.map((item, index) => {
-        const itemValues = ((formValues[config.name] as Record<string, unknown>[])?.[index] ?? {}) as FormValues;
+        const itemValues = ((formValues[config.name] as Array<Record<string, unknown>>)?.[index] ?? {}) as FormValues;
 
         return (
           <div
@@ -115,10 +115,12 @@ export const DynamicListField: FC<DynamicListFieldComponentProps> = ({
                 />
               );
             })}
-            <Form.Item label=" " colon={false}>
+            <Form.Item
+              label=" "
+              colon={false}>
               <Button
                 type="text"
-                danger
+                danger={true}
                 icon={<MinusCircleOutlined />}
                 onClick={() => remove(index)}
                 disabled={isDisabled}
