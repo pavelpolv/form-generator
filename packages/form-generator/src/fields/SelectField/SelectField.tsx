@@ -14,8 +14,8 @@ interface SelectFieldProps {
 }
 
 /**
- * Select field component
- * Supports single and multiple selection with optional search
+ * Компонент поля выбора
+ * Поддерживает одиночный и множественный выбор с опциональным поиском
  */
 export const SelectField: FC<SelectFieldProps> = memo(({
   config,
@@ -23,7 +23,7 @@ export const SelectField: FC<SelectFieldProps> = memo(({
   error,
   disabled = false,
 }) => {
-  // Validate config - memoized since config doesn't change after initialization
+  // Валидация конфига — мемоизирована, так как конфиг не изменяется после инициализации
   const configError = useMemo(() => validateFieldConfig(config), [config]);
   if (configError) {
     return (
@@ -44,7 +44,7 @@ export const SelectField: FC<SelectFieldProps> = memo(({
     searchable = false,
   } = config;
 
-  // Memoize filter function to prevent recreation on each render
+  // Мемоизация функции фильтрации для предотвращения пересоздания при каждом рендере
   const filterOption = useCallback(
     (input: string, option: { children?: unknown } | undefined) =>
       (option?.children as string)?.toLowerCase().includes(input.toLowerCase()),

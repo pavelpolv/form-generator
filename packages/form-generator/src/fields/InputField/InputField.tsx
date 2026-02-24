@@ -12,8 +12,8 @@ interface InputFieldProps {
 }
 
 /**
- * Input field component
- * Supports text, number, email, password, tel, url input types
+ * Компонент поля ввода
+ * Поддерживает типы ввода: text, number, email, password, tel, url
  */
 export const InputField: FC<InputFieldProps> = memo(({
   config,
@@ -21,7 +21,7 @@ export const InputField: FC<InputFieldProps> = memo(({
   error,
   disabled = false,
 }) => {
-  // Validate config - memoized since config doesn't change after initialization
+  // Валидация конфига — мемоизирована, так как конфиг не изменяется после инициализации
   const configError = useMemo(() => validateFieldConfig(config), [config]);
   if (configError) {
     return (

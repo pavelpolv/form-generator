@@ -1,72 +1,72 @@
 /**
- * Comparison operators for conditions
+ * Операторы сравнения для условий
  */
 export type ComparisonOperator =
-  | '<'      // Less than
-  | '>'      // Greater than
-  | '<='     // Less than or equal
-  | '>='     // Greater than or equal
-  | '==='    // Strict equality
-  | '!=='    // Strict inequality
-  | '∅'      // Empty (null, undefined, '', [], {})
-  | '!∅'     // Not empty
-  | 'includes'   // String/Array contains
-  | 'startsWith' // String starts with
-  | 'endsWith'   // String ends with
-  | 'match'      // Regex match
+  | '<'      // Меньше
+  | '>'      // Больше
+  | '<='     // Меньше или равно
+  | '>='     // Больше или равно
+  | '==='    // Строгое равенство
+  | '!=='    // Строгое неравенство
+  | '∅'      // Пусто (null, undefined, '', [], {})
+  | '!∅'     // Не пусто
+  | 'includes'   // Строка/массив содержит
+  | 'startsWith' // Строка начинается с
+  | 'endsWith'   // Строка заканчивается на
+  | 'match'      // Соответствие регулярному выражению
 
 /**
- * Comparison type for condition groups
+ * Тип сравнения для групп условий
  */
 export type ComparisonType = 'and' | 'or'
 
 /**
- * Condition value for field comparison
+ * Значение условия для сравнения полей
  *
  * @example
- * // Compare with literal value
+ * // Сравнение с литеральным значением
  * { field: 'age', condition: '>', value: 18 }
  *
  * @example
- * // Compare with another field (use $ prefix)
+ * // Сравнение с другим полем (использовать префикс $)
  * { field: 'password', condition: '===', value: '$confirmPassword' }
  *
  * @example
- * // Check if field is not empty
+ * // Проверка, что поле не пустое
  * { field: 'email', condition: '!∅', message: 'Email is required' }
  */
 export interface ConditionValue {
   /**
-   * Field name to read value from (not validated against form fields)
+   * Имя поля, из которого читается значение (не валидируется по полям формы)
    */
   field: string
 
   /**
-   * Comparison operator
+   * Оператор сравнения
    */
   condition: ComparisonOperator
 
   /**
-   * Value to compare with:
-   * - Literal value: string, number, boolean, etc.
-   * - Field reference: use $ prefix (e.g., "$otherField")
-   * - Not required for ∅ and !∅ operators
+   * Значение для сравнения:
+   * - Литеральное значение: строка, число, булево и т.д.
+   * - Ссылка на поле: использовать префикс $ (например, "$otherField")
+   * - Не требуется для операторов ∅ и !∅
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   value?: any
 
   /**
-   * Error message to display when validation fails
-   * Used only for validateCondition, ignored for visibleCondition and disabledCondition
+   * Сообщение об ошибке при неудачной валидации
+   * Используется только для validateCondition, игнорируется для visibleCondition и disabledCondition
    */
   message?: string
 }
 
 /**
- * Condition group with nested conditions
+ * Группа условий с вложенными условиями
  *
  * @example
- * // Simple AND group
+ * // Простая группа AND
  * {
  *   comparisonType: 'and',
  *   children: [
@@ -76,7 +76,7 @@ export interface ConditionValue {
  * }
  *
  * @example
- * // Nested groups
+ * // Вложенные группы
  * {
  *   comparisonType: 'or',
  *   children: [
@@ -93,27 +93,27 @@ export interface ConditionValue {
  */
 export interface ConditionGroup {
   /**
-   * How to combine children:
-   * - 'and': all children must be true
-   * - 'or': at least one child must be true
+   * Способ объединения дочерних условий:
+   * - 'and': все дочерние условия должны быть истинны
+   * - 'or': хотя бы одно дочернее условие должно быть истинно
    */
   comparisonType: ComparisonType
 
   /**
-   * Child conditions or nested groups
+   * Дочерние условия или вложенные группы
    */
   children: Array<ConditionGroup | ConditionValue>
 }
 
 /**
- * Type guard to check if a condition is a ConditionValue
+ * Предикат типа для проверки, является ли условие ConditionValue
  */
 export function isConditionValue(condition: ConditionGroup | ConditionValue): condition is ConditionValue {
   return 'field' in condition && 'condition' in condition;
 }
 
 /**
- * Type guard to check if a condition is a ConditionGroup
+ * Предикат типа для проверки, является ли условие ConditionGroup
  */
 export function isConditionGroup(condition: ConditionGroup | ConditionValue): condition is ConditionGroup {
   return 'comparisonType' in condition && 'children' in condition;

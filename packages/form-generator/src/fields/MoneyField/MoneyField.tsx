@@ -5,7 +5,7 @@ import { MoneyField as MoneyFieldConfig, FormValues } from '@/types';
 import { validateFieldConfig } from '@/validation/fieldSchemas';
 
 /**
- * Format a number as a money string with space thousand separators and comma decimal separator
+ * Форматирует число в строку денежного значения с разделителем тысяч в виде пробела и запятой в качестве десятичного разделителя
  */
 function formatMoney(value: number | undefined | null, decimalPlaces: number): string {
   if (value === undefined || value === null || isNaN(value)) return '';
@@ -15,7 +15,7 @@ function formatMoney(value: number | undefined | null, decimalPlaces: number): s
   const fixed = absValue.toFixed(decimalPlaces);
   const [intPart, decPart] = fixed.split('.');
 
-  // Add space separators for thousands
+  // Добавляем пробелы как разделители тысяч
   const formatted = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 
   const result = decPart !== undefined ? `${formatted},${decPart}` : formatted;
@@ -24,7 +24,7 @@ function formatMoney(value: number | undefined | null, decimalPlaces: number): s
 }
 
 /**
- * Format a raw input string with space thousand separators (integer part only)
+ * Форматирует строку необработанного ввода с разделителями тысяч в виде пробелов (только целая часть)
  */
 function formatWithSpaces(value: string): string {
   if (!value) return value;
@@ -41,12 +41,12 @@ function formatWithSpaces(value: string): string {
 }
 
 /**
- * Parse a formatted money string back to a number
+ * Разбирает отформатированную строку денежного значения обратно в число
  */
 function parseMoney(formatted: string): number | undefined {
   if (!formatted || formatted === '-') return undefined;
 
-  // Remove spaces and replace comma with dot
+  // Убираем пробелы и заменяем запятую на точку
   const cleaned = formatted.replace(/\s/g, '').replace(',', '.');
   const num = Number(cleaned);
 
@@ -60,7 +60,7 @@ interface MoneyFieldProps {
   disabled?: boolean
 }
 
-// Memoized inner component to use hooks with field from render prop
+// Мемоизированный внутренний компонент для использования хуков с field из render prop
 const MoneyInner: FC<{
   field: ControllerRenderProps<FormValues, string>
   label?: string
@@ -80,7 +80,7 @@ const MoneyInner: FC<{
   const inputElRef = useRef<HTMLInputElement | null>(null);
   const cursorRef = useRef<number>(0);
 
-  // Restore cursor position after React re-renders with formatted value
+  // Восстанавливаем позицию курсора после повторного рендера React с отформатированным значением
   useLayoutEffect(() => {
     if (inputElRef.current && document.activeElement === inputElRef.current) {
       inputElRef.current.setSelectionRange(cursorRef.current, cursorRef.current);
@@ -93,23 +93,23 @@ const MoneyInner: FC<{
     const cursorPos = inputEl.selectionStart ?? 0;
     const raw = inputEl.value;
 
-    // Count significant (non-space) chars before cursor in raw input
+    // Считаем значимые (не пробельные) символы перед курсором в необработанном вводе
     let sigCharsBefore = 0;
     for (let i = 0; i < cursorPos && i < raw.length; i++) {
       if (raw[i] !== ' ') sigCharsBefore++;
     }
 
-    // Filter: only digits, comma, space, and optionally minus
+    // Фильтр: только цифры, запятая, пробел и опционально минус
     const allowedPattern = allowNegative ? /[^0-9, -]/g : /[^0-9, ]/g;
     let filtered = raw.replace(allowedPattern, '');
 
-    // Only allow minus at the beginning
+    // Минус допускается только в начале строки
     if (allowNegative) {
       const hasLeadingMinus = filtered.startsWith('-');
       filtered = (hasLeadingMinus ? '-' : '') + filtered.replace(/-/g, '');
     }
 
-    // Only allow one comma
+    // Допускается только одна запятая
     const commaIndex = filtered.indexOf(',');
     if (commaIndex !== -1) {
       const beforeComma = filtered.slice(0, commaIndex + 1);
@@ -117,10 +117,10 @@ const MoneyInner: FC<{
       filtered = beforeComma + afterComma;
     }
 
-    // Format integer part with space separators
+    // Форматируем целую часть с пробелами как разделителями тысяч
     const formatted = formatWithSpaces(filtered);
 
-    // Calculate new cursor position based on significant chars count
+    // Вычисляем новую позицию курсора на основе количества значимых символов
     let newCursor = 0;
     let seen = 0;
     for (let i = 0; i < formatted.length; i++) {
@@ -145,7 +145,7 @@ const MoneyInner: FC<{
 
   const handleBlur = useCallback(() => {
     field.onBlur();
-    // Reformat display value on blur
+    // Переформатируем отображаемое значение при потере фокуса
     const numericValue = field.value as number | undefined | null;
     setDisplayValue(formatMoney(numericValue, decimalPlaces));
   }, [field, decimalPlaces]);
@@ -175,8 +175,8 @@ const MoneyInner: FC<{
 MoneyInner.displayName = 'MoneyInner';
 
 /**
- * Money field component
- * Supports formatted money input with space thousand separators and comma decimal separator
+ * Компонент денежного поля
+ * Поддерживает форматированный ввод денежных сумм с пробелом как разделителем тысяч и запятой как десятичным разделителем
  */
 export const MoneyField: FC<MoneyFieldProps> = memo(({
   config,
@@ -184,7 +184,7 @@ export const MoneyField: FC<MoneyFieldProps> = memo(({
   error,
   disabled = false,
 }) => {
-  // Validate config - memoized since config doesn't change after initialization
+  // Валидация конфига — мемоизирована, так как конфиг не изменяется после инициализации
   const configError = useMemo(() => validateFieldConfig(config), [config]);
   if (configError) {
     return (

@@ -7,7 +7,7 @@ import { FieldRenderer } from '@/components/FieldRenderer';
 import { DynamicListField } from '@/fields/DynamicListField';
 
 /**
- * Memoized field wrapper to prevent unnecessary re-calculations of conditions
+ * Мемоизированная обёртка поля для предотвращения лишних вычислений условий
  */
 interface MemoizedFieldProps {
   field: Field
@@ -25,18 +25,18 @@ const MemoizedField: FC<MemoizedFieldProps> = memo(
     touchedFields,
     forceShowErrors,
   }) => {
-    // Memoize visibility check
+    // Мемоизируем проверку видимости
     const isFieldVisible = useMemo(
       () => evaluateConditions(field.visibleCondition, formValues),
       [field.visibleCondition, formValues],
     );
 
-    // Memoize validation check
+    // Мемоизируем проверку валидации
     const isFieldValid = useMemo(
       () => evaluateConditions(field.validateCondition, formValues),
       [field.validateCondition, formValues],
     );
-    // Memoize disabled check
+    // Мемоизируем проверку блокировки
     const isFieldDisabled = useMemo(
       () => field.disabledCondition
         ? evaluateConditions(field.disabledCondition, formValues)
@@ -44,7 +44,7 @@ const MemoizedField: FC<MemoizedFieldProps> = memo(
       [field.disabledCondition, formValues],
     );
 
-    // Memoize validation messages
+    // Мемоизируем сообщения валидации
     const isFieldTouched = touchedFields[field.name];
     const shouldShowErrors = isFieldTouched || forceShowErrors;
     const fieldValidationMessages = useMemo(
@@ -68,13 +68,13 @@ const MemoizedField: FC<MemoizedFieldProps> = memo(
     );
   },
   (prevProps, nextProps) => {
-    // Custom comparison - only re-render if relevant data changed
+    // Кастомное сравнение — перерендериваем только при изменении значимых данных
     if (prevProps.field !== nextProps.field) return false;
     if (prevProps.control !== nextProps.control) return false;
     if (prevProps.formValues !== nextProps.formValues) return false;
     if (prevProps.forceShowErrors !== nextProps.forceShowErrors) return false;
 
-    // Only compare touched state for this specific field
+    // Сравниваем touched-состояние только для конкретного поля
     const fieldName = prevProps.field.name;
     if (Boolean(prevProps.touchedFields[fieldName]) !== Boolean(nextProps.touchedFields[fieldName])) {
       return false;
@@ -95,7 +95,7 @@ interface FieldGroupProps {
 }
 
 /**
- * Custom comparison function for memo
+ * Кастомная функция сравнения для memo
  */
 const arePropsEqual = (
   prevProps: FieldGroupProps,
@@ -123,7 +123,7 @@ const arePropsEqual = (
 };
 
 /**
- * Field group component with optimized field rendering
+ * Компонент группы полей с оптимизированным рендерингом
  */
 export const FieldGroup: FC<FieldGroupProps> = memo(
   ({ group, control, formValues, touchedFields, forceShowErrors }) => {
@@ -165,7 +165,7 @@ export const FieldGroup: FC<FieldGroupProps> = memo(
 
     const groupContent = (
       <>
-        {/* Render fields using MemoizedField for better performance */}
+        {/* Рендерим поля через MemoizedField для лучшей производительности */}
         {sortedFields.map((field) => {
           if (field.type === 'dynamicList') {
             return (

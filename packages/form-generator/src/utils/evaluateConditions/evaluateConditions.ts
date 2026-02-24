@@ -8,8 +8,8 @@ import {
 } from '@/types';
 
 /**
- * Check if a value is empty
- * Empty values: null, undefined, '', [], {}
+ * Проверяет, является ли значение пустым
+ * Пустые значения: null, undefined, '', [], {}
  */
 function isEmpty(value: unknown): boolean {
   if (value === null || value === undefined) return true;
@@ -20,7 +20,7 @@ function isEmpty(value: unknown): boolean {
 }
 
 /**
- * Check if a value is a valid ISO date string
+ * Проверяет, является ли значение валидной строкой в формате ISO-даты
  */
 function isISODateString(value: unknown): value is string {
   if (typeof value !== 'string') return false;
@@ -30,23 +30,23 @@ function isISODateString(value: unknown): value is string {
 }
 
 /**
- * Get comparable value for date or number comparisons
- * Handles ISO date strings and numbers
+ * Возвращает сравниваемое значение для дат или чисел
+ * Обрабатывает строки в формате ISO-даты и числа
  */
 function getComparableValue(value: unknown): number {
-  // If it's an ISO date string, convert to timestamp
+  // Если значение — строка в формате ISO-даты, преобразуем в timestamp
   if (isISODateString(value)) {
     return new Date(value).getTime();
   }
-  // Otherwise convert to number
+  // Иначе преобразуем в число
   return Number(value);
 }
 
 /**
- * Get field value, supports $ prefix for field references
+ * Возвращает значение поля; поддерживает префикс $ для ссылок на поля
  */
 function getFieldValue(value: unknown, formValues: FormValues): unknown {
-  // If value is a string starting with $, treat it as a field reference
+  // Если значение — строка, начинающаяся с $, трактуем её как ссылку на поле
   if (typeof value === 'string' && value.startsWith('$')) {
     const fieldName = value.substring(1);
 
@@ -56,7 +56,7 @@ function getFieldValue(value: unknown, formValues: FormValues): unknown {
 }
 
 /**
- * Compare two values based on operator
+ * Сравнивает два значения по заданному оператору
  */
 // eslint-disable-next-line complexity
 function compareValues(
@@ -139,7 +139,7 @@ function compareValues(
 }
 
 /**
- * Evaluate a single condition value
+ * Вычисляет результат отдельного условия
  */
 function evaluateConditionValue(
   condition: ConditionValue,
@@ -147,24 +147,24 @@ function evaluateConditionValue(
 ): boolean {
   const { field, condition: operator, value } = condition;
 
-  // Check if field exists in form values (but don't fail if it doesn't)
+  // Получаем значение поля (не ошибаемся, если поле отсутствует)
   const fieldValue = formValues[field];
 
-  // Get the comparison value (resolve field references with $)
+  // Получаем значение для сравнения (разрешаем ссылки на поля через $)
   const comparisonValue = getFieldValue(value, formValues);
 
   return compareValues(fieldValue, operator, comparisonValue);
 }
 
 /**
- * Evaluate a condition group recursively
+ * Рекурсивно вычисляет результат группы условий
  */
 function evaluateConditionGroupInternal(
   group: ConditionGroup,
   formValues: FormValues,
   depth: number = 0,
 ): boolean {
-  // Protect against circular dependencies
+  // Защита от циклических зависимостей
   if (depth > 50) {
     console.error('[Form Generator] Maximum condition depth exceeded. Possible circular dependency.');
     return false;
@@ -199,11 +199,11 @@ function evaluateConditionGroupInternal(
 }
 
 /**
- * Evaluate a condition (group or value) against form values
+ * Вычисляет условие (группу или значение) относительно текущих значений формы
  *
- * @param condition - Condition to evaluate (ConditionGroup or ConditionValue)
- * @param formValues - Current form values (flat structure)
- * @returns true if condition passes, false otherwise
+ * @param condition - Условие для вычисления (ConditionGroup или ConditionValue)
+ * @param formValues - Текущие значения формы (плоская структура)
+ * @returns true если условие выполнено, false в противном случае
  *
  * @example
  * const condition = {
@@ -220,7 +220,7 @@ export function evaluateConditions(
   condition: ConditionGroup | ConditionValue | undefined,
   formValues: FormValues,
 ): boolean {
-  // If no condition is provided, return true (no restrictions)
+  // Если условие не задано, возвращаем true (нет ограничений)
   if (!condition) {
     return true;
   }
@@ -241,12 +241,12 @@ export function evaluateConditions(
 }
 
 /**
- * Collect all validation error messages from a condition
- * Used to display validation errors when validateCondition fails
+ * Собирает все сообщения об ошибках валидации из условия
+ * Используется для отображения ошибок при невыполнении validateCondition
  *
- * @param condition - Condition to check
- * @param formValues - Current form values
- * @returns Array of error messages from failed conditions
+ * @param condition - Условие для проверки
+ * @param formValues - Текущие значения формы
+ * @returns Массив сообщений об ошибках из невыполненных условий
  */
 export function collectValidationMessages(
   condition: ConditionGroup | ConditionValue | undefined,
@@ -265,8 +265,8 @@ export function collectValidationMessages(
         messages.push(cond.message);
       }
     } else if (isConditionGroup(cond)) {
-      // For 'and' groups, collect all failing conditions
-      // For 'or' groups, only collect if ALL conditions fail
+      // Для групп 'and' собираем все невыполненные условия
+      // Для групп 'or' собираем только если ВСЕ условия не выполнены
       const allResults = cond.children.map((child) => {
         if (isConditionValue(child)) {
           return evaluateConditionValue(child, formValues);
@@ -281,15 +281,15 @@ export function collectValidationMessages(
         : allResults.some((r) => r);
 
       if (!groupPassed) {
-        // Collect messages from children
+        // Собираем сообщения из дочерних элементов
         cond.children.forEach((child, index) => {
           if (cond.comparisonType === 'and') {
-            // For 'and', collect from failed conditions
+            // Для 'and' собираем из невыполненных условий
             if (!allResults[index]) {
               collect(child);
             }
           } else {
-            // For 'or', collect from all if group failed
+            // Для 'or' собираем из всех, если группа не выполнена
             collect(child);
           }
         });
@@ -307,11 +307,11 @@ export function collectValidationMessages(
 }
 
 /**
- * Collect all field names referenced in a condition
- * Used to check if all fields in a validation condition have been touched
+ * Собирает все имена полей, на которые ссылается условие
+ * Используется для проверки, были ли затронуты все поля в условии валидации
  *
- * @param condition - Condition to analyze
- * @returns Array of field names referenced in the condition
+ * @param condition - Условие для анализа
+ * @returns Массив имён полей, упоминаемых в условии
  */
 export function collectFieldsFromCondition(
   condition: ConditionGroup | ConditionValue | undefined,
@@ -324,17 +324,17 @@ export function collectFieldsFromCondition(
 
   function collect(cond: ConditionGroup | ConditionValue): void {
     if (isConditionValue(cond)) {
-      // Add the field name
+      // Добавляем имя поля
       if (cond.field) {
         fieldNames.push(cond.field);
       }
-      // Also check if the value references another field (starts with $)
+      // Проверяем, ссылается ли значение на другое поле (начинается с $)
       if (typeof cond.value === 'string' && cond.value.startsWith('$')) {
         const referencedField = cond.value.substring(1);
         fieldNames.push(referencedField);
       }
     } else if (isConditionGroup(cond)) {
-      // Recursively collect from children
+      // Рекурсивно собираем из дочерних элементов
       cond.children.forEach((child) => {
         collect(child);
       });
@@ -343,7 +343,7 @@ export function collectFieldsFromCondition(
 
   try {
     collect(condition);
-    // Return unique field names
+    // Возвращаем уникальные имена полей
     return [...new Set(fieldNames)];
   } catch (error) {
     console.error('[Form Generator] Error collecting fields from condition:', error);

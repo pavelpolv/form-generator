@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 /**
- * Base field schema shared by all field types
+ * Базовая схема поля, общая для всех типов
  */
 const baseFieldSchema = z.object({
   name: z.string().min(1, 'Field name is required'),
@@ -15,7 +15,7 @@ const baseFieldSchema = z.object({
 });
 
 /**
- * Input field validation schema
+ * Схема валидации текстового поля
  */
 export const inputFieldSchema = baseFieldSchema.extend({
   type: z.literal('input'),
@@ -24,7 +24,7 @@ export const inputFieldSchema = baseFieldSchema.extend({
 });
 
 /**
- * Input number field validation schema
+ * Схема валидации числового поля
  */
 export const inputNumberFieldSchema = baseFieldSchema.extend({
   type: z.literal('inputNumber'),
@@ -34,7 +34,7 @@ export const inputNumberFieldSchema = baseFieldSchema.extend({
 });
 
 /**
- * Select field validation schema
+ * Схема валидации поля select
  */
 export const selectFieldSchema = baseFieldSchema.extend({
   type: z.literal('select'),
@@ -50,7 +50,7 @@ export const selectFieldSchema = baseFieldSchema.extend({
 });
 
 /**
- * Switch field validation schema
+ * Схема валидации поля-переключателя
  */
 export const switchFieldSchema = baseFieldSchema.extend({
   type: z.literal('switch'),
@@ -59,7 +59,7 @@ export const switchFieldSchema = baseFieldSchema.extend({
 });
 
 /**
- * Date field validation schema
+ * Схема валидации поля даты
  */
 export const dateFieldSchema = baseFieldSchema.extend({
   type: z.literal('date'),
@@ -70,7 +70,7 @@ export const dateFieldSchema = baseFieldSchema.extend({
 });
 
 /**
- * Money field validation schema
+ * Схема валидации денежного поля
  */
 export const moneyFieldSchema = baseFieldSchema.extend({
   type: z.literal('money'),
@@ -83,7 +83,7 @@ export const moneyFieldSchema = baseFieldSchema.extend({
 });
 
 /**
- * Textarea field validation schema
+ * Схема валидации поля textarea
  */
 export const textareaFieldSchema = baseFieldSchema.extend({
   type: z.literal('textarea'),
@@ -99,7 +99,7 @@ export const textareaFieldSchema = baseFieldSchema.extend({
 });
 
 /**
- * Dynamic list field validation schema
+ * Схема валидации поля динамического списка
  */
 export const dynamicListFieldSchema = baseFieldSchema.extend({
   type: z.literal('dynamicList'),
@@ -114,8 +114,8 @@ export const dynamicListFieldSchema = baseFieldSchema.extend({
 });
 
 /**
- * Validate field config and return error message if invalid
- * Accepts unknown input for runtime validation
+ * Валидирует конфигурацию поля и возвращает сообщение об ошибке при неверных данных
+ * Принимает неизвестный тип для валидации во время выполнения
  */
 export function validateFieldConfig(config: unknown): string | null {
   if (typeof config !== 'object' || config === null) {

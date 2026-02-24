@@ -10,8 +10,8 @@ import { FormValues } from '@/types';
 import { evaluateConditions } from '@/utils/evaluateConditions';
 
 /**
- * Resolve an operand: if it's a $fieldRef string, return the form field value;
- * otherwise return the literal value as-is.
+ * Разрешает операнд: если это строка $fieldRef, возвращает значение поля формы;
+ * иначе возвращает литеральное значение как есть.
  */
 function resolveOperand(operand: ComputedOperand, formValues: FormValues): unknown {
   if (typeof operand === 'string' && operand.startsWith('$')) {
@@ -22,8 +22,8 @@ function resolveOperand(operand: ComputedOperand, formValues: FormValues): unkno
 }
 
 /**
- * Evaluate arithmetic expression with two operands.
- * Returns null if operands are invalid or division by zero occurs.
+ * Вычисляет арифметическое выражение с двумя операндами.
+ * Возвращает null, если операнды некорректны или происходит деление на ноль.
  */
 function evaluateArithmetic(expr: ArithmeticExpression, formValues: FormValues): number | null {
   const left = resolveOperand(expr.left, formValues);
@@ -57,7 +57,7 @@ function evaluateArithmetic(expr: ArithmeticExpression, formValues: FormValues):
 }
 
 /**
- * Resolve a ComputedResultValue to an actual value using current form values.
+ * Разрешает ComputedResultValue в конкретное значение, используя текущие значения формы.
  */
 function resolveResultValue(resultValue: ComputedResultValue, formValues: FormValues): unknown {
   if (isArithmeticExpression(resultValue)) {
@@ -67,11 +67,11 @@ function resolveResultValue(resultValue: ComputedResultValue, formValues: FormVa
 }
 
 /**
- * Evaluate computed value configuration against current form values.
+ * Вычисляет конфигурацию вычисляемого значения относительно текущих значений формы.
  *
- * Iterates through cases and returns the value from the first matching case.
- * Falls back to `default` if no case matches.
- * Returns `{ shouldUpdate: false }` if no case matches and no default is defined.
+ * Перебирает условия и возвращает значение первого совпавшего.
+ * Если ни одно условие не совпало, возвращает значение из `default`.
+ * Возвращает `{ shouldUpdate: false }`, если нет совпадений и `default` не задан.
  */
 export function evaluateComputedValue(
   config: ComputedValueConfig,

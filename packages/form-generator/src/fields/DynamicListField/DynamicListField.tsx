@@ -14,9 +14,9 @@ interface DynamicListFieldComponentProps {
 }
 
 /**
- * Dynamic list field component
- * Renders a list of items where each item is a group of sub-fields.
- * Conditions in item fields are evaluated in the scope of the item's values.
+ * Компонент динамического списка
+ * Отображает список элементов, каждый из которых представляет собой группу вложенных полей.
+ * Условия в полях элементов вычисляются в контексте значений конкретного элемента.
  */
 export const DynamicListField: FC<DynamicListFieldComponentProps> = ({
   config,

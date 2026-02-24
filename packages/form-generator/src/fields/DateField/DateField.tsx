@@ -13,8 +13,8 @@ interface DateFieldProps {
 }
 
 /**
- * Date field component
- * Supports date and datetime selection with format customization
+ * Компонент поля даты
+ * Поддерживает выбор даты и даты со временем с настройкой формата
  */
 export const DateField: FC<DateFieldProps> = memo(({
   config,
@@ -22,7 +22,7 @@ export const DateField: FC<DateFieldProps> = memo(({
   error,
   disabled = false,
 }) => {
-  // Validate config - memoized since config doesn't change after initialization
+  // Валидация конфига — мемоизирована, так как конфиг не изменяется после инициализации
   const configError = useMemo(() => validateFieldConfig(config), [config]);
   if (configError) {
     return (
@@ -44,7 +44,7 @@ export const DateField: FC<DateFieldProps> = memo(({
     disabledDateAfter,
   } = config;
 
-  // Memoize disabledDate function to prevent recreation on each render
+  // Мемоизация функции disabledDate для предотвращения пересоздания при каждом рендере
   const disabledDate = useCallback((current: Moment) => {
     if (!current) return false;
 

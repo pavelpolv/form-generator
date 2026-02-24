@@ -12,8 +12,8 @@ interface SwitchFieldProps {
 }
 
 /**
- * Switch field component
- * Represents a boolean toggle with optional checked/unchecked text
+ * Компонент поля-переключателя
+ * Представляет булев тумблер с опциональным текстом для включённого/выключенного состояния
  */
 export const SwitchField: FC<SwitchFieldProps> = memo(({
   config,
@@ -21,7 +21,7 @@ export const SwitchField: FC<SwitchFieldProps> = memo(({
   error,
   disabled = false,
 }) => {
-  // Validate config - memoized since config doesn't change after initialization
+  // Валидация конфига — мемоизирована, так как конфиг не изменяется после инициализации
   const configError = useMemo(() => validateFieldConfig(config), [config]);
   if (configError) {
     return (

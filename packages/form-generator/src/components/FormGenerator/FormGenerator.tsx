@@ -15,29 +15,29 @@ export interface FormGeneratorRef {
 
 export interface FormGeneratorProps {
   /**
-   * Form configuration
+   * Конфигурация формы
    */
   config: FormConfig
 
   /**
-   * Initial form values
+   * Начальные значения формы
    */
   initialValues?: FormValues
 
   /**
-   * Callback when form values change
+   * Колбэк при изменении значений формы
    */
   onChange?: (values: FormValues) => void
 
   /**
-   * Callback when form is submitted
+   * Колбэк при отправке формы
    */
   onSubmit?: (values: FormValues) => void
 }
 
 /**
- * Form Generator Component
- * Main component for rendering dynamic forms based on configuration
+ * Компонент генератора форм
+ * Основной компонент для рендеринга динамических форм на основе конфигурации
  */
 export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
   (
@@ -51,21 +51,21 @@ export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
   ) => {
     const { control, handleSubmit, watch, reset, getValues, setValue } = useForm({
       defaultValues: initialValues,
-      mode: 'onBlur', // Validate on blur (first error)
-      reValidateMode: 'onChange', // Re-validate on change (if already has error)
+      mode: 'onBlur', // Валидация при потере фокуса (первая ошибка)
+      reValidateMode: 'onChange', // Повторная валидация при изменении (если уже есть ошибка)
     });
 
     const [loadingKey, setLoadingKey] = useState<string | null>(null);
     const [forceShowErrors, setForceShowErrors] = useState(false);
 
-    // Subscribe to touchedFields changes using useFormState
-    // This creates a proper subscription and triggers re-renders when touchedFields change
+    // Подписываемся на изменения touchedFields через useFormState
+    // Создаёт корректную подписку и вызывает повторный рендер при изменении touchedFields
     const { touchedFields } = useFormState({ control });
 
-    // Watch all form values for conditions
+    // Следим за всеми значениями формы для условий
     const formValues = watch();
 
-    // Collect fields with computedValue (memoized, depends only on config)
+    // Собираем поля с computedValue (мемоизировано, зависит только от config)
     const computedFields = useMemo(() => {
       const result: Array<{ name: string; config: ComputedValueConfig }> = [];
       for (const group of config.groups) {
@@ -78,8 +78,8 @@ export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
       return result;
     }, [config.groups]);
 
-    // Compute field values on every form change
-    // Guard against loops: compare with current value before calling setValue
+    // Вычисляем значения полей при каждом изменении формы
+    // Защита от зацикливания: сравниваем с текущим значением перед вызовом setValue
     useEffect(() => {
       if (computedFields.length === 0) return;
       for (const { name, config: cvConfig } of computedFields) {
@@ -90,12 +90,13 @@ export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
       }
     }, [formValues, computedFields, setValue]);
 
-    // Create a plain object copy of touchedFields for child components
-    // react-hook-form uses Proxy objects which can cause issues with React's hook dependency comparison
-    // We use a ref to track the previous value and only update when keys actually change
+    // Создаём простую копию объекта touchedFields для дочерних компонентов
+    // react-hook-form использует Proxy-объекты, которые могут вызывать проблемы
+    // при сравнении зависимостей в хуках React
+    // Используем ref для отслеживания предыдущего значения и обновляем только при реальных изменениях ключей
     const touchedFieldsRef = useRef<Record<string, boolean>>({});
 
-    // Build current touched state safely
+    // Безопасно формируем текущее состояние touched
     const currentTouchedKeys: string[] = [];
     try {
       for (const key in touchedFields) {
@@ -104,10 +105,10 @@ export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
         }
       }
     } catch {
-      // Proxy iteration failed, keep previous value
+      // Итерация по Proxy не удалась, сохраняем предыдущее значение
     }
 
-    // Update ref only if touched fields actually changed
+    // Обновляем ref только при реальном изменении touched-полей
     const currentTouchedKey = currentTouchedKeys.sort().join(',');
     const prevTouchedKey = Object.keys(touchedFieldsRef.current).sort().join(',');
 
@@ -121,7 +122,7 @@ export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
 
     const touchedFieldsSnapshot = touchedFieldsRef.current;
 
-    // Notify parent of changes
+    // Уведомляем родителя об изменениях
     useEffect(() => {
       if (onChange) {
         onChange(formValues);
@@ -192,7 +193,7 @@ export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
       }
     }, [config.groups, getValues, handleButtonSubmit]);
 
-    // Expose form methods via ref
+    // Открываем методы формы через ref
     useImperativeHandle(ref, () => ({
       getValues: () => formValues,
       reset: (values?: FormValues) => reset(values || initialValues),
@@ -215,7 +216,7 @@ export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
       <Form
         layout="vertical"
         onFinish={hasButtons ? undefined : handleSubmit(handleFormSubmit)}>
-        {/* Render groups */}
+        {/* Рендерим группы полей */}
         {sortedGroups.map((group, index) => (
           <FieldGroup
             key={`${group.name}-${index}`}
@@ -227,7 +228,7 @@ export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
           />
         ))}
 
-        {/* Action buttons */}
+        {/* Кнопки действий */}
         {hasButtons ? (
           <FormButtons
             buttons={config.buttons!}

@@ -4,7 +4,7 @@ const buttonTypeSchema = z.enum(['primary', 'default', 'dashed', 'link', 'text']
 const httpMethodSchema = z.enum(['POST', 'PUT', 'PATCH', 'DELETE']);
 
 /**
- * Submit button validation schema
+ * Схема валидации кнопки отправки
  */
 export const submitButtonSchema = z.object({
   key: z.string().min(1, 'Button key is required'),
@@ -18,7 +18,7 @@ export const submitButtonSchema = z.object({
 });
 
 /**
- * Reset button validation schema
+ * Схема валидации кнопки сброса
  */
 export const resetButtonSchema = z.object({
   key: z.string().min(1, 'Button key is required'),
@@ -28,7 +28,7 @@ export const resetButtonSchema = z.object({
 });
 
 /**
- * Discriminated union of all button configs
+ * Размеченное объединение всех конфигураций кнопок
  */
 export const buttonConfigSchema = z.discriminatedUnion('action', [
   submitButtonSchema,
@@ -36,7 +36,7 @@ export const buttonConfigSchema = z.discriminatedUnion('action', [
 ]);
 
 /**
- * Array of buttons with unique key validation
+ * Массив кнопок с валидацией уникальности ключей
  */
 export const buttonsArraySchema = z
   .array(buttonConfigSchema)
@@ -50,7 +50,7 @@ export const buttonsArraySchema = z
   );
 
 /**
- * Validate buttons config and return error message if invalid
+ * Валидирует конфигурацию кнопок и возвращает сообщение об ошибке при неверных данных
  */
 
 export function validateButtonsConfig(config: unknown): string | null {

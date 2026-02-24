@@ -3,112 +3,112 @@ import { ConditionGroup } from './condition.types';
 import { ComputedValueConfig } from './computed.types';
 
 /**
- * Available field types
- * Each type corresponds to a specific field component
+ * Доступные типы полей
+ * Каждый тип соответствует конкретному компоненту поля
  */
 export type FieldType = 'input' | 'inputNumber' | 'select' | 'switch' | 'date' | 'money' | 'textarea' | 'dynamicList'
 
 /**
- * Base field configuration shared by all field types
+ * Базовая конфигурация поля, общая для всех типов
  */
 export interface BaseField {
   /**
-   * Unique field name (used as key in form values)
+   * Уникальное имя поля (используется как ключ в значениях формы)
    */
   name: string
 
   /**
-   * Display label for the field
+   * Отображаемая метка поля
    */
   label: string
 
   /**
-   * Field type
+   * Тип поля
    */
   type: FieldType
 
   /**
-   * Condition to show/hide the field
-   * If condition evaluates to false, field is hidden
+   * Условие показа/скрытия поля
+   * Если условие ложно, поле скрывается
    */
   visibleCondition?: ConditionGroup
 
   /**
-   * Condition for field validation
-   * If condition evaluates to false, validation error is shown
+   * Условие валидации поля
+   * Если условие ложно, отображается ошибка валидации
    */
   validateCondition?: ConditionGroup
 
   /**
-   * Condition to enable/disable the field
-   * If condition evaluates to true, field is disabled
+   * Условие включения/отключения поля
+   * Если условие истинно, поле блокируется
    */
   disabledCondition?: ConditionGroup
 
   /**
-   * Configuration for automatically computing the field value from other fields
+   * Конфигурация автоматического вычисления значения поля из других полей
    */
   computedValue?: ComputedValueConfig
 
   /**
-   * Display order (lower values rendered first, default 0)
+   * Порядок отображения (меньшие значения рендерятся первыми, по умолчанию 0)
    */
   order?: number
 
   /**
-   * Placeholder text
+   * Текст-заглушка
    */
   placeholder?: string
 
   /**
-   * Default value for the field
+   * Значение поля по умолчанию
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   defaultValue?: any
 }
 
 /**
- * HTML input type for text-based inputs
+ * Тип HTML-инпута для текстовых полей
  */
 export type InputType = 'text' | 'password' | 'email' | 'tel' | 'url' | 'search'
 
 /**
- * Input field specific props
+ * Специфичные свойства текстового поля
  */
 export interface InputFieldProps {
   /**
-   * Input type (text, password, email, tel, url, search)
+   * Тип инпута (text, password, email, tel, url, search)
    */
   inputType?: InputType
 
   /**
-   * Maximum length
+   * Максимальная длина
    */
   maxLength?: number
 }
 
 /**
- * Input number field specific props
+ * Специфичные свойства числового поля
  */
 export interface InputNumberFieldProps {
   /**
-   * Minimum value
+   * Минимальное значение
    */
   min?: number
 
   /**
-   * Maximum value
+   * Максимальное значение
    */
   max?: number
 
   /**
-   * Step value
+   * Шаг изменения значения
    */
   step?: number
 }
 
 /**
- * Select field option
+ * Вариант выбора для поля select
  */
 export interface SelectOption {
   label: string
@@ -117,176 +117,176 @@ export interface SelectOption {
 }
 
 /**
- * Select field specific props
+ * Специфичные свойства поля select
  */
 export interface SelectFieldProps {
   /**
-   * Options for select dropdown
+   * Варианты для выпадающего списка
    */
   options: SelectOption[]
 
   /**
-   * Allow multiple selection
+   * Разрешить множественный выбор
    */
   multiple?: boolean
 
   /**
-   * Allow search/filter options
+   * Разрешить поиск/фильтрацию вариантов
    */
   searchable?: boolean
 }
 
 /**
- * Switch field specific props
+ * Специфичные свойства поля-переключателя
  */
 export interface SwitchFieldProps {
   /**
-   * Text to display when switch is on
+   * Текст при включённом состоянии
    */
   checkedText?: string
 
   /**
-   * Text to display when switch is off
+   * Текст при выключенном состоянии
    */
   uncheckedText?: string
 }
 
 /**
- * Date field specific props
+ * Специфичные свойства поля даты
  */
 export interface DateFieldProps {
   /**
-   * Date format for display
+   * Формат отображения даты
    * @default 'YYYY-MM-DD'
    */
   format?: string
 
   /**
-   * Show time picker
+   * Показывать выбор времени
    */
   showTime?: boolean
 
   /**
-   * Disable dates before this date
+   * Отключить даты до указанной
    */
   disabledDateBefore?: Date
 
   /**
-   * Disable dates after this date
+   * Отключить даты после указанной
    */
   disabledDateAfter?: Date
 }
 
 /**
- * Money field specific props
+ * Специфичные свойства денежного поля
  */
 export interface MoneyFieldProps {
   /**
-   * Number of decimal places
+   * Количество знаков после запятой
    * @default 2
    */
   decimalPlaces?: number
 
   /**
-   * Prefix displayed before the input (e.g. currency symbol)
+   * Префикс перед инпутом (например, символ валюты)
    */
   prefix?: string
 
   /**
-   * Suffix displayed after the input (e.g. currency code)
+   * Суффикс после инпута (например, код валюты)
    */
   suffix?: string
 
   /**
-   * Allow negative values
+   * Разрешить отрицательные значения
    * @default false
    */
   allowNegative?: boolean
 
   /**
-   * Minimum value
+   * Минимальное значение
    */
   min?: number
 
   /**
-   * Maximum value
+   * Максимальное значение
    */
   max?: number
 }
 
 /**
- * Textarea field specific props
+ * Специфичные свойства поля textarea
  */
 export interface TextareaFieldProps {
   /**
-   * Number of visible text rows
+   * Количество видимых строк текста
    */
   rows?: number
 
   /**
-   * Maximum length
+   * Максимальная длина
    */
   maxLength?: number
 
   /**
-   * Auto size configuration
-   * If true, textarea will auto-resize based on content
-   * If object, can specify min and max rows
+   * Конфигурация автоматического изменения размера
+   * Если true, textarea будет автоматически менять размер в зависимости от содержимого
+   * Если объект, можно задать минимальное и максимальное количество строк
    */
   autoSize?: boolean | { minRows?: number; maxRows?: number }
 }
 
 /**
- * Input field configuration
+ * Конфигурация текстового поля
  */
 export interface InputField extends BaseField, InputFieldProps {
   type: 'input'
 }
 
 /**
- * Input number field configuration
+ * Конфигурация числового поля
  */
 export interface InputNumberField extends BaseField, InputNumberFieldProps {
   type: 'inputNumber'
 }
 
 /**
- * Select field configuration
+ * Конфигурация поля select
  */
 export interface SelectField extends BaseField, SelectFieldProps {
   type: 'select'
 }
 
 /**
- * Switch field configuration
+ * Конфигурация поля-переключателя
  */
 export interface SwitchField extends BaseField, SwitchFieldProps {
   type: 'switch'
 }
 
 /**
- * Date field configuration
+ * Конфигурация поля даты
  */
 export interface DateField extends BaseField, DateFieldProps {
   type: 'date'
 }
 
 /**
- * Money field configuration
+ * Конфигурация денежного поля
  */
 export interface MoneyField extends BaseField, MoneyFieldProps {
   type: 'money'
 }
 
 /**
- * Textarea field configuration
+ * Конфигурация поля textarea
  */
 export interface TextareaField extends BaseField, TextareaFieldProps {
   type: 'textarea'
 }
 
 /**
- * Item field types supported inside dynamicList
+ * Типы элементов, поддерживаемые внутри dynamicList
  */
 export type DynamicListItemField =
   | InputField
@@ -298,44 +298,44 @@ export type DynamicListItemField =
   | TextareaField
 
 /**
- * Configuration for the "Add" button in a dynamic list field
+ * Конфигурация кнопки "Добавить" в поле динамического списка
  */
 export interface DynamicListAddButtonConfig {
-  /** Button label text. Default: 'Add item' */
+  /** Текст кнопки. По умолчанию: 'Add item' */
   label?: string
-  /** Position relative to the list items. Default: 'bottom' */
+  /** Положение относительно элементов списка. По умолчанию: 'bottom' */
   position?: 'top' | 'bottom'
-  /** Button size (Ant Design). Default: 'middle' */
+  /** Размер кнопки (Ant Design). По умолчанию: 'middle' */
   size?: 'large' | 'middle' | 'small'
-  /** Stretch to full width. Default: true */
+  /** Растянуть на всю ширину. По умолчанию: true */
   block?: boolean
-  /** Custom icon. Default: <PlusOutlined /> */
+  /** Пользовательская иконка. По умолчанию: <PlusOutlined /> */
   icon?: ReactNode
 }
 
 /**
- * Dynamic list field specific props
+ * Специфичные свойства поля динамического списка
  */
 export interface DynamicListFieldProps {
   /**
-   * Fields rendered inside each list item
+   * Поля, отображаемые внутри каждого элемента списка
    */
   itemFields: DynamicListItemField[]
 
   /**
-   * Configuration for the "Add" button
+   * Конфигурация кнопки "Добавить"
    */
   addButton?: DynamicListAddButtonConfig
 }
 
 /**
- * Dynamic list field configuration
+ * Конфигурация поля динамического списка
  */
 export interface DynamicListField extends BaseField, DynamicListFieldProps {
   type: 'dynamicList'
 }
 
 /**
- * Union type of all field configurations
+ * Объединяющий тип всех конфигураций полей
  */
 export type Field = InputField | InputNumberField | SelectField | SwitchField | DateField | MoneyField | TextareaField | DynamicListField

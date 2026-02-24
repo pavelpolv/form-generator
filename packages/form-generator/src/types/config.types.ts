@@ -3,70 +3,70 @@ import { ConditionGroup } from './condition.types';
 import { Field } from './field.types';
 
 /**
- * Field group configuration
- * Groups fields together with a visual border and title
+ * Конфигурация группы полей
+ * Объединяет поля вместе с визуальной рамкой и заголовком
  */
 export interface GroupField {
   /**
-   * Group name/title displayed in the UI
+   * Имя/заголовок группы, отображаемый в интерфейсе
    */
   name: string
 
   /**
-   * Show group title
+   * Показывать заголовок группы
    * @default true
    */
   showTitle?: boolean
 
   /**
-   * Show group border
+   * Показывать рамку группы
    * @default true
    */
   showBorder?: boolean
 
   /**
-   * Condition to show/hide the entire group
-   * If condition evaluates to false, group and all its fields are hidden
+   * Условие показа/скрытия всей группы
+   * Если условие ложно, группа и все её поля скрываются
    */
   visibleCondition?: ConditionGroup
 
   /**
-   * Condition for group validation
-   * If condition evaluates to false, validation error is shown for the group
+   * Условие валидации группы
+   * Если условие ложно, для группы отображается ошибка валидации
    */
   validateCondition?: ConditionGroup
 
   /**
-   * Display order (lower values rendered first, default 0)
+   * Порядок отображения (меньшие значения рендерятся первыми, по умолчанию 0)
    */
   order?: number
 
   /**
-   * Fields contained in this group
+   * Поля, входящие в эту группу
    */
   fields: Field[]
 }
 
 /**
- * Complete form configuration
+ * Полная конфигурация формы
  */
 export interface FormConfig {
   /**
-   * Array of field groups
-   * Groups are rendered vertically in order
+   * Массив групп полей
+   * Группы отображаются вертикально по порядку
    */
   groups: GroupField[]
 
   /**
-   * Button configurations
-   * If not provided, a default submit button is rendered
+   * Конфигурации кнопок
+   * Если не указано, отображается кнопка отправки по умолчанию
    */
   buttons?: ButtonConfig[]
 }
 
 /**
- * Form values structure (flat)
- * Keys are field names, values are field values
+ * Структура значений формы (плоская)
+ * Ключи — имена полей, значения — значения полей
  *
  * @example
  * {

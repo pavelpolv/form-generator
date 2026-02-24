@@ -11,7 +11,7 @@ interface InputNumberFieldProps {
   disabled?: boolean
 }
 
-// Memoized inner component to use hooks with field from render prop
+// Мемоизированный внутренний компонент для использования хуков с field из render prop
 const InputNumberInner: FC<{
   field: ControllerRenderProps<FormValues, string>
   label?: string
@@ -55,8 +55,8 @@ const InputNumberInner: FC<{
 InputNumberInner.displayName = 'InputNumberInner';
 
 /**
- * Input number field component
- * Supports numeric input with min, max, and step configuration
+ * Компонент числового поля ввода
+ * Поддерживает ввод чисел с настройкой минимума, максимума и шага
  */
 export const InputNumberField: FC<InputNumberFieldProps> = memo(({
   config,
@@ -64,7 +64,7 @@ export const InputNumberField: FC<InputNumberFieldProps> = memo(({
   error,
   disabled = false,
 }) => {
-  // Validate config - memoized since config doesn't change after initialization
+  // Валидация конфига — мемоизирована, так как конфиг не изменяется после инициализации
   const configError = useMemo(() => validateFieldConfig(config), [config]);
   if (configError) {
     return (

@@ -11,8 +11,8 @@ interface FieldRendererProps {
 }
 
 /**
- * Custom comparison for memo
- * Prevents unnecessary re-renders when props are functionally equal
+ * Кастомное сравнение для memo
+ * Предотвращает лишние перерендеры, когда пропсы функционально не изменились
  */
 const arePropsEqual = (
   prevProps: FieldRendererProps,
@@ -27,8 +27,8 @@ const arePropsEqual = (
 };
 
 /**
- * Dynamic field renderer
- * Renders the appropriate field component based on field type
+ * Динамический рендерер полей
+ * Рендерит подходящий компонент поля в зависимости от его типа
  */
 export const FieldRenderer: FC<FieldRendererProps> = memo(({
   field,

@@ -1,15 +1,15 @@
 /**
- * Button visual type (maps to Ant Design Button type)
+ * Визуальный тип кнопки (соответствует типу кнопки Ant Design)
  */
 export type ButtonType = 'primary' | 'default' | 'dashed' | 'link' | 'text'
 
 /**
- * Supported HTTP methods for submit buttons
+ * Поддерживаемые HTTP-методы для кнопок отправки
  */
 export type HttpMethod = 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 
 /**
- * Notification configuration for submit results
+ * Конфигурация уведомления о результате отправки
  */
 export interface NotificationConfig {
   message: string
@@ -17,8 +17,8 @@ export interface NotificationConfig {
 }
 
 /**
- * Submit button configuration
- * Sends form data to a URL via fetch
+ * Конфигурация кнопки отправки
+ * Отправляет данные формы на URL через fetch
  */
 export interface SubmitButtonConfig {
   key: string
@@ -34,8 +34,8 @@ export interface SubmitButtonConfig {
 }
 
 /**
- * Reset button configuration
- * Resets form to initial values
+ * Конфигурация кнопки сброса
+ * Сбрасывает форму к начальным значениям
  */
 export interface ResetButtonConfig {
   key: string
@@ -45,6 +45,6 @@ export interface ResetButtonConfig {
 }
 
 /**
- * Discriminated union of all button configs
+ * Размеченное объединение всех конфигураций кнопок
  */
 export type ButtonConfig = SubmitButtonConfig | ResetButtonConfig

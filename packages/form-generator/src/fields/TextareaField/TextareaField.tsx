@@ -12,8 +12,8 @@ interface TextareaFieldProps {
 }
 
 /**
- * Textarea field component
- * Supports multi-line text input with optional auto-sizing
+ * Компонент поля многострочного ввода
+ * Поддерживает многострочный ввод текста с опциональным автоматическим изменением размера
  */
 export const TextareaField: FC<TextareaFieldProps> = memo(({
   config,
@@ -21,7 +21,7 @@ export const TextareaField: FC<TextareaFieldProps> = memo(({
   error,
   disabled = false,
 }) => {
-  // Validate config - memoized since config doesn't change after initialization
+  // Валидация конфига — мемоизирована, так как конфиг не изменяется после инициализации
   const configError = useMemo(() => validateFieldConfig(config), [config]);
   if (configError) {
     return (
