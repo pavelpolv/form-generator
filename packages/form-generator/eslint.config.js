@@ -71,6 +71,8 @@ export default [
       '@typescript-eslint/no-use-before-define': ['error', { functions: false, classes: true, variables: true }],
 
       // --- React ---
+      'react/jsx-indent': ['error', 2],
+      'react/jsx-indent-props': ['error', 2],
       'react/destructuring-assignment': 'off',
       'react/function-component-definition': 'off',
       'react/jsx-boolean-value': ['error', 'always'],

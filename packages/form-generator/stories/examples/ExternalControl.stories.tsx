@@ -75,7 +75,7 @@ const ExternalButtonsExample = () => {
           type="primary"
           onClick={() => formRef.current?.submit()}
         >
-          Отправить (внешняя кнопка)
+              Отправить (внешняя кнопка)
         </Button>
         <Button
           onClick={() => formRef.current?.reset()}
