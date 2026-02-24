@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { TextareaField } from './TextareaField';
 import { TextareaField as TextareaFieldConfig } from '@/types';
 
-// Wrapper component to provide react-hook-form context
+// Компонент-обёртка для предоставления контекста react-hook-form
 const TestWrapper = ({ config, error, disabled }: { config: TextareaFieldConfig; error?: string; disabled?: boolean }) => {
   const { control } = useForm();
 
@@ -24,17 +24,17 @@ describe('TextareaField', () => {
     placeholder: 'Enter text',
   };
 
-  it('should render with label', () => {
+  it('1. рендерит с лейблом', () => {
     render(<TestWrapper config={baseConfig} />);
     expect(screen.getByText('Test Label')).toBeInTheDocument();
   });
 
-  it('should render with placeholder', () => {
+  it('2. рендерит с плейсхолдером', () => {
     render(<TestWrapper config={baseConfig} />);
     expect(screen.getByPlaceholderText('Enter text')).toBeInTheDocument();
   });
 
-  it('should allow user input', async () => {
+  it('3. принимает пользовательский ввод', async () => {
     const user = userEvent.setup();
     render(<TestWrapper config={baseConfig} />);
 
@@ -44,14 +44,14 @@ describe('TextareaField', () => {
     expect(textarea).toHaveValue('multi\nline\ntext');
   });
 
-  it('should display error message', () => {
+  it('4. отображает сообщение об ошибке', () => {
     render(<TestWrapper
       config={baseConfig}
       error="This field is required" />);
     expect(screen.getByText('This field is required')).toBeInTheDocument();
   });
 
-  it('should be disabled when disabled prop is true', () => {
+  it('5. отключён, когда передан prop disabled=true', () => {
     render(<TestWrapper
       config={baseConfig}
       disabled={true} />);
@@ -59,7 +59,7 @@ describe('TextareaField', () => {
     expect(textarea).toBeDisabled();
   });
 
-  it('should render with default value', () => {
+  it('6. рендерит со значением по умолчанию', () => {
     const config: TextareaFieldConfig = {
       ...baseConfig,
       defaultValue: 'default text',
@@ -69,7 +69,7 @@ describe('TextareaField', () => {
     expect(textarea).toHaveValue('default text');
   });
 
-  it('should render with maxLength and enforce limit', async () => {
+  it('7. рендерит с maxLength и соблюдает ограничение', async () => {
     const user = userEvent.setup();
     const config: TextareaFieldConfig = {
       ...baseConfig,
@@ -78,11 +78,11 @@ describe('TextareaField', () => {
     render(<TestWrapper config={config} />);
     const textarea = screen.getByPlaceholderText('Enter text');
     await user.type(textarea, 'abcdefgh');
-    // Ant Design TextArea enforces maxLength by truncating input
+    // Ant Design TextArea обрезает ввод до значения maxLength
     expect(textarea.textContent?.length ?? (textarea as HTMLTextAreaElement).value.length).toBeLessThanOrEqual(5);
   });
 
-  it('should render with rows attribute', () => {
+  it('8. рендерит с атрибутом rows', () => {
     const config: TextareaFieldConfig = {
       ...baseConfig,
       rows: 6,
@@ -92,7 +92,7 @@ describe('TextareaField', () => {
     expect(textarea).toHaveAttribute('rows', '6');
   });
 
-  it('should render with autoSize', () => {
+  it('9. рендерит с autoSize', () => {
     const config: TextareaFieldConfig = {
       ...baseConfig,
       autoSize: { minRows: 2, maxRows: 6 },
@@ -101,7 +101,7 @@ describe('TextareaField', () => {
     expect(screen.getByPlaceholderText('Enter text')).toBeInTheDocument();
   });
 
-  it('should display config error for invalid config', () => {
+  it('10. отображает ошибку конфигурации при невалидном конфиге', () => {
     const invalidConfig = {
       type: 'textarea',
       name: '',

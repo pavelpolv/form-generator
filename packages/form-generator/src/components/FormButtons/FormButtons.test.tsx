@@ -20,7 +20,7 @@ const resetButton: ButtonConfig = {
 };
 
 describe('FormButtons', () => {
-  it('should render submit and reset buttons', () => {
+  it('должен рендерить кнопки submit и reset', () => {
     render(
       <FormButtons
         buttons={[submitButton, resetButton]}
@@ -33,7 +33,7 @@ describe('FormButtons', () => {
     expect(screen.getByText('Reset')).toBeInTheDocument();
   });
 
-  it('should render nothing for empty buttons array', () => {
+  it('должен рендерить пустой контент при пустом массиве кнопок', () => {
     const { container } = render(
       <FormButtons
         buttons={[]}
@@ -45,7 +45,7 @@ describe('FormButtons', () => {
     expect(container.innerHTML).toBe('');
   });
 
-  it('should call onSubmitClick when submit button clicked', async () => {
+  it('должен вызывать onSubmitClick при нажатии кнопки submit', async () => {
     const onSubmitClick = vi.fn();
     const user = userEvent.setup();
     render(
@@ -61,7 +61,7 @@ describe('FormButtons', () => {
     expect(onSubmitClick).toHaveBeenCalledWith(submitButton);
   });
 
-  it('should call onResetClick when reset button clicked', async () => {
+  it('должен вызывать onResetClick при нажатии кнопки reset', async () => {
     const onResetClick = vi.fn();
     const user = userEvent.setup();
     render(
@@ -77,7 +77,7 @@ describe('FormButtons', () => {
     expect(onResetClick).toHaveBeenCalled();
   });
 
-  it('should show loading state on the active button', () => {
+  it('должен отображать состояние загрузки на активной кнопке', () => {
     render(
       <FormButtons
         buttons={[submitButton, resetButton]}
@@ -91,7 +91,7 @@ describe('FormButtons', () => {
     expect(saveBtn.classList.toString()).toContain('loading');
   });
 
-  it('should disable other buttons during loading', () => {
+  it('должен блокировать остальные кнопки во время загрузки', () => {
     render(
       <FormButtons
         buttons={[submitButton, resetButton]}
@@ -105,7 +105,7 @@ describe('FormButtons', () => {
     expect(resetBtn).toBeDisabled();
   });
 
-  it('should not disable buttons when not loading', () => {
+  it('не должен блокировать кнопки когда загрузка не активна', () => {
     render(
       <FormButtons
         buttons={[submitButton, resetButton]}

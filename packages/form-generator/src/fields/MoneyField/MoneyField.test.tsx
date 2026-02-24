@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { MoneyField } from './MoneyField';
 import { MoneyField as MoneyFieldConfig } from '@/types';
 
-// Wrapper component to provide react-hook-form context
+// Обёртка для предоставления контекста react-hook-form
 const TestWrapper = ({ config, error, disabled }: { config: MoneyFieldConfig; error?: string; disabled?: boolean }) => {
   const { control } = useForm();
 
@@ -24,45 +24,45 @@ describe('MoneyField', () => {
     placeholder: 'Enter amount',
   };
 
-  it('should render with label', () => {
+  it('должен рендерить с лейблом', () => {
     render(<TestWrapper config={baseConfig} />);
     expect(screen.getByText('Test Money')).toBeInTheDocument();
   });
 
-  it('should render with placeholder', () => {
+  it('должен рендерить с плейсхолдером', () => {
     render(<TestWrapper config={baseConfig} />);
     expect(screen.getByPlaceholderText('Enter amount')).toBeInTheDocument();
   });
 
-  it('should render text input (not number)', () => {
+  it('должен рендерить текстовый инпут (не числовой)', () => {
     render(<TestWrapper config={baseConfig} />);
     const input = screen.getByPlaceholderText('Enter amount');
     expect(input).toHaveAttribute('type', 'text');
   });
 
-  it('should format with spaces immediately while typing', async () => {
+  it('должен форматировать с пробелами сразу во время ввода', async () => {
     const user = userEvent.setup();
     render(<TestWrapper config={baseConfig} />);
 
     const input = screen.getByPlaceholderText('Enter amount');
     await user.type(input, '12345');
 
-    // Spaces are added during typing, not only on blur
+    // Пробелы добавляются при вводе, а не только при потере фокуса
     expect(input).toHaveValue('12 345');
   });
 
-  it('should format with space thousand separators on blur', async () => {
+  it('должен форматировать с пробелами-разделителями тысяч при потере фокуса', async () => {
     const user = userEvent.setup();
     render(<TestWrapper config={baseConfig} />);
 
     const input = screen.getByPlaceholderText('Enter amount');
     await user.type(input, '1234567');
-    await user.tab(); // trigger blur
+    await user.tab(); // вызываем blur
 
     expect(input).toHaveValue('1 234 567,00');
   });
 
-  it('should handle decimal input with comma', async () => {
+  it('должен обрабатывать ввод дробной части через запятую', async () => {
     const user = userEvent.setup();
     render(<TestWrapper config={baseConfig} />);
 
@@ -73,7 +73,7 @@ describe('MoneyField', () => {
     expect(input).toHaveValue('1 234,56');
   });
 
-  it('should respect decimalPlaces config', async () => {
+  it('должен учитывать конфигурацию decimalPlaces', async () => {
     const user = userEvent.setup();
     const config: MoneyFieldConfig = {
       ...baseConfig,
@@ -88,7 +88,7 @@ describe('MoneyField', () => {
     expect(input).toHaveValue('1 234');
   });
 
-  it('should display prefix', () => {
+  it('должен отображать префикс', () => {
     const config: MoneyFieldConfig = {
       ...baseConfig,
       prefix: '$',
@@ -97,7 +97,7 @@ describe('MoneyField', () => {
     expect(screen.getByText('$')).toBeInTheDocument();
   });
 
-  it('should display suffix', () => {
+  it('должен отображать суффикс', () => {
     const config: MoneyFieldConfig = {
       ...baseConfig,
       suffix: 'RUB',
@@ -106,7 +106,7 @@ describe('MoneyField', () => {
     expect(screen.getByText('RUB')).toBeInTheDocument();
   });
 
-  it('should allow negative values when allowNegative is true', async () => {
+  it('должен допускать отрицательные значения, когда allowNegative=true', async () => {
     const user = userEvent.setup();
     const config: MoneyFieldConfig = {
       ...baseConfig,
@@ -121,7 +121,7 @@ describe('MoneyField', () => {
     expect(input).toHaveValue('-1 000,00');
   });
 
-  it('should not allow minus sign when allowNegative is false', async () => {
+  it('должен запрещать знак минуса, когда allowNegative=false', async () => {
     const user = userEvent.setup();
     render(<TestWrapper config={baseConfig} />);
 
@@ -129,18 +129,18 @@ describe('MoneyField', () => {
     await user.type(input, '-1000');
     await user.tab();
 
-    // Minus is filtered out
+    // Минус фильтруется
     expect(input).toHaveValue('1 000,00');
   });
 
-  it('should display error message', () => {
+  it('должен отображать сообщение об ошибке', () => {
     render(<TestWrapper
       config={baseConfig}
       error="Amount is required" />);
     expect(screen.getByText('Amount is required')).toBeInTheDocument();
   });
 
-  it('should be disabled when disabled prop is true', () => {
+  it('должен быть заблокирован, когда disabled=true', () => {
     render(<TestWrapper
       config={baseConfig}
       disabled={true} />);
@@ -148,7 +148,7 @@ describe('MoneyField', () => {
     expect(input).toBeDisabled();
   });
 
-  it('should display config error for invalid config', () => {
+  it('должен отображать ошибку конфигурации при невалидном конфиге', () => {
     const invalidConfig = {
       type: 'money',
       name: '',
@@ -159,7 +159,7 @@ describe('MoneyField', () => {
     expect(screen.getByText('Невозможно отобразить поле')).toBeInTheDocument();
   });
 
-  it('should convert empty input to undefined on blur', async () => {
+  it('должен конвертировать пустой инпут в undefined при потере фокуса', async () => {
     const user = userEvent.setup();
     render(<TestWrapper config={baseConfig} />);
 
@@ -171,7 +171,7 @@ describe('MoneyField', () => {
     expect(input).toHaveValue('');
   });
 
-  it('should render with default value', () => {
+  it('должен рендерить с дефолтным значением', () => {
     const config: MoneyFieldConfig = {
       ...baseConfig,
       defaultValue: 5000,
@@ -181,7 +181,7 @@ describe('MoneyField', () => {
     expect(input).toHaveValue('5 000,00');
   });
 
-  it('should clamp value to min', async () => {
+  it('должен ограничивать значение снизу по min', async () => {
     const user = userEvent.setup();
     const config: MoneyFieldConfig = {
       ...baseConfig,
@@ -196,7 +196,7 @@ describe('MoneyField', () => {
     expect(input).toHaveValue('100,00');
   });
 
-  it('should clamp value to max', async () => {
+  it('должен ограничивать значение сверху по max', async () => {
     const user = userEvent.setup();
     const config: MoneyFieldConfig = {
       ...baseConfig,
@@ -211,7 +211,7 @@ describe('MoneyField', () => {
     expect(input).toHaveValue('1 000,00');
   });
 
-  it('should handle non-numeric input gracefully', async () => {
+  it('должен корректно обрабатывать нечисловой ввод', async () => {
     const user = userEvent.setup();
     render(<TestWrapper config={baseConfig} />);
 
@@ -219,11 +219,11 @@ describe('MoneyField', () => {
     await user.type(input, 'abc');
     await user.tab();
 
-    // Non-numeric characters are filtered out, resulting in empty
+    // Нечисловые символы отфильтровываются, результат — пустая строка
     expect(input).toHaveValue('');
   });
 
-  it('should strip extra minus signs when allowNegative is true', async () => {
+  it('должен убирать лишние знаки минуса, когда allowNegative=true', async () => {
     const user = userEvent.setup();
     const config: MoneyFieldConfig = {
       ...baseConfig,
@@ -232,15 +232,15 @@ describe('MoneyField', () => {
     render(<TestWrapper config={config} />);
 
     const input = screen.getByPlaceholderText('Enter amount');
-    // Type a value with minus in the middle: type normally, extra minus filtered
+    // Вводим значение с минусом в середине: дополнительные минусы фильтруются
     await user.type(input, '-1-2-3');
     await user.tab();
 
-    // Only leading minus kept, extra minuses removed
+    // Только ведущий минус сохраняется, остальные удаляются
     expect(input).toHaveValue('-123,00');
   });
 
-  it('should handle only comma input', async () => {
+  it('должен обрабатывать ввод только запятой', async () => {
     const user = userEvent.setup();
     render(<TestWrapper config={baseConfig} />);
 
@@ -251,7 +251,7 @@ describe('MoneyField', () => {
     expect(input).toHaveValue('');
   });
 
-  it('should handle multiple commas by keeping only the first', async () => {
+  it('должен обрабатывать несколько запятых, оставляя только первую', async () => {
     const user = userEvent.setup();
     render(<TestWrapper config={baseConfig} />);
 
@@ -259,11 +259,11 @@ describe('MoneyField', () => {
     await user.type(input, '12,34,56');
     await user.tab();
 
-    // Only one comma allowed, second is stripped → 12,3456 → parsed as 12.3456
+    // Допускается только одна запятая, вторая отбрасывается → 12,3456 → разбирается как 12.3456
     expect(input).toHaveValue('12,35');
   });
 
-  it('should handle positive values when allowNegative is true', async () => {
+  it('должен обрабатывать положительные значения, когда allowNegative=true', async () => {
     const user = userEvent.setup();
     const config: MoneyFieldConfig = {
       ...baseConfig,
@@ -275,38 +275,38 @@ describe('MoneyField', () => {
     await user.type(input, '500');
     await user.tab();
 
-    // No minus sign, should still work normally
+    // Без знака минуса всё должно работать в штатном режиме
     expect(input).toHaveValue('500,00');
   });
 
-  it('should handle cursor in the middle of value (break in cursor loop)', async () => {
+  it('должен обрабатывать курсор в середине значения (ветка прерывания цикла курсора)', async () => {
     const user = userEvent.setup();
     render(<TestWrapper config={baseConfig} />);
 
     const input = screen.getByPlaceholderText('Enter amount') as HTMLInputElement;
     await user.type(input, '1234');
 
-    // Simulate editing in the middle: set selectionStart before firing change
-    // Value is "1 234", simulate inserting "5" at position 1 → "15 234"
+    // Симулируем редактирование в середине: устанавливаем selectionStart перед срабатыванием change
+    // Значение «1 234», симулируем вставку «5» на позицию 1 → «15 234»
     Object.defineProperty(input, 'selectionStart', { value: 2, writable: true, configurable: true });
     fireEvent.change(input, { target: { value: '15 234' } });
 
-    // The cursor break branch should have been hit
+    // Должна была сработать ветка прерывания курсора
     expect(input).toHaveValue('15 234');
   });
 
-  it('should handle null selectionStart gracefully', async () => {
+  it('должен корректно обрабатывать selectionStart=null (фолбэк ?? 0)', async () => {
     const user = userEvent.setup();
     render(<TestWrapper config={baseConfig} />);
 
     const input = screen.getByPlaceholderText('Enter amount') as HTMLInputElement;
 
-    // Set selectionStart to null to trigger ?? 0 fallback
+    // Устанавливаем selectionStart=null для вызова фолбэка ?? 0
     Object.defineProperty(input, 'selectionStart', { value: null, writable: true, configurable: true });
     fireEvent.change(input, { target: { value: '999' } });
 
-    // With selectionStart=null, sigCharsBefore=0, cursor stays at 0
-    // Value should still be formatted
+    // При selectionStart=null, sigCharsBefore=0, курсор остаётся на 0
+    // Значение всё равно должно быть отформатировано
     expect(input).toHaveValue('999');
   });
 });

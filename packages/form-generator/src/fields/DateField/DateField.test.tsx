@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { DateField } from './DateField';
 import { DateField as DateFieldConfig } from '@/types';
 
-// Wrapper component to provide react-hook-form context
+// Компонент-обёртка для предоставления контекста react-hook-form
 const TestWrapper = ({
   config,
   error,
@@ -33,24 +33,24 @@ describe('DateField', () => {
     placeholder: 'Select date',
   };
 
-  it('should render with label', () => {
+  it('1. рендерит с лейблом', () => {
     render(<TestWrapper config={baseConfig} />);
     expect(screen.getByText('Test Date')).toBeInTheDocument();
   });
 
-  it('should render with placeholder', () => {
+  it('2. рендерит с плейсхолдером', () => {
     render(<TestWrapper config={baseConfig} />);
     expect(screen.getByPlaceholderText('Select date')).toBeInTheDocument();
   });
 
-  it('should display error message', () => {
+  it('3. отображает сообщение об ошибке', () => {
     render(<TestWrapper
       config={baseConfig}
       error="Date is required" />);
     expect(screen.getByText('Date is required')).toBeInTheDocument();
   });
 
-  it('should be disabled when disabled prop is true', () => {
+  it('4. отключён, когда передан prop disabled=true', () => {
     render(<TestWrapper
       config={baseConfig}
       disabled={true} />);
@@ -58,7 +58,7 @@ describe('DateField', () => {
     expect(input).toBeDisabled();
   });
 
-  it('should display config error for invalid config', () => {
+  it('5. отображает ошибку конфигурации при невалидном конфиге', () => {
     const invalidConfig = {
       type: 'date',
       name: '',
@@ -69,7 +69,7 @@ describe('DateField', () => {
     expect(screen.getByText('Невозможно отобразить поле')).toBeInTheDocument();
   });
 
-  it('should render with custom format', () => {
+  it('6. рендерит с кастомным форматом', () => {
     const config: DateFieldConfig = {
       ...baseConfig,
       format: 'DD/MM/YYYY',
@@ -78,7 +78,7 @@ describe('DateField', () => {
     expect(screen.getByPlaceholderText('Select date')).toBeInTheDocument();
   });
 
-  it('should render with showTime=true', () => {
+  it('7. рендерит с showTime=true', () => {
     const config: DateFieldConfig = {
       ...baseConfig,
       showTime: true,
@@ -87,7 +87,7 @@ describe('DateField', () => {
     expect(screen.getByPlaceholderText('Select date')).toBeInTheDocument();
   });
 
-  it('should render with disabledDateBefore', () => {
+  it('8. рендерит с disabledDateBefore', () => {
     const config: DateFieldConfig = {
       ...baseConfig,
       disabledDateBefore: new Date('2024-06-01'),
@@ -96,7 +96,7 @@ describe('DateField', () => {
     expect(screen.getByPlaceholderText('Select date')).toBeInTheDocument();
   });
 
-  it('should render with disabledDateAfter', () => {
+  it('9. рендерит с disabledDateAfter', () => {
     const config: DateFieldConfig = {
       ...baseConfig,
       disabledDateAfter: new Date('2024-12-31'),
@@ -105,7 +105,7 @@ describe('DateField', () => {
     expect(screen.getByPlaceholderText('Select date')).toBeInTheDocument();
   });
 
-  it('should render with both disabledDateBefore and disabledDateAfter', () => {
+  it('10. рендерит с одновременно disabledDateBefore и disabledDateAfter', () => {
     const config: DateFieldConfig = {
       ...baseConfig,
       disabledDateBefore: new Date('2024-01-01'),
@@ -115,7 +115,7 @@ describe('DateField', () => {
     expect(screen.getByPlaceholderText('Select date')).toBeInTheDocument();
   });
 
-  it('should display existing value from form', () => {
+  it('11. отображает существующее значение из формы', () => {
     const config: DateFieldConfig = {
       ...baseConfig,
     };
@@ -125,25 +125,25 @@ describe('DateField', () => {
         defaultValues={{ testDate: '2024-06-15T10:00:00.000Z' }}
       />,
     );
-    // DatePicker should show the date
+    // DatePicker должен показывать дату
     const input = screen.getByPlaceholderText('Select date');
     expect(input).toHaveValue('2024-06-15');
   });
 
-  it('should handle date selection via onChange', async () => {
+  it('12. обрабатывает выбор даты через onChange', async () => {
     render(<TestWrapper config={baseConfig} />);
     const input = screen.getByPlaceholderText('Select date');
 
-    // Open the date picker
+    // Открываем датапикер
     fireEvent.mouseDown(input);
 
-    // Click on a date cell (today) to trigger onChange with a date
+    // Кликаем по ячейке с сегодняшней датой, чтобы вызвать onChange с датой
     const todayCell = document.querySelector('.ant-picker-cell-today .ant-picker-cell-inner');
     expect(todayCell).not.toBeNull();
     fireEvent.click(todayCell!);
   });
 
-  it('should handle clearing date (onChange with null)', async () => {
+  it('13. обрабатывает очистку даты (onChange с null)', async () => {
     render(
       <TestWrapper
         config={baseConfig}
@@ -151,18 +151,18 @@ describe('DateField', () => {
       />,
     );
 
-    // Hover over the picker to reveal the clear button
+    // Наводим курсор на пикер, чтобы показалась кнопка очистки
     const picker = document.querySelector('.ant-picker')!;
     fireEvent.mouseEnter(picker);
 
-    // Find and click the clear button
+    // Находим и кликаем по кнопке очистки
     const clearBtn = document.querySelector('.ant-picker-clear');
     expect(clearBtn).not.toBeNull();
     fireEvent.mouseDown(clearBtn!);
     fireEvent.click(clearBtn!);
   });
 
-  it('should call disabledDate function when picker is opened with disabledDateBefore', async () => {
+  it('14. вызывает функцию disabledDate при открытии пикера с disabledDateBefore', async () => {
     const config: DateFieldConfig = {
       ...baseConfig,
       disabledDateBefore: new Date('2099-01-01'),
@@ -170,15 +170,15 @@ describe('DateField', () => {
     render(<TestWrapper config={config} />);
     const input = screen.getByPlaceholderText('Select date');
 
-    // Open the date picker - this triggers disabledDate for each visible date
+    // Открываем датапикер — это вызывает disabledDate для каждой видимой даты
     fireEvent.mouseDown(input);
 
-    // Dates should be rendered, and many should be disabled
+    // Даты должны быть отрисованы, и многие из них должны быть отключены
     const disabledCells = document.querySelectorAll('.ant-picker-cell-disabled');
     expect(disabledCells.length).toBeGreaterThan(0);
   });
 
-  it('should call disabledDate function when picker is opened with disabledDateAfter', async () => {
+  it('15. вызывает функцию disabledDate при открытии пикера с disabledDateAfter', async () => {
     const config: DateFieldConfig = {
       ...baseConfig,
       disabledDateAfter: new Date('2000-01-01'),
@@ -186,10 +186,10 @@ describe('DateField', () => {
     render(<TestWrapper config={config} />);
     const input = screen.getByPlaceholderText('Select date');
 
-    // Open the date picker
+    // Открываем датапикер
     fireEvent.mouseDown(input);
 
-    // Dates should be rendered with many disabled
+    // Даты должны быть отрисованы, многие из них отключены
     const disabledCells = document.querySelectorAll('.ant-picker-cell-disabled');
     expect(disabledCells.length).toBeGreaterThan(0);
   });

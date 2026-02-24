@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { InputField } from './InputField';
 import { InputField as InputFieldConfig } from '@/types';
 
-// Wrapper component to provide react-hook-form context
+// Обёртка для предоставления контекста react-hook-form
 const TestWrapper = ({ config, error, disabled }: { config: InputFieldConfig; error?: string; disabled?: boolean }) => {
   const { control } = useForm();
 
@@ -25,23 +25,23 @@ describe('InputField', () => {
     inputType: 'text',
   };
 
-  it('should render with label', () => {
+  it('должен рендерить с лейблом', () => {
     render(<TestWrapper config={baseConfig} />);
     expect(screen.getByText('Test Label')).toBeInTheDocument();
   });
 
-  it('should render with placeholder', () => {
+  it('должен рендерить с плейсхолдером', () => {
     render(<TestWrapper config={baseConfig} />);
     expect(screen.getByPlaceholderText('Enter value')).toBeInTheDocument();
   });
 
-  it('should render text input by default', () => {
+  it('должен рендерить текстовый инпут по умолчанию', () => {
     render(<TestWrapper config={baseConfig} />);
     const input = screen.getByPlaceholderText('Enter value');
     expect(input).toHaveAttribute('type', 'text');
   });
 
-  it('should render password input', () => {
+  it('должен рендерить инпут для пароля', () => {
     const config: InputFieldConfig = {
       ...baseConfig,
       inputType: 'password',
@@ -51,7 +51,7 @@ describe('InputField', () => {
     expect(input).toHaveAttribute('type', 'password');
   });
 
-  it('should allow user input', async () => {
+  it('должен допускать ввод пользователя', async () => {
     const user = userEvent.setup();
     render(<TestWrapper config={baseConfig} />);
 
@@ -61,14 +61,14 @@ describe('InputField', () => {
     expect(input).toHaveValue('test value');
   });
 
-  it('should display error message', () => {
+  it('должен отображать сообщение об ошибке', () => {
     render(<TestWrapper
       config={baseConfig}
       error="This field is required" />);
     expect(screen.getByText('This field is required')).toBeInTheDocument();
   });
 
-  it('should be disabled when disabled prop is true', () => {
+  it('должен быть заблокирован, когда disabled=true', () => {
     render(<TestWrapper
       config={baseConfig}
       disabled={true} />);
@@ -76,7 +76,7 @@ describe('InputField', () => {
     expect(input).toBeDisabled();
   });
 
-  it('should display config error for invalid config', () => {
+  it('должен отображать ошибку конфигурации при невалидном конфиге', () => {
     const invalidConfig = {
       type: 'input',
       name: '',
@@ -87,7 +87,7 @@ describe('InputField', () => {
     expect(screen.getByText('Невозможно отобразить поле')).toBeInTheDocument();
   });
 
-  it('should render with default value', () => {
+  it('должен рендерить с дефолтным значением', () => {
     const config: InputFieldConfig = {
       ...baseConfig,
       defaultValue: 'default text',
@@ -97,7 +97,7 @@ describe('InputField', () => {
     expect(input).toHaveValue('default text');
   });
 
-  it('should render email input type', () => {
+  it('должен рендерить инпут типа email', () => {
     const config: InputFieldConfig = {
       ...baseConfig,
       inputType: 'email',
@@ -107,7 +107,7 @@ describe('InputField', () => {
     expect(input).toHaveAttribute('type', 'email');
   });
 
-  it('should render with maxLength attribute', () => {
+  it('должен рендерить с атрибутом maxLength', () => {
     const config: InputFieldConfig = {
       ...baseConfig,
       maxLength: 50,

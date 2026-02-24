@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { SwitchField } from './SwitchField';
 import { SwitchField as SwitchFieldConfig } from '@/types';
 
-// Wrapper component to provide react-hook-form context
+// Компонент-обёртка для предоставления контекста react-hook-form
 const TestWrapper = ({ config, error, disabled }: { config: SwitchFieldConfig; error?: string; disabled?: boolean }) => {
   const { control } = useForm();
 
@@ -23,17 +23,17 @@ describe('SwitchField', () => {
     label: 'Test Switch',
   };
 
-  it('should render with label', () => {
+  it('1. рендерит с лейблом', () => {
     render(<TestWrapper config={baseConfig} />);
     expect(screen.getByText('Test Switch')).toBeInTheDocument();
   });
 
-  it('should render switch element', () => {
+  it('2. рендерит элемент переключателя', () => {
     render(<TestWrapper config={baseConfig} />);
     expect(screen.getByRole('switch')).toBeInTheDocument();
   });
 
-  it('should toggle on click', async () => {
+  it('3. переключается при клике', async () => {
     const user = userEvent.setup();
     render(<TestWrapper config={baseConfig} />);
 
@@ -44,14 +44,14 @@ describe('SwitchField', () => {
     expect(switchEl).toHaveAttribute('aria-checked', 'true');
   });
 
-  it('should display error message', () => {
+  it('4. отображает сообщение об ошибке', () => {
     render(<TestWrapper
       config={baseConfig}
       error="You must agree" />);
     expect(screen.getByText('You must agree')).toBeInTheDocument();
   });
 
-  it('should be disabled when disabled prop is true', () => {
+  it('5. отключён, когда передан prop disabled=true', () => {
     render(<TestWrapper
       config={baseConfig}
       disabled={true} />);
@@ -59,7 +59,7 @@ describe('SwitchField', () => {
     expect(switchEl).toBeDisabled();
   });
 
-  it('should render with checked text', () => {
+  it('6. рендерит с текстом для состояния включено', () => {
     const config: SwitchFieldConfig = {
       ...baseConfig,
       checkedText: 'Yes',
@@ -69,7 +69,7 @@ describe('SwitchField', () => {
     expect(screen.getByText('No')).toBeInTheDocument();
   });
 
-  it('should display config error for invalid config', () => {
+  it('7. отображает ошибку конфигурации при невалидном конфиге', () => {
     const invalidConfig = {
       type: 'switch',
       name: '',
@@ -80,7 +80,7 @@ describe('SwitchField', () => {
     expect(screen.getByText('Невозможно отобразить поле')).toBeInTheDocument();
   });
 
-  it('should render with default value true', async () => {
+  it('8. рендерит с defaultValue=true', async () => {
     const config: SwitchFieldConfig = {
       ...baseConfig,
       defaultValue: true,
@@ -90,13 +90,13 @@ describe('SwitchField', () => {
     expect(switchEl).toHaveAttribute('aria-checked', 'true');
   });
 
-  it('should default to false when no defaultValue provided', () => {
+  it('9. по умолчанию false, если defaultValue не передан', () => {
     render(<TestWrapper config={baseConfig} />);
     const switchEl = screen.getByRole('switch');
     expect(switchEl).toHaveAttribute('aria-checked', 'false');
   });
 
-  it('should default to false when defaultValue is undefined', () => {
+  it('10. по умолчанию false, если defaultValue равен undefined', () => {
     const config: SwitchFieldConfig = {
       ...baseConfig,
       defaultValue: undefined,

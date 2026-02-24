@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { InputNumberField } from './InputNumberField';
 import { InputNumberField as InputNumberFieldConfig } from '@/types';
 
-// Wrapper component to provide react-hook-form context
+// Обёртка для предоставления контекста react-hook-form
 const TestWrapper = ({ config, error, disabled }: { config: InputNumberFieldConfig; error?: string; disabled?: boolean }) => {
   const { control } = useForm();
 
@@ -24,23 +24,23 @@ describe('InputNumberField', () => {
     placeholder: 'Enter number',
   };
 
-  it('should render with label', () => {
+  it('должен рендерить с лейблом', () => {
     render(<TestWrapper config={baseConfig} />);
     expect(screen.getByText('Test Number')).toBeInTheDocument();
   });
 
-  it('should render with placeholder', () => {
+  it('должен рендерить с плейсхолдером', () => {
     render(<TestWrapper config={baseConfig} />);
     expect(screen.getByPlaceholderText('Enter number')).toBeInTheDocument();
   });
 
-  it('should render number input', () => {
+  it('должен рендерить числовой инпут', () => {
     render(<TestWrapper config={baseConfig} />);
     const input = screen.getByPlaceholderText('Enter number');
     expect(input).toHaveAttribute('type', 'number');
   });
 
-  it('should allow numeric input', async () => {
+  it('должен допускать ввод числа', async () => {
     const user = userEvent.setup();
     render(<TestWrapper config={baseConfig} />);
 
@@ -50,14 +50,14 @@ describe('InputNumberField', () => {
     expect(input).toHaveValue(42);
   });
 
-  it('should display error message', () => {
+  it('должен отображать сообщение об ошибке', () => {
     render(<TestWrapper
       config={baseConfig}
       error="Value is required" />);
     expect(screen.getByText('Value is required')).toBeInTheDocument();
   });
 
-  it('should be disabled when disabled prop is true', () => {
+  it('должен быть заблокирован, когда disabled=true', () => {
     render(<TestWrapper
       config={baseConfig}
       disabled={true} />);
@@ -65,7 +65,7 @@ describe('InputNumberField', () => {
     expect(input).toBeDisabled();
   });
 
-  it('should render with min attribute', () => {
+  it('должен рендерить с атрибутом min', () => {
     const config: InputNumberFieldConfig = {
       ...baseConfig,
       min: 0,
@@ -75,7 +75,7 @@ describe('InputNumberField', () => {
     expect(input).toHaveAttribute('min', '0');
   });
 
-  it('should render with max attribute', () => {
+  it('должен рендерить с атрибутом max', () => {
     const config: InputNumberFieldConfig = {
       ...baseConfig,
       max: 100,
@@ -85,7 +85,7 @@ describe('InputNumberField', () => {
     expect(input).toHaveAttribute('max', '100');
   });
 
-  it('should render with step attribute', () => {
+  it('должен рендерить с атрибутом step', () => {
     const config: InputNumberFieldConfig = {
       ...baseConfig,
       step: 0.01,
@@ -95,7 +95,7 @@ describe('InputNumberField', () => {
     expect(input).toHaveAttribute('step', '0.01');
   });
 
-  it('should display config error for invalid config', () => {
+  it('должен отображать ошибку конфигурации при невалидном конфиге', () => {
     const invalidConfig = {
       type: 'inputNumber',
       name: '',
@@ -106,18 +106,18 @@ describe('InputNumberField', () => {
     expect(screen.getByText('Невозможно отобразить поле')).toBeInTheDocument();
   });
 
-  it('should handle blur event', async () => {
+  it('должен обрабатывать событие blur', async () => {
     const user = userEvent.setup();
     render(<TestWrapper config={baseConfig} />);
 
     const input = screen.getByPlaceholderText('Enter number');
     await user.click(input);
-    await user.tab(); // trigger blur
-    // No error should occur
+    await user.tab(); // вызываем blur
+    // Ошибок быть не должно
     expect(input).toBeInTheDocument();
   });
 
-  it('should convert empty input to undefined', async () => {
+  it('должен конвертировать пустой инпут в undefined', async () => {
     const user = userEvent.setup();
     render(<TestWrapper config={baseConfig} />);
 
@@ -125,11 +125,11 @@ describe('InputNumberField', () => {
     await user.type(input, '42');
     await user.clear(input);
 
-    // The value should be empty
+    // Значение должно быть пустым
     expect(input).toHaveValue(null);
   });
 
-  it('should render with default value', () => {
+  it('должен рендерить с дефолтным значением', () => {
     const config: InputNumberFieldConfig = {
       ...baseConfig,
       defaultValue: 99,

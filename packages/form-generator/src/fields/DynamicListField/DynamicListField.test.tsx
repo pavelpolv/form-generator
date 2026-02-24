@@ -37,14 +37,14 @@ describe('DynamicListField', () => {
     ],
   };
 
-  it('1. renders with empty list - Add button visible, no items', () => {
+  it('1. рендерит пустой список — кнопка добавления видна, элементов нет', () => {
     render(<TestWrapper config={baseConfig} />);
     expect(screen.getByText('Add item')).toBeInTheDocument();
-    // No input placeholders rendered yet
+    // Плейсхолдеры инпутов ещё не отрендерены
     expect(screen.queryByPlaceholderText('Enter name')).toBeNull();
   });
 
-  it('2. click Add appends an item with fields', async () => {
+  it('2. клик по «Добавить» добавляет элемент с полями', async () => {
     const user = userEvent.setup();
     render(<TestWrapper config={baseConfig} />);
     await user.click(screen.getByText('Add item'));
@@ -52,18 +52,18 @@ describe('DynamicListField', () => {
     expect(screen.getByPlaceholderText('Enter age')).toBeInTheDocument();
   });
 
-  it('3. click Remove deletes an item', async () => {
+  it('3. клик по «Удалить» удаляет элемент', async () => {
     const user = userEvent.setup();
     render(<TestWrapper config={baseConfig} />);
     await user.click(screen.getByText('Add item'));
     expect(screen.getByPlaceholderText('Enter name')).toBeInTheDocument();
-    // The remove button is first in DOM order (before the "Add item" button)
+    // Кнопка удаления первая в DOM (перед кнопкой «Add item»)
     const [removeButton] = screen.getAllByRole('button');
     await user.click(removeButton);
     expect(screen.queryByPlaceholderText('Enter name')).toBeNull();
   });
 
-  it('4. defaultValue of item fields applied when Add clicked', async () => {
+  it('4. defaultValue полей элемента применяется при клике «Добавить»', async () => {
     const user = userEvent.setup();
     const config: DynamicListFieldConfig = {
       ...baseConfig,
@@ -76,7 +76,7 @@ describe('DynamicListField', () => {
     expect(screen.getByPlaceholderText('Enter name')).toHaveValue('John');
   });
 
-  it('5. visibleCondition false - list not rendered', () => {
+  it('5. visibleCondition=false — список не рендерится', () => {
     const config: DynamicListFieldConfig = {
       ...baseConfig,
       visibleCondition: {
@@ -88,7 +88,7 @@ describe('DynamicListField', () => {
     expect(container.innerHTML).toBe('');
   });
 
-  it('6. visibleCondition true - list rendered', () => {
+  it('6. visibleCondition=true — список рендерится', () => {
     const config: DynamicListFieldConfig = {
       ...baseConfig,
       visibleCondition: {
@@ -100,7 +100,7 @@ describe('DynamicListField', () => {
     expect(screen.getByText('Add item')).toBeInTheDocument();
   });
 
-  it('7. disabledCondition true - Add button disabled', () => {
+  it('7. disabledCondition=true — кнопка добавления заблокирована', () => {
     const config: DynamicListFieldConfig = {
       ...baseConfig,
       disabledCondition: {
@@ -113,7 +113,7 @@ describe('DynamicListField', () => {
     expect(addButton).toBeDisabled();
   });
 
-  it('8. validateCondition on item-field + forceShowErrors shows error', async () => {
+  it('8. validateCondition на поле элемента + forceShowErrors показывает ошибку', async () => {
     const user = userEvent.setup();
     const config: DynamicListFieldConfig = {
       type: 'dynamicList',
@@ -132,14 +132,14 @@ describe('DynamicListField', () => {
         },
       ],
     };
-    // Don't pass existing passengers - click Add to get one item with empty name
+    // Не передаём существующих пассажиров — кликаем «Добавить», получаем элемент с пустым именем
     render(<TestWrapper config={config} forceShowErrors={true} />);
     await user.click(screen.getByText('Add item'));
-    // Item's name is empty in formValues scope → validateCondition fails → error shown
+    // Имя элемента пустое в области видимости formValues → validateCondition не проходит → ошибка отображается
     expect(screen.getByText('Name is required')).toBeInTheDocument();
   });
 
-  it('9. visibleCondition on item-field hides the field inside item', async () => {
+  it('9. visibleCondition на поле элемента скрывает его внутри элемента', async () => {
     const user = userEvent.setup();
     const config: DynamicListFieldConfig = {
       type: 'dynamicList',
@@ -159,15 +159,15 @@ describe('DynamicListField', () => {
         },
       ],
     };
-    // Add one item - formValues empty means itemValues.name=undefined=empty
+    // Добавляем один элемент — formValues пустые, значит itemValues.name=undefined=пусто
     render(<TestWrapper config={config} />);
     await user.click(screen.getByText('Add item'));
-    // name is visible (no visibleCondition), passport is hidden (name is empty in item scope)
+    // name видно (нет visibleCondition), passport скрыт (name пустое в области элемента)
     expect(screen.getByPlaceholderText('Enter name')).toBeInTheDocument();
     expect(screen.queryByPlaceholderText('Enter passport')).toBeNull();
   });
 
-  it('10. disabledCondition on item-field disables that field inside item', () => {
+  it('10. disabledCondition на поле элемента блокирует это поле внутри элемента', () => {
     const config: DynamicListFieldConfig = {
       type: 'dynamicList',
       name: 'passengers',
@@ -185,22 +185,22 @@ describe('DynamicListField', () => {
         },
       ],
     };
-    // Item from defaultValues - no need to click "Add item"
+    // Элемент из defaultValues — кликать «Add item» не нужно
     render(<TestWrapper config={config} formValues={{ passengers: [{ name: 'locked' }] }} />);
-    // useFieldArray initializes from defaultValues - item is already rendered
+    // useFieldArray инициализируется из defaultValues — элемент уже отрендерен
     expect(screen.getByPlaceholderText('Enter name')).toBeDisabled();
   });
 
-  it('11. field names registered as listName.0.fieldName', async () => {
+  it('11. имена полей регистрируются как listName.0.fieldName', async () => {
     const user = userEvent.setup();
     render(<TestWrapper config={baseConfig} />);
     await user.click(screen.getByText('Add item'));
     const nameInput = screen.getByPlaceholderText('Enter name');
-    // react-hook-form registers the field with the nested path
+    // react-hook-form регистрирует поле с вложенным путём
     expect(nameInput).toHaveAttribute('name', 'passengers.0.name');
   });
 
-  it('12. multiple items - each gets correct index in name', async () => {
+  it('12. несколько элементов — каждый получает правильный индекс в имени', async () => {
     const user = userEvent.setup();
     render(<TestWrapper config={baseConfig} />);
     await user.click(screen.getByText('Add item'));
@@ -210,7 +210,7 @@ describe('DynamicListField', () => {
     expect(inputs[1]).toHaveAttribute('name', 'passengers.1.name');
   });
 
-  it('13. addButton.label customizes button text', () => {
+  it('13. addButton.label изменяет текст кнопки', () => {
     const config: DynamicListFieldConfig = {
       ...baseConfig,
       addButton: { label: 'Add passenger' },
@@ -220,7 +220,7 @@ describe('DynamicListField', () => {
     expect(screen.queryByText('Add item')).toBeNull();
   });
 
-  it('14. addButton.position=top renders button before items', async () => {
+  it('14. addButton.position=top рендерит кнопку перед элементами', async () => {
     const user = userEvent.setup();
     const config: DynamicListFieldConfig = {
       ...baseConfig,
@@ -229,13 +229,13 @@ describe('DynamicListField', () => {
     render(<TestWrapper config={config} />);
     await user.click(screen.getByText('Add item'));
     const buttons = screen.getAllByRole('button');
-    // Add button (top) should come before the remove button in DOM
+    // Кнопка добавления (top) должна идти перед кнопкой удаления в DOM
     const addBtnIndex = buttons.findIndex(b => b.textContent?.includes('Add item'));
     const removeBtnIndex = buttons.findIndex(b => b.querySelector('[aria-label="minus-circle"]') || b.closest('[data-icon]'));
     expect(addBtnIndex).toBeLessThan(removeBtnIndex === -1 ? Infinity : removeBtnIndex);
   });
 
-  it('15. addButton.block=false removes full-width styling', () => {
+  it('15. addButton.block=false убирает стиль на всю ширину', () => {
     const config: DynamicListFieldConfig = {
       ...baseConfig,
       addButton: { block: false },
@@ -245,13 +245,13 @@ describe('DynamicListField', () => {
     expect(addButton).not.toHaveClass('ant-btn-block');
   });
 
-  it('16. addButton.block=true (default) adds full-width styling', () => {
+  it('16. addButton.block=true (по умолчанию) добавляет стиль на всю ширину', () => {
     render(<TestWrapper config={baseConfig} />);
     const addButton = screen.getByText('Add item').closest('button');
     expect(addButton).toHaveClass('ant-btn-block');
   });
 
-  it('17. addButton.size=small renders small button', () => {
+  it('17. addButton.size=small рендерит маленькую кнопку', () => {
     const config: DynamicListFieldConfig = {
       ...baseConfig,
       addButton: { size: 'small' },

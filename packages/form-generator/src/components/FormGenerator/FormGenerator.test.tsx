@@ -35,28 +35,28 @@ const multiGroupConfig: FormConfig = {
 };
 
 describe('FormGenerator', () => {
-  describe('rendering', () => {
-    it('should render form with groups', () => {
+  describe('рендеринг', () => {
+    it('должен рендерить форму с группами', () => {
       render(<FormGenerator config={simpleConfig} />);
       expect(screen.getByText('Personal Info')).toBeInTheDocument();
       expect(screen.getByText('First Name')).toBeInTheDocument();
       expect(screen.getByText('Last Name')).toBeInTheDocument();
     });
 
-    it('should render multiple groups', () => {
+    it('должен рендерить несколько групп', () => {
       render(<FormGenerator config={multiGroupConfig} />);
       expect(screen.getByText('Group 1')).toBeInTheDocument();
       expect(screen.getByText('Group 2')).toBeInTheDocument();
     });
   });
 
-  describe('default buttons (no config.buttons)', () => {
-    it('should show default submit button when config.buttons is not set', () => {
+  describe('кнопки по умолчанию (config.buttons не задан)', () => {
+    it('должен показывать кнопку submit по умолчанию когда config.buttons не задан', () => {
       render(<FormGenerator config={simpleConfig} />);
       expect(screen.getByText('Submit')).toBeInTheDocument();
     });
 
-    it('should call onSubmit via default submit button', async () => {
+    it('должен вызывать onSubmit через кнопку submit по умолчанию', async () => {
       const onSubmit = vi.fn();
       const user = userEvent.setup();
       render(
@@ -74,7 +74,7 @@ describe('FormGenerator', () => {
   });
 
   describe('config.buttons', () => {
-    it('should render buttons from config', () => {
+    it('должен рендерить кнопки из конфига', () => {
       const config: FormConfig = {
         ...simpleConfig,
         buttons: [
@@ -99,7 +99,7 @@ describe('FormGenerator', () => {
       expect(screen.queryByText('Submit')).toBeNull();
     });
 
-    it('should render no buttons when config.buttons is empty array', () => {
+    it('должен не рендерить кнопки когда config.buttons является пустым массивом', () => {
       const config: FormConfig = {
         ...simpleConfig,
         buttons: [],
@@ -108,7 +108,7 @@ describe('FormGenerator', () => {
       expect(screen.queryByText('Submit')).toBeNull();
     });
 
-    it('should reset form when reset button clicked', async () => {
+    it('должен сбрасывать форму при нажатии кнопки reset', async () => {
       const config: FormConfig = {
         ...simpleConfig,
         buttons: [
@@ -137,12 +137,12 @@ describe('FormGenerator', () => {
     });
   });
 
-  describe('submit button with fetch', () => {
+  describe('кнопка submit с fetch', () => {
     beforeEach(() => {
       vi.restoreAllMocks();
     });
 
-    it('should call fetch on submit button click', async () => {
+    it('должен вызывать fetch при нажатии кнопки submit', async () => {
       const fetchMock = vi.fn().mockResolvedValue({ ok: true });
       vi.stubGlobal('fetch', fetchMock);
 
@@ -180,7 +180,7 @@ describe('FormGenerator', () => {
       });
     });
 
-    it('should use POST as default method', async () => {
+    it('должен использовать POST как метод по умолчанию', async () => {
       const fetchMock = vi.fn().mockResolvedValue({ ok: true });
       vi.stubGlobal('fetch', fetchMock);
 
@@ -209,7 +209,7 @@ describe('FormGenerator', () => {
       });
     });
 
-    it('should call onSubmit callback after successful fetch', async () => {
+    it('должен вызывать onSubmit после успешного fetch', async () => {
       const fetchMock = vi.fn().mockResolvedValue({ ok: true });
       vi.stubGlobal('fetch', fetchMock);
       const onSubmit = vi.fn();
@@ -242,7 +242,7 @@ describe('FormGenerator', () => {
       });
     });
 
-    it('should not call onSubmit on fetch failure', async () => {
+    it('не должен вызывать onSubmit при ошибке fetch', async () => {
       const fetchMock = vi.fn().mockResolvedValue({ ok: false, status: 500 });
       vi.stubGlobal('fetch', fetchMock);
       const onSubmit = vi.fn();
@@ -277,7 +277,7 @@ describe('FormGenerator', () => {
       expect(onSubmit).not.toHaveBeenCalled();
     });
 
-    it('should handle non-Error exception during fetch', async () => {
+    it('должен обрабатывать исключение не являющееся Error во время fetch', async () => {
       const fetchMock = vi.fn().mockRejectedValue('string error');
       vi.stubGlobal('fetch', fetchMock);
 
@@ -304,7 +304,7 @@ describe('FormGenerator', () => {
       });
     });
 
-    it('should reset form after submit when resetAfterSubmit is true', async () => {
+    it('должен сбрасывать форму после отправки когда resetAfterSubmit=true', async () => {
       const fetchMock = vi.fn().mockResolvedValue({ ok: true });
       vi.stubGlobal('fetch', fetchMock);
 
@@ -343,7 +343,7 @@ describe('FormGenerator', () => {
   });
 
   describe('onChange', () => {
-    it('should call onChange when values change', async () => {
+    it('должен вызывать onChange при изменении значений', async () => {
       const onChange = vi.fn();
       const user = userEvent.setup();
       render(<FormGenerator
@@ -356,19 +356,19 @@ describe('FormGenerator', () => {
       expect(onChange).toHaveBeenCalled();
     });
 
-    it('should not crash without onChange', async () => {
+    it('не должен падать без onChange', async () => {
       const user = userEvent.setup();
       render(<FormGenerator config={simpleConfig} />);
 
       const input = screen.getByPlaceholderText('Enter first name');
       await user.type(input, 'John');
-      // No error should occur
+      // Ошибок возникать не должно
       expect(input).toHaveValue('John');
     });
   });
 
   describe('onSubmit', () => {
-    it('should call onSubmit when form is submitted', async () => {
+    it('должен вызывать onSubmit при отправке формы', async () => {
       const onSubmit = vi.fn();
       const user = userEvent.setup();
       render(<FormGenerator
@@ -381,18 +381,18 @@ describe('FormGenerator', () => {
       expect(onSubmit).toHaveBeenCalled();
     });
 
-    it('should not crash without onSubmit', async () => {
+    it('не должен падать без onSubmit', async () => {
       const user = userEvent.setup();
       render(<FormGenerator config={simpleConfig} />);
 
       const submitBtn = screen.getByText('Submit');
       await user.click(submitBtn);
-      // No error should occur
+      // Ошибок возникать не должно
     });
   });
 
-  describe('reset', () => {
-    it('should reset to initial values when reset button clicked', async () => {
+  describe('сброс', () => {
+    it('должен сбрасывать к начальным значениям при нажатии кнопки reset', async () => {
       const config: FormConfig = {
         ...simpleConfig,
         buttons: [
@@ -422,8 +422,8 @@ describe('FormGenerator', () => {
     });
   });
 
-  describe('imperative handle ref', () => {
-    it('should expose getValues method', () => {
+  describe('императивный ref', () => {
+    it('должен предоставлять метод getValues', () => {
       const ref = createRef<FormGeneratorRef>();
       render(
         <FormGenerator
@@ -438,7 +438,7 @@ describe('FormGenerator', () => {
       expect(values.firstName).toBe('John');
     });
 
-    it('should expose reset method', async () => {
+    it('должен предоставлять метод reset', async () => {
       const ref = createRef<FormGeneratorRef>();
       render(
         <FormGenerator
@@ -456,7 +456,7 @@ describe('FormGenerator', () => {
       expect(input).toHaveValue('John');
     });
 
-    it('should expose submit method', async () => {
+    it('должен предоставлять метод submit', async () => {
       const onSubmit = vi.fn();
       const ref = createRef<FormGeneratorRef>();
       render(
@@ -474,7 +474,7 @@ describe('FormGenerator', () => {
       expect(onSubmit).toHaveBeenCalled();
     });
 
-    it('should expose setValue method to set a single field', async () => {
+    it('должен предоставлять метод setValue для установки значения одного поля', async () => {
       const ref = createRef<FormGeneratorRef>();
       render(
         <FormGenerator
@@ -492,7 +492,7 @@ describe('FormGenerator', () => {
       expect(input).toHaveValue('Alice');
     });
 
-    it('should return updated value from getValues after setValue', async () => {
+    it('должен возвращать обновлённое значение из getValues после setValue', async () => {
       const ref = createRef<FormGeneratorRef>();
       render(
         <FormGenerator
@@ -510,7 +510,7 @@ describe('FormGenerator', () => {
       expect(values.lastName).toBe('Smith');
     });
 
-    it('should reset with custom values', async () => {
+    it('должен сбрасывать к произвольным значениям', async () => {
       const ref = createRef<FormGeneratorRef>();
       render(
         <FormGenerator
@@ -529,8 +529,8 @@ describe('FormGenerator', () => {
     });
   });
 
-  describe('order sorting', () => {
-    it('should render groups sorted by order property', () => {
+  describe('сортировка по order', () => {
+    it('должен рендерить группы отсортированные по свойству order', () => {
       const orderedConfig: FormConfig = {
         groups: [
           {
@@ -557,7 +557,7 @@ describe('FormGenerator', () => {
       expect(titles[2].textContent).toBe('Group C');
     });
 
-    it('should default order to 0 when not specified', () => {
+    it('должен использовать order=0 по умолчанию когда свойство не задано', () => {
       const orderedConfig: FormConfig = {
         groups: [
           {
@@ -578,12 +578,12 @@ describe('FormGenerator', () => {
     });
   });
 
-  describe('submit with requiresValidation', () => {
+  describe('submit с requiresValidation', () => {
     beforeEach(() => {
       vi.restoreAllMocks();
     });
 
-    it('should show validation errors and prevent submit when validation fails', async () => {
+    it('должен показывать ошибки валидации и предотвращать отправку при неудачной валидации', async () => {
       const fetchMock = vi.fn().mockResolvedValue({ ok: true });
       vi.stubGlobal('fetch', fetchMock);
 
@@ -622,13 +622,13 @@ describe('FormGenerator', () => {
 
       await user.click(screen.getByText('Save'));
 
-      // Validation failed so fetch should NOT be called
+      // Валидация не прошла, поэтому fetch НЕ должен быть вызван
       expect(fetchMock).not.toHaveBeenCalled();
-      // Error message should be shown (forceShowErrors=true)
+      // Сообщение об ошибке должно быть показано (forceShowErrors=true)
       expect(screen.getByText('Email required')).toBeInTheDocument();
     });
 
-    it('should show group validation errors and prevent submit', async () => {
+    it('должен показывать ошибки валидации группы и предотвращать отправку', async () => {
       const fetchMock = vi.fn().mockResolvedValue({ ok: true });
       vi.stubGlobal('fetch', fetchMock);
 
@@ -665,7 +665,7 @@ describe('FormGenerator', () => {
       expect(fetchMock).not.toHaveBeenCalled();
     });
 
-    it('should submit when validation passes with requiresValidation', async () => {
+    it('должен отправлять форму когда валидация прошла успешно с requiresValidation', async () => {
       const fetchMock = vi.fn().mockResolvedValue({ ok: true });
       vi.stubGlobal('fetch', fetchMock);
 
@@ -715,7 +715,7 @@ describe('FormGenerator', () => {
   });
 
   describe('initialValues', () => {
-    it('should default to empty object when no initialValues provided', () => {
+    it('должен использовать пустой объект по умолчанию когда initialValues не задан', () => {
       const ref = createRef<FormGeneratorRef>();
       render(<FormGenerator
         ref={ref}
@@ -725,7 +725,7 @@ describe('FormGenerator', () => {
       expect(values).toBeDefined();
     });
 
-    it('should use provided initialValues', () => {
+    it('должен использовать переданные initialValues', () => {
       const ref = createRef<FormGeneratorRef>();
       render(
         <FormGenerator

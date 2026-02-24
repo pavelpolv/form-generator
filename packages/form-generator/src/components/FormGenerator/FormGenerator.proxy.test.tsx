@@ -1,12 +1,12 @@
 import { vi, describe, it, expect } from 'vitest';
 
-// Create a throwing proxy that simulates react-hook-form Proxy iteration failure
+// Создаём бросающий прокси, имитирующий ошибку итерации Proxy в react-hook-form
 const throwingProxy = new Proxy({} as Record<string, boolean>, {
   ownKeys() { throw new Error('Proxy iteration error'); },
   getOwnPropertyDescriptor() { throw new Error('Proxy iteration error'); },
 });
 
-// Mock useFormState to return a touchedFields proxy that throws during iteration
+// Мокаем useFormState, возвращая touchedFields в виде прокси, бросающего ошибку при итерации
 vi.mock('react-hook-form', async () => {
   const actual = await vi.importActual<typeof import('react-hook-form')>('react-hook-form');
 
@@ -44,9 +44,9 @@ const simpleConfig: FormConfig = {
   ],
 };
 
-describe('FormGenerator - touchedFields Proxy error handling', () => {
-  it('should render without crashing when Proxy iteration throws', () => {
-    // The catch block in FormGenerator handles Proxy iteration errors gracefully
+describe('FormGenerator - обработка ошибок Proxy в touchedFields', () => {
+  it('должен рендериться без падения когда итерация Proxy бросает исключение', () => {
+    // Блок catch в FormGenerator корректно обрабатывает ошибки итерации Proxy
     render(<FormGenerator config={simpleConfig} />);
     expect(screen.getByText('Test Group')).toBeInTheDocument();
     expect(screen.getByText('Field 1')).toBeInTheDocument();

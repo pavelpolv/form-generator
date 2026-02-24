@@ -1,7 +1,7 @@
 import { vi, describe, it, expect } from 'vitest';
 
-// Mock useFormState to return touchedFields with falsy values
-// This covers the false branch of: hasOwnProperty.call(touchedFields, key) && touchedFields[key]
+// Мокаем useFormState, возвращая touchedFields с ложными значениями.
+// Это покрывает ветку false в: hasOwnProperty.call(touchedFields, key) && touchedFields[key]
 vi.mock('react-hook-form', async () => {
   const actual = await vi.importActual<typeof import('react-hook-form')>('react-hook-form');
 
@@ -39,8 +39,8 @@ const simpleConfig: FormConfig = {
   ],
 };
 
-describe('FormGenerator - touchedFields with falsy values', () => {
-  it('should skip falsy touchedFields values without error', () => {
+describe('FormGenerator - touchedFields с ложными значениями', () => {
+  it('должен пропускать ложные значения touchedFields без ошибок', () => {
     render(<FormGenerator config={simpleConfig} />);
     expect(screen.getByText('Test Group')).toBeInTheDocument();
     expect(screen.getByText('Field 1')).toBeInTheDocument();

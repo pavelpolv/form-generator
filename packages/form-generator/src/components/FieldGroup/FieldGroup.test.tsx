@@ -29,7 +29,7 @@ const TestWrapper = ({
   );
 };
 
-// Wrapper that allows re-rendering with different props to test React.memo
+// Обёртка, позволяющая повторно рендерить с разными пропсами для тестирования React.memo
 const ReRenderWrapper = ({
   initialGroup,
   initialFormValues = {},
@@ -76,7 +76,7 @@ const ReRenderWrapper = ({
   );
 };
 
-// Wrapper that switches control to trigger memo comparison on control change
+// Обёртка, переключающая control для проверки сравнения в memo при смене control
 const ControlChangeWrapper = ({ group }: { group: GroupField }) => {
   const form1 = useForm();
   const form2 = useForm();
@@ -107,15 +107,15 @@ describe('FieldGroup', () => {
     ],
   };
 
-  describe('visibility', () => {
-    it('should render visible group', () => {
+  describe('видимость', () => {
+    it('должен рендерить видимую группу', () => {
       render(<TestWrapper group={baseGroup} />);
       expect(screen.getByText('Test Group')).toBeInTheDocument();
       expect(screen.getByText('Field 1')).toBeInTheDocument();
       expect(screen.getByText('Field 2')).toBeInTheDocument();
     });
 
-    it('should not render invisible group', () => {
+    it('не должен рендерить невидимую группу', () => {
       const group: GroupField = {
         ...baseGroup,
         visibleCondition: {
@@ -129,7 +129,7 @@ describe('FieldGroup', () => {
       expect(container.innerHTML).toBe('');
     });
 
-    it('should render group when visibleCondition is met', () => {
+    it('должен рендерить группу когда visibleCondition выполнено', () => {
       const group: GroupField = {
         ...baseGroup,
         visibleCondition: {
@@ -145,14 +145,14 @@ describe('FieldGroup', () => {
   });
 
   describe('showBorder', () => {
-    it('should render Card when showBorder=true (default)', () => {
+    it('должен рендерить Card когда showBorder=true (по умолчанию)', () => {
       render(<TestWrapper group={baseGroup} />);
-      // Card renders the title differently - as ant-card-head-title
+      // Card рендерит заголовок иначе — через ant-card-head-title
       const card = document.querySelector('.ant-card');
       expect(card).not.toBeNull();
     });
 
-    it('should render div when showBorder=false', () => {
+    it('должен рендерить div когда showBorder=false', () => {
       const group: GroupField = { ...baseGroup, showBorder: false };
       render(<TestWrapper group={group} />);
       const card = document.querySelector('.ant-card');
@@ -162,27 +162,27 @@ describe('FieldGroup', () => {
   });
 
   describe('showTitle', () => {
-    it('should show title when showTitle=true (default)', () => {
+    it('должен показывать заголовок когда showTitle=true (по умолчанию)', () => {
       render(<TestWrapper group={baseGroup} />);
       expect(screen.getByText('Test Group')).toBeInTheDocument();
     });
 
-    it('should not show title when showTitle=false with border', () => {
+    it('не должен показывать заголовок когда showTitle=false с рамкой', () => {
       const group: GroupField = { ...baseGroup, showTitle: false };
       render(<TestWrapper group={group} />);
-      // Card is rendered but without title
+      // Card рендерится, но без заголовка
       const card = document.querySelector('.ant-card');
       expect(card).not.toBeNull();
-      // Title should not be rendered as card head
+      // Заголовок не должен рендериться как card head
       const cardHead = document.querySelector('.ant-card-head');
       expect(cardHead).toBeNull();
     });
 
-    it('should not show title when showTitle=false without border', () => {
+    it('не должен показывать заголовок когда showTitle=false без рамки', () => {
       const group: GroupField = { ...baseGroup, showTitle: false, showBorder: false };
       const { container } = render(<TestWrapper group={group} />);
       expect(screen.getByText('Field 1')).toBeInTheDocument();
-      // The group name should not be in the document as a heading
+      // Название группы не должно присутствовать в документе как заголовок
       const titleDiv = container.querySelector('div[style*="fontWeight"]');
       expect(titleDiv).toBeNull();
     });
@@ -199,7 +199,7 @@ describe('FieldGroup', () => {
       },
     };
 
-    it('should show validation error when condition fails and all fields touched', () => {
+    it('должен показывать ошибку валидации когда условие не выполнено и все поля тронуты', () => {
       render(
         <TestWrapper
           group={groupWithValidation}
@@ -210,7 +210,7 @@ describe('FieldGroup', () => {
       expect(screen.getByText('Field 1 is required')).toBeInTheDocument();
     });
 
-    it('should not show validation error when condition fails but fields not touched', () => {
+    it('не должен показывать ошибку валидации когда условие не выполнено но поля не тронуты', () => {
       render(
         <TestWrapper
           group={groupWithValidation}
@@ -221,7 +221,7 @@ describe('FieldGroup', () => {
       expect(screen.queryByText('Field 1 is required')).toBeNull();
     });
 
-    it('should not show validation error when condition passes', () => {
+    it('не должен показывать ошибку валидации когда условие выполнено', () => {
       render(
         <TestWrapper
           group={groupWithValidation}
@@ -232,7 +232,7 @@ describe('FieldGroup', () => {
       expect(screen.queryByText('Field 1 is required')).toBeNull();
     });
 
-    it('should handle group without validateCondition', () => {
+    it('должен корректно обрабатывать группу без validateCondition', () => {
       render(<TestWrapper
         group={baseGroup}
         formValues={{}}
@@ -241,7 +241,7 @@ describe('FieldGroup', () => {
     });
   });
 
-  describe('showGroupError styling', () => {
+  describe('стилизация showGroupError', () => {
     const groupWithValidation: GroupField = {
       ...baseGroup,
       validateCondition: {
@@ -252,7 +252,7 @@ describe('FieldGroup', () => {
       },
     };
 
-    it('should add error styling to Card when validation fails', () => {
+    it('должен добавлять стиль ошибки к Card при неудачной валидации', () => {
       render(
         <TestWrapper
           group={groupWithValidation}
@@ -264,7 +264,7 @@ describe('FieldGroup', () => {
       expect(card).not.toBeNull();
     });
 
-    it('should add error color to title div when showBorder=false and validation fails', () => {
+    it('должен применять цвет ошибки к заголовку div когда showBorder=false и валидация не прошла', () => {
       const group: GroupField = { ...groupWithValidation, showBorder: false };
       render(
         <TestWrapper
@@ -278,16 +278,16 @@ describe('FieldGroup', () => {
     });
   });
 
-  describe('empty fields', () => {
-    it('should render group with empty fields array', () => {
+  describe('пустые поля', () => {
+    it('должен рендерить группу с пустым массивом fields', () => {
       const group: GroupField = { ...baseGroup, fields: [] };
       render(<TestWrapper group={group} />);
       expect(screen.getByText('Test Group')).toBeInTheDocument();
     });
   });
 
-  describe('order sorting', () => {
-    it('should render fields sorted by order property', () => {
+  describe('сортировка по order', () => {
+    it('должен рендерить поля отсортированные по свойству order', () => {
       const group: GroupField = {
         name: 'Ordered Group',
         fields: [
@@ -303,7 +303,7 @@ describe('FieldGroup', () => {
       expect(labels[2].textContent).toBe('Field C');
     });
 
-    it('should default order to 0 when not specified', () => {
+    it('должен использовать order=0 по умолчанию когда свойство не задано', () => {
       const group: GroupField = {
         name: 'Mixed Order',
         fields: [
@@ -319,7 +319,7 @@ describe('FieldGroup', () => {
   });
 
   describe('MemoizedField', () => {
-    it('should not render field when visibleCondition is false', () => {
+    it('не должен рендерить поле когда visibleCondition ложно', () => {
       const group: GroupField = {
         name: 'Group',
         fields: [
@@ -340,7 +340,7 @@ describe('FieldGroup', () => {
       expect(screen.queryByText('Hidden Field')).toBeNull();
     });
 
-    it('should render field when visibleCondition is true', () => {
+    it('должен рендерить поле когда visibleCondition истинно', () => {
       const group: GroupField = {
         name: 'Group',
         fields: [
@@ -361,7 +361,7 @@ describe('FieldGroup', () => {
       expect(screen.getByText('Visible Field')).toBeInTheDocument();
     });
 
-    it('should show field validation error when validateCondition fails and field touched', () => {
+    it('должен показывать ошибку валидации поля когда validateCondition не выполнено и поле тронуто', () => {
       const group: GroupField = {
         name: 'Group',
         fields: [
@@ -386,7 +386,7 @@ describe('FieldGroup', () => {
       expect(screen.getByText('Email required')).toBeInTheDocument();
     });
 
-    it('should not show field validation error when field not touched', () => {
+    it('не должен показывать ошибку валидации поля когда поле не тронуто', () => {
       const group: GroupField = {
         name: 'Group',
         fields: [
@@ -411,7 +411,7 @@ describe('FieldGroup', () => {
       expect(screen.queryByText('Email required')).toBeNull();
     });
 
-    it('should disable field when disabledCondition is true', () => {
+    it('должен блокировать поле когда disabledCondition истинно', () => {
       const group: GroupField = {
         name: 'Group',
         fields: [
@@ -436,7 +436,7 @@ describe('FieldGroup', () => {
       expect(screen.getByPlaceholderText('Locked field')).toBeDisabled();
     });
 
-    it('should not disable field when no disabledCondition', () => {
+    it('не должен блокировать поле когда disabledCondition отсутствует', () => {
       const group: GroupField = {
         name: 'Group',
         fields: [
@@ -453,61 +453,61 @@ describe('FieldGroup', () => {
     });
   });
 
-  describe('React.memo re-render behavior', () => {
-    it('should handle re-render with changed formValues', async () => {
+  describe('поведение React.memo при повторном рендере', () => {
+    it('должен обрабатывать повторный рендер с изменёнными formValues', async () => {
       render(<ReRenderWrapper initialGroup={baseGroup} />);
       expect(screen.getByText('Test Group')).toBeInTheDocument();
 
-      // Trigger re-render with new formValues
+      // Вызываем повторный рендер с новыми formValues
       await act(async () => {
         screen.getByTestId('update-values').click();
       });
       expect(screen.getByText('Test Group')).toBeInTheDocument();
     });
 
-    it('should handle re-render with changed touchedFields', async () => {
+    it('должен обрабатывать повторный рендер с изменёнными touchedFields', async () => {
       render(<ReRenderWrapper initialGroup={baseGroup} />);
 
-      // Trigger re-render with new touchedFields
+      // Вызываем повторный рендер с новыми touchedFields
       await act(async () => {
         screen.getByTestId('update-touched').click();
       });
       expect(screen.getByText('Test Group')).toBeInTheDocument();
     });
 
-    it('should handle re-render with same values (memo optimization)', async () => {
+    it('должен обрабатывать повторный рендер с теми же значениями (оптимизация memo)', async () => {
       render(<ReRenderWrapper initialGroup={baseGroup} />);
 
-      // Trigger re-render with same formValues (new reference but same content)
+      // Вызываем повторный рендер с теми же formValues (новая ссылка, но то же содержимое)
       await act(async () => {
         screen.getByTestId('same-rerender').click();
       });
       expect(screen.getByText('Test Group')).toBeInTheDocument();
     });
 
-    it('should re-render when group reference changes (triggers arePropsEqual)', async () => {
+    it('должен перерендериваться когда ссылка на group меняется (запускает arePropsEqual)', async () => {
       render(<ReRenderWrapper initialGroup={baseGroup} />);
       expect(screen.getByText('Test Group')).toBeInTheDocument();
 
-      // Change the group reference - triggers arePropsEqual to return false
+      // Меняем ссылку на group — запускает arePropsEqual возвращающий false
       await act(async () => {
         screen.getByTestId('change-group').click();
       });
       expect(screen.getByText('Test Group')).toBeInTheDocument();
     });
 
-    it('should re-render when control reference changes', async () => {
+    it('должен перерендериваться когда ссылка на control меняется', async () => {
       render(<ControlChangeWrapper group={baseGroup} />);
       expect(screen.getByText('Test Group')).toBeInTheDocument();
 
-      // Switch to a different control - triggers control !== nextProps.control
+      // Переключаемся на другой control — запускает проверку control !== nextProps.control
       await act(async () => {
         screen.getByTestId('switch-control').click();
       });
       expect(screen.getByText('Test Group')).toBeInTheDocument();
     });
 
-    it('should re-render when forceShowErrors changes', async () => {
+    it('должен перерендериваться когда forceShowErrors меняется', async () => {
       render(<ReRenderWrapper initialGroup={baseGroup} />);
       expect(screen.getByText('Test Group')).toBeInTheDocument();
 
@@ -519,7 +519,7 @@ describe('FieldGroup', () => {
   });
 
   describe('forceShowErrors', () => {
-    it('should show validation errors when forceShowErrors is true even without touched fields', () => {
+    it('должен показывать ошибки валидации когда forceShowErrors=true даже без тронутых полей', () => {
       const groupWithValidation: GroupField = {
         ...baseGroup,
         validateCondition: {
@@ -540,7 +540,7 @@ describe('FieldGroup', () => {
       expect(screen.getByText('Field 1 is required')).toBeInTheDocument();
     });
 
-    it('should show field validation errors when forceShowErrors is true', () => {
+    it('должен показывать ошибки валидации полей когда forceShowErrors=true', () => {
       const group: GroupField = {
         name: 'Group',
         fields: [

@@ -15,19 +15,19 @@ const TestWrapper = ({ field, error, disabled }: { field: Field; error?: string;
 };
 
 describe('FieldRenderer', () => {
-  it('should render input field', () => {
+  it('должен рендерить поле input', () => {
     const field: Field = { type: 'input', name: 'test', label: 'Test Input' };
     render(<TestWrapper field={field} />);
     expect(screen.getByText('Test Input')).toBeInTheDocument();
   });
 
-  it('should render inputNumber field', () => {
+  it('должен рендерить поле inputNumber', () => {
     const field: Field = { type: 'inputNumber', name: 'num', label: 'Test Number' };
     render(<TestWrapper field={field} />);
     expect(screen.getByText('Test Number')).toBeInTheDocument();
   });
 
-  it('should render select field', () => {
+  it('должен рендерить поле select', () => {
     const field: Field = {
       type: 'select',
       name: 'sel',
@@ -38,19 +38,19 @@ describe('FieldRenderer', () => {
     expect(screen.getByText('Test Select')).toBeInTheDocument();
   });
 
-  it('should render switch field', () => {
+  it('должен рендерить поле switch', () => {
     const field: Field = { type: 'switch', name: 'sw', label: 'Test Switch' };
     render(<TestWrapper field={field} />);
     expect(screen.getByText('Test Switch')).toBeInTheDocument();
   });
 
-  it('should render date field', () => {
+  it('должен рендерить поле date', () => {
     const field: Field = { type: 'date', name: 'dt', label: 'Test Date' };
     render(<TestWrapper field={field} />);
     expect(screen.getByText('Test Date')).toBeInTheDocument();
   });
 
-  it('should return null and log error for unknown field type', () => {
+  it('должен вернуть null и залогировать ошибку для неизвестного типа поля', () => {
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     const field = { type: 'unknown', name: 'unk', label: 'Unknown' } as any;
     const { container } = render(<TestWrapper field={field} />);
@@ -59,7 +59,7 @@ describe('FieldRenderer', () => {
     consoleSpy.mockRestore();
   });
 
-  it('should pass error prop to field', () => {
+  it('должен передавать проп error в поле', () => {
     const field: Field = { type: 'input', name: 'test', label: 'Test' };
     render(<TestWrapper
       field={field}
@@ -67,7 +67,7 @@ describe('FieldRenderer', () => {
     expect(screen.getByText('Required field')).toBeInTheDocument();
   });
 
-  it('should pass disabled prop to field', () => {
+  it('должен передавать проп disabled в поле', () => {
     const field: Field = { type: 'input', name: 'test', label: 'Test', placeholder: 'Enter' };
     render(<TestWrapper
       field={field}
@@ -75,13 +75,13 @@ describe('FieldRenderer', () => {
     expect(screen.getByPlaceholderText('Enter')).toBeDisabled();
   });
 
-  it('should render textarea field', () => {
+  it('должен рендерить поле textarea', () => {
     const field: Field = { type: 'textarea', name: 'desc', label: 'Description' };
     render(<TestWrapper field={field} />);
     expect(screen.getByText('Description')).toBeInTheDocument();
   });
 
-  it('should render money field', () => {
+  it('должен рендерить поле money', () => {
     const field: Field = { type: 'money', name: 'amount', label: 'Amount' };
     render(<TestWrapper field={field} />);
     expect(screen.getByText('Amount')).toBeInTheDocument();

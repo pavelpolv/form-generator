@@ -9,7 +9,7 @@ import {
 
 describe('buttonSchemas', () => {
   describe('submitButtonSchema', () => {
-    it('should validate valid submit button config', () => {
+    it('должен валидировать корректную конфигурацию кнопки submit', () => {
       const config = {
         key: 'save',
         label: 'Save',
@@ -20,7 +20,7 @@ describe('buttonSchemas', () => {
       expect(() => submitButtonSchema.parse(config)).not.toThrow();
     });
 
-    it('should validate submit button with all optional fields', () => {
+    it('должен валидировать кнопку submit со всеми опциональными полями', () => {
       const config = {
         key: 'save',
         label: 'Save',
@@ -34,7 +34,7 @@ describe('buttonSchemas', () => {
       expect(() => submitButtonSchema.parse(config)).not.toThrow();
     });
 
-    it('should fail without key', () => {
+    it('должен завершаться неудачей без key', () => {
       const config = {
         key: '',
         label: 'Save',
@@ -45,7 +45,7 @@ describe('buttonSchemas', () => {
       expect(() => submitButtonSchema.parse(config)).toThrow();
     });
 
-    it('should fail without label', () => {
+    it('должен завершаться неудачей без label', () => {
       const config = {
         key: 'save',
         label: '',
@@ -56,7 +56,7 @@ describe('buttonSchemas', () => {
       expect(() => submitButtonSchema.parse(config)).toThrow();
     });
 
-    it('should fail with invalid url', () => {
+    it('должен завершаться неудачей с невалидным url', () => {
       const config = {
         key: 'save',
         label: 'Save',
@@ -67,7 +67,7 @@ describe('buttonSchemas', () => {
       expect(() => submitButtonSchema.parse(config)).toThrow();
     });
 
-    it('should fail with invalid method', () => {
+    it('должен завершаться неудачей с невалидным method', () => {
       const config = {
         key: 'save',
         label: 'Save',
@@ -79,7 +79,7 @@ describe('buttonSchemas', () => {
       expect(() => submitButtonSchema.parse(config)).toThrow();
     });
 
-    it('should fail with invalid button type', () => {
+    it('должен завершаться неудачей с невалидным типом кнопки', () => {
       const config = {
         key: 'save',
         label: 'Save',
@@ -91,7 +91,7 @@ describe('buttonSchemas', () => {
       expect(() => submitButtonSchema.parse(config)).toThrow();
     });
 
-    it('should fail without requiresValidation', () => {
+    it('должен завершаться неудачей без requiresValidation', () => {
       const config = {
         key: 'save',
         label: 'Save',
@@ -103,7 +103,7 @@ describe('buttonSchemas', () => {
   });
 
   describe('resetButtonSchema', () => {
-    it('should validate valid reset button config', () => {
+    it('должен валидировать корректную конфигурацию кнопки reset', () => {
       const config = {
         key: 'reset',
         label: 'Reset',
@@ -112,7 +112,7 @@ describe('buttonSchemas', () => {
       expect(() => resetButtonSchema.parse(config)).not.toThrow();
     });
 
-    it('should validate reset button with type', () => {
+    it('должен валидировать кнопку reset с типом', () => {
       const config = {
         key: 'reset',
         label: 'Clear Form',
@@ -122,7 +122,7 @@ describe('buttonSchemas', () => {
       expect(() => resetButtonSchema.parse(config)).not.toThrow();
     });
 
-    it('should fail without key', () => {
+    it('должен завершаться неудачей без key', () => {
       const config = {
         key: '',
         label: 'Reset',
@@ -133,7 +133,7 @@ describe('buttonSchemas', () => {
   });
 
   describe('buttonConfigSchema', () => {
-    it('should accept submit button', () => {
+    it('должен принимать кнопку submit', () => {
       const config = {
         key: 'save',
         label: 'Save',
@@ -144,7 +144,7 @@ describe('buttonSchemas', () => {
       expect(() => buttonConfigSchema.parse(config)).not.toThrow();
     });
 
-    it('should accept reset button', () => {
+    it('должен принимать кнопку reset', () => {
       const config = {
         key: 'reset',
         label: 'Reset',
@@ -153,7 +153,7 @@ describe('buttonSchemas', () => {
       expect(() => buttonConfigSchema.parse(config)).not.toThrow();
     });
 
-    it('should fail with unknown action', () => {
+    it('должен завершаться неудачей с неизвестным action', () => {
       const config = {
         key: 'custom',
         label: 'Custom',
@@ -164,7 +164,7 @@ describe('buttonSchemas', () => {
   });
 
   describe('buttonsArraySchema', () => {
-    it('should validate array of buttons', () => {
+    it('должен валидировать массив кнопок', () => {
       const config = [
         {
           key: 'save',
@@ -182,11 +182,11 @@ describe('buttonSchemas', () => {
       expect(() => buttonsArraySchema.parse(config)).not.toThrow();
     });
 
-    it('should validate empty array', () => {
+    it('должен валидировать пустой массив', () => {
       expect(() => buttonsArraySchema.parse([])).not.toThrow();
     });
 
-    it('should fail with duplicate keys', () => {
+    it('должен завершаться неудачей с дублирующимися ключами', () => {
       const config = [
         {
           key: 'save',
@@ -208,7 +208,7 @@ describe('buttonSchemas', () => {
   });
 
   describe('validateButtonsConfig', () => {
-    it('should return null for valid config', () => {
+    it('должен возвращать null для валидной конфигурации', () => {
       const config = [
         {
           key: 'save',
@@ -221,19 +221,19 @@ describe('buttonSchemas', () => {
       expect(validateButtonsConfig(config)).toBeNull();
     });
 
-    it('should return null for empty array', () => {
+    it('должен возвращать null для пустого массива', () => {
       expect(validateButtonsConfig([])).toBeNull();
     });
 
-    it('should return error for non-array', () => {
+    it('должен возвращать ошибку для не-массива', () => {
       expect(validateButtonsConfig('not an array')).toBe('Buttons config must be an array');
     });
 
-    it('should return error for null', () => {
+    it('должен возвращать ошибку для null', () => {
       expect(validateButtonsConfig(null)).toBe('Buttons config must be an array');
     });
 
-    it('should return error for invalid button in array', () => {
+    it('должен возвращать ошибку для невалидной кнопки в массиве', () => {
       const config = [
         {
           key: '',
@@ -248,7 +248,7 @@ describe('buttonSchemas', () => {
       expect(error).toContain('key');
     });
 
-    it('should return error for duplicate keys', () => {
+    it('должен возвращать ошибку для дублирующихся ключей', () => {
       const config = [
         {
           key: 'btn',
@@ -268,7 +268,7 @@ describe('buttonSchemas', () => {
       expect(error).toContain('unique');
     });
 
-    it('should handle non-ZodError exceptions', () => {
+    it('должен обрабатывать исключения не являющиеся ZodError', () => {
       const spy = vi.spyOn(buttonsArraySchema, 'parse').mockImplementation(() => {
         throw new Error('unexpected error');
       });

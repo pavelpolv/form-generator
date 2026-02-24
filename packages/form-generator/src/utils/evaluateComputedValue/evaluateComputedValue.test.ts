@@ -7,8 +7,8 @@ afterEach(() => {
 });
 
 describe('evaluateComputedValue', () => {
-  describe('case matching', () => {
-    it('should return value from first matching case', () => {
+  describe('совпадение с кейсом', () => {
+    it('должен возвращать значение из первого совпавшего кейса', () => {
       const config: ComputedValueConfig = {
         cases: [
           {
@@ -21,7 +21,7 @@ describe('evaluateComputedValue', () => {
       expect(evaluateComputedValue(config, formValues)).toEqual({ shouldUpdate: true, value: 'result-A' });
     });
 
-    it('should skip non-matching case and use second matching case', () => {
+    it('должен пропускать несовпавший кейс и использовать второй совпавший', () => {
       const config: ComputedValueConfig = {
         cases: [
           {
@@ -38,7 +38,7 @@ describe('evaluateComputedValue', () => {
       expect(evaluateComputedValue(config, formValues)).toEqual({ shouldUpdate: true, value: 'result-B' });
     });
 
-    it('should return { shouldUpdate: false } when no case matches and no default', () => {
+    it('должен возвращать { shouldUpdate: false } когда нет совпавших кейсов и нет default', () => {
       const config: ComputedValueConfig = {
         cases: [
           {
@@ -51,7 +51,7 @@ describe('evaluateComputedValue', () => {
       expect(evaluateComputedValue(config, formValues)).toEqual({ shouldUpdate: false });
     });
 
-    it('should use default when no cases match', () => {
+    it('должен использовать default когда нет совпавших кейсов', () => {
       const config: ComputedValueConfig = {
         cases: [
           {
@@ -65,7 +65,7 @@ describe('evaluateComputedValue', () => {
       expect(evaluateComputedValue(config, formValues)).toEqual({ shouldUpdate: true, value: 'default-value' });
     });
 
-    it('should use default: null and return { shouldUpdate: true, value: null }', () => {
+    it('должен использовать default: null и возвращать { shouldUpdate: true, value: null }', () => {
       const config: ComputedValueConfig = {
         cases: [],
         default: null,
@@ -74,7 +74,7 @@ describe('evaluateComputedValue', () => {
       expect(evaluateComputedValue(config, formValues)).toEqual({ shouldUpdate: true, value: null });
     });
 
-    it('should handle empty cases with default', () => {
+    it('должен обрабатывать пустые кейсы с default', () => {
       const config: ComputedValueConfig = {
         cases: [],
         default: 42,
@@ -84,8 +84,8 @@ describe('evaluateComputedValue', () => {
     });
   });
 
-  describe('literal values', () => {
-    it('should return string literal', () => {
+  describe('литеральные значения', () => {
+    it('должен возвращать строковый литерал', () => {
       const config: ComputedValueConfig = {
         cases: [
           { condition: { field: 'x', condition: '===', value: 1 }, value: 'hello' },
@@ -94,7 +94,7 @@ describe('evaluateComputedValue', () => {
       expect(evaluateComputedValue(config, { x: 1 })).toEqual({ shouldUpdate: true, value: 'hello' });
     });
 
-    it('should return number literal', () => {
+    it('должен возвращать числовой литерал', () => {
       const config: ComputedValueConfig = {
         cases: [
           { condition: { field: 'x', condition: '===', value: 1 }, value: 99 },
@@ -103,7 +103,7 @@ describe('evaluateComputedValue', () => {
       expect(evaluateComputedValue(config, { x: 1 })).toEqual({ shouldUpdate: true, value: 99 });
     });
 
-    it('should return boolean literal', () => {
+    it('должен возвращать булев литерал', () => {
       const config: ComputedValueConfig = {
         cases: [
           { condition: { field: 'x', condition: '===', value: 1 }, value: true },
@@ -112,7 +112,7 @@ describe('evaluateComputedValue', () => {
       expect(evaluateComputedValue(config, { x: 1 })).toEqual({ shouldUpdate: true, value: true });
     });
 
-    it('should return null literal', () => {
+    it('должен возвращать null литерал', () => {
       const config: ComputedValueConfig = {
         cases: [
           { condition: { field: 'x', condition: '===', value: 1 }, value: null },
@@ -122,8 +122,8 @@ describe('evaluateComputedValue', () => {
     });
   });
 
-  describe('$fieldRef resolution', () => {
-    it('should resolve $fieldRef to form value', () => {
+  describe('разрешение $fieldRef', () => {
+    it('должен разрешать $fieldRef в значение формы', () => {
       const config: ComputedValueConfig = {
         cases: [
           { condition: { field: 'enabled', condition: '===', value: true }, value: '$source' },
@@ -134,8 +134,8 @@ describe('evaluateComputedValue', () => {
     });
   });
 
-  describe('arithmetic expressions', () => {
-    it('should compute addition with literals', () => {
+  describe('арифметические выражения', () => {
+    it('должен вычислять сложение с литералами', () => {
       const config: ComputedValueConfig = {
         cases: [
           {
@@ -147,7 +147,7 @@ describe('evaluateComputedValue', () => {
       expect(evaluateComputedValue(config, { active: true })).toEqual({ shouldUpdate: true, value: 10 });
     });
 
-    it('should compute subtraction with literals', () => {
+    it('должен вычислять вычитание с литералами', () => {
       const config: ComputedValueConfig = {
         cases: [
           {
@@ -159,7 +159,7 @@ describe('evaluateComputedValue', () => {
       expect(evaluateComputedValue(config, { active: true })).toEqual({ shouldUpdate: true, value: 7 });
     });
 
-    it('should compute multiplication with literals', () => {
+    it('должен вычислять умножение с литералами', () => {
       const config: ComputedValueConfig = {
         cases: [
           {
@@ -171,7 +171,7 @@ describe('evaluateComputedValue', () => {
       expect(evaluateComputedValue(config, { active: true })).toEqual({ shouldUpdate: true, value: 20 });
     });
 
-    it('should compute division with literals', () => {
+    it('должен вычислять деление с литералами', () => {
       const config: ComputedValueConfig = {
         cases: [
           {
@@ -183,7 +183,7 @@ describe('evaluateComputedValue', () => {
       expect(evaluateComputedValue(config, { active: true })).toEqual({ shouldUpdate: true, value: 5 });
     });
 
-    it('should resolve $fieldRef operands in arithmetic', () => {
+    it('должен разрешать операнды $fieldRef в арифметике', () => {
       const config: ComputedValueConfig = {
         cases: [
           {
@@ -196,7 +196,7 @@ describe('evaluateComputedValue', () => {
       expect(evaluateComputedValue(config, formValues)).toEqual({ shouldUpdate: true, value: 12 });
     });
 
-    it('should return null when left operand is null', () => {
+    it('должен возвращать null когда левый операнд равен null', () => {
       const config: ComputedValueConfig = {
         cases: [
           {
@@ -208,7 +208,7 @@ describe('evaluateComputedValue', () => {
       expect(evaluateComputedValue(config, { active: true })).toEqual({ shouldUpdate: true, value: null });
     });
 
-    it('should return null when $fieldRef operand is undefined', () => {
+    it('должен возвращать null когда операнд $fieldRef равен undefined', () => {
       const config: ComputedValueConfig = {
         cases: [
           {
@@ -220,7 +220,7 @@ describe('evaluateComputedValue', () => {
       expect(evaluateComputedValue(config, { active: true })).toEqual({ shouldUpdate: true, value: null });
     });
 
-    it('should return null on division by zero', () => {
+    it('должен возвращать null при делении на ноль', () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       const config: ComputedValueConfig = {
         cases: [
@@ -235,7 +235,7 @@ describe('evaluateComputedValue', () => {
       expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('division by zero'));
     });
 
-    it('should return null for non-numeric operands and log error', () => {
+    it('должен возвращать null для нечисловых операндов и логировать ошибку', () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       const config: ComputedValueConfig = {
         cases: [
@@ -251,8 +251,8 @@ describe('evaluateComputedValue', () => {
     });
   });
 
-  describe('condition types', () => {
-    it('should work with ConditionGroup (case 1: category+enabled → orderType)', () => {
+  describe('типы условий', () => {
+    it('должен работать с ConditionGroup (кейс 1: category+enabled → orderType)', () => {
       const config: ComputedValueConfig = {
         cases: [
           {
@@ -269,20 +269,20 @@ describe('evaluateComputedValue', () => {
         default: 'auto',
       };
 
-      // Both conditions met
+      // Оба условия выполняются
       expect(evaluateComputedValue(config, { category: 'B', enabled: true }))
         .toEqual({ shouldUpdate: true, value: 'manual' });
 
-      // Only one condition met → default
+      // Только одно условие выполняется → default
       expect(evaluateComputedValue(config, { category: 'B', enabled: false }))
         .toEqual({ shouldUpdate: true, value: 'auto' });
 
-      // Neither condition met → default
+      // Ни одно условие не выполняется → default
       expect(evaluateComputedValue(config, { category: 'A', enabled: false }))
         .toEqual({ shouldUpdate: true, value: 'auto' });
     });
 
-    it('should work with arithmetic (case 2: value1*value2 if enabled, else null)', () => {
+    it('должен работать с арифметикой (кейс 2: value1*value2 если enabled, иначе null)', () => {
       const config: ComputedValueConfig = {
         cases: [
           {
@@ -293,11 +293,11 @@ describe('evaluateComputedValue', () => {
         default: null,
       };
 
-      // Enabled: compute product
+      // Включено: вычисляем произведение
       expect(evaluateComputedValue(config, { enabled: true, value1: 6, value2: 7 }))
         .toEqual({ shouldUpdate: true, value: 42 });
 
-      // Disabled: return null
+      // Выключено: возвращаем null
       expect(evaluateComputedValue(config, { enabled: false, value1: 6, value2: 7 }))
         .toEqual({ shouldUpdate: true, value: null });
     });

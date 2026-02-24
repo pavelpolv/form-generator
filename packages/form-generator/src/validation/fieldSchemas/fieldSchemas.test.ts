@@ -11,7 +11,7 @@ import {
 
 describe('fieldSchemas', () => {
   describe('inputFieldSchema', () => {
-    it('should validate valid input config', () => {
+    it('должен валидировать корректную конфигурацию input', () => {
       const config = {
         type: 'input',
         name: 'email',
@@ -22,7 +22,7 @@ describe('fieldSchemas', () => {
       expect(() => inputFieldSchema.parse(config)).not.toThrow();
     });
 
-    it('should validate password input type', () => {
+    it('должен валидировать тип input password', () => {
       const config = {
         type: 'input',
         name: 'password',
@@ -32,7 +32,7 @@ describe('fieldSchemas', () => {
       expect(() => inputFieldSchema.parse(config)).not.toThrow();
     });
 
-    it('should fail without name', () => {
+    it('должен завершаться неудачей без name', () => {
       const config = {
         type: 'input',
         name: '',
@@ -41,7 +41,7 @@ describe('fieldSchemas', () => {
       expect(() => inputFieldSchema.parse(config)).toThrow();
     });
 
-    it('should fail without label', () => {
+    it('должен завершаться неудачей без label', () => {
       const config = {
         type: 'input',
         name: 'email',
@@ -50,7 +50,7 @@ describe('fieldSchemas', () => {
       expect(() => inputFieldSchema.parse(config)).toThrow();
     });
 
-    it('should fail with invalid maxLength', () => {
+    it('должен завершаться неудачей с невалидным maxLength', () => {
       const config = {
         type: 'input',
         name: 'email',
@@ -60,7 +60,7 @@ describe('fieldSchemas', () => {
       expect(() => inputFieldSchema.parse(config)).toThrow();
     });
 
-    it('should fail with non-integer maxLength', () => {
+    it('должен завершаться неудачей с нецелым maxLength', () => {
       const config = {
         type: 'input',
         name: 'email',
@@ -71,8 +71,8 @@ describe('fieldSchemas', () => {
     });
   });
 
-  describe('order property', () => {
-    it('should accept order as a number', () => {
+  describe('свойство order', () => {
+    it('должен принимать order как число', () => {
       const config = {
         type: 'input',
         name: 'field',
@@ -82,7 +82,7 @@ describe('fieldSchemas', () => {
       expect(() => inputFieldSchema.parse(config)).not.toThrow();
     });
 
-    it('should accept config without order', () => {
+    it('должен принимать конфигурацию без order', () => {
       const config = {
         type: 'input',
         name: 'field',
@@ -91,7 +91,7 @@ describe('fieldSchemas', () => {
       expect(() => inputFieldSchema.parse(config)).not.toThrow();
     });
 
-    it('should reject non-number order', () => {
+    it('должен отклонять нечисловой order', () => {
       const config = {
         type: 'input',
         name: 'field',
@@ -103,7 +103,7 @@ describe('fieldSchemas', () => {
   });
 
   describe('inputNumberFieldSchema', () => {
-    it('should validate valid inputNumber config', () => {
+    it('должен валидировать корректную конфигурацию inputNumber', () => {
       const config = {
         type: 'inputNumber',
         name: 'age',
@@ -115,7 +115,7 @@ describe('fieldSchemas', () => {
       expect(() => inputNumberFieldSchema.parse(config)).not.toThrow();
     });
 
-    it('should validate config without min/max/step', () => {
+    it('должен валидировать конфигурацию без min/max/step', () => {
       const config = {
         type: 'inputNumber',
         name: 'quantity',
@@ -124,7 +124,7 @@ describe('fieldSchemas', () => {
       expect(() => inputNumberFieldSchema.parse(config)).not.toThrow();
     });
 
-    it('should fail with negative step', () => {
+    it('должен завершаться неудачей с отрицательным step', () => {
       const config = {
         type: 'inputNumber',
         name: 'price',
@@ -134,7 +134,7 @@ describe('fieldSchemas', () => {
       expect(() => inputNumberFieldSchema.parse(config)).toThrow();
     });
 
-    it('should fail with zero step', () => {
+    it('должен завершаться неудачей с нулевым step', () => {
       const config = {
         type: 'inputNumber',
         name: 'price',
@@ -144,7 +144,7 @@ describe('fieldSchemas', () => {
       expect(() => inputNumberFieldSchema.parse(config)).toThrow();
     });
 
-    it('should allow decimal step', () => {
+    it('должен допускать дробный step', () => {
       const config = {
         type: 'inputNumber',
         name: 'price',
@@ -156,7 +156,7 @@ describe('fieldSchemas', () => {
   });
 
   describe('selectFieldSchema', () => {
-    it('should validate valid select config', () => {
+    it('должен валидировать корректную конфигурацию select', () => {
       const config = {
         type: 'select',
         name: 'country',
@@ -169,7 +169,7 @@ describe('fieldSchemas', () => {
       expect(() => selectFieldSchema.parse(config)).not.toThrow();
     });
 
-    it('should validate multiple select', () => {
+    it('должен валидировать множественный select', () => {
       const config = {
         type: 'select',
         name: 'countries',
@@ -181,7 +181,7 @@ describe('fieldSchemas', () => {
       expect(() => selectFieldSchema.parse(config)).not.toThrow();
     });
 
-    it('should validate options with numeric values', () => {
+    it('должен валидировать options с числовыми значениями', () => {
       const config = {
         type: 'select',
         name: 'rating',
@@ -194,7 +194,7 @@ describe('fieldSchemas', () => {
       expect(() => selectFieldSchema.parse(config)).not.toThrow();
     });
 
-    it('should validate options with disabled flag', () => {
+    it('должен валидировать options с флагом disabled', () => {
       const config = {
         type: 'select',
         name: 'status',
@@ -207,7 +207,7 @@ describe('fieldSchemas', () => {
       expect(() => selectFieldSchema.parse(config)).not.toThrow();
     });
 
-    it('should fail with empty options array', () => {
+    it('должен завершаться неудачей с пустым массивом options', () => {
       const config = {
         type: 'select',
         name: 'country',
@@ -217,7 +217,7 @@ describe('fieldSchemas', () => {
       expect(() => selectFieldSchema.parse(config)).toThrow();
     });
 
-    it('should fail with empty option label', () => {
+    it('должен завершаться неудачей с пустым label у option', () => {
       const config = {
         type: 'select',
         name: 'country',
@@ -229,7 +229,7 @@ describe('fieldSchemas', () => {
   });
 
   describe('switchFieldSchema', () => {
-    it('should validate valid switch config', () => {
+    it('должен валидировать корректную конфигурацию switch', () => {
       const config = {
         type: 'switch',
         name: 'enabled',
@@ -238,7 +238,7 @@ describe('fieldSchemas', () => {
       expect(() => switchFieldSchema.parse(config)).not.toThrow();
     });
 
-    it('should validate switch with checked/unchecked text', () => {
+    it('должен валидировать switch с текстом для включённого/выключённого состояния', () => {
       const config = {
         type: 'switch',
         name: 'agree',
@@ -249,7 +249,7 @@ describe('fieldSchemas', () => {
       expect(() => switchFieldSchema.parse(config)).not.toThrow();
     });
 
-    it('should validate switch with default value', () => {
+    it('должен валидировать switch с дефолтным значением', () => {
       const config = {
         type: 'switch',
         name: 'enabled',
@@ -261,7 +261,7 @@ describe('fieldSchemas', () => {
   });
 
   describe('dateFieldSchema', () => {
-    it('should validate valid date config', () => {
+    it('должен валидировать корректную конфигурацию date', () => {
       const config = {
         type: 'date',
         name: 'birthDate',
@@ -270,7 +270,7 @@ describe('fieldSchemas', () => {
       expect(() => dateFieldSchema.parse(config)).not.toThrow();
     });
 
-    it('should validate date with format and showTime', () => {
+    it('должен валидировать date с format и showTime', () => {
       const config = {
         type: 'date',
         name: 'appointment',
@@ -281,7 +281,7 @@ describe('fieldSchemas', () => {
       expect(() => dateFieldSchema.parse(config)).not.toThrow();
     });
 
-    it('should validate date with disabled dates (string)', () => {
+    it('должен валидировать date с отключёнными датами (строка)', () => {
       const config = {
         type: 'date',
         name: 'futureDate',
@@ -292,7 +292,7 @@ describe('fieldSchemas', () => {
       expect(() => dateFieldSchema.parse(config)).not.toThrow();
     });
 
-    it('should validate date with disabled dates (Date object)', () => {
+    it('должен валидировать date с отключёнными датами (объект Date)', () => {
       const config = {
         type: 'date',
         name: 'pastDate',
@@ -304,7 +304,7 @@ describe('fieldSchemas', () => {
   });
 
   describe('textareaFieldSchema', () => {
-    it('should validate valid textarea config', () => {
+    it('должен валидировать корректную конфигурацию textarea', () => {
       const config = {
         type: 'textarea',
         name: 'description',
@@ -314,7 +314,7 @@ describe('fieldSchemas', () => {
       expect(() => textareaFieldSchema.parse(config)).not.toThrow();
     });
 
-    it('should validate textarea with rows', () => {
+    it('должен валидировать textarea с rows', () => {
       const config = {
         type: 'textarea',
         name: 'notes',
@@ -324,7 +324,7 @@ describe('fieldSchemas', () => {
       expect(() => textareaFieldSchema.parse(config)).not.toThrow();
     });
 
-    it('should validate textarea with maxLength', () => {
+    it('должен валидировать textarea с maxLength', () => {
       const config = {
         type: 'textarea',
         name: 'bio',
@@ -334,7 +334,7 @@ describe('fieldSchemas', () => {
       expect(() => textareaFieldSchema.parse(config)).not.toThrow();
     });
 
-    it('should validate textarea with boolean autoSize', () => {
+    it('должен валидировать textarea с булевым autoSize', () => {
       const config = {
         type: 'textarea',
         name: 'comment',
@@ -344,7 +344,7 @@ describe('fieldSchemas', () => {
       expect(() => textareaFieldSchema.parse(config)).not.toThrow();
     });
 
-    it('should validate textarea with object autoSize', () => {
+    it('должен валидировать textarea с объектным autoSize', () => {
       const config = {
         type: 'textarea',
         name: 'comment',
@@ -354,7 +354,7 @@ describe('fieldSchemas', () => {
       expect(() => textareaFieldSchema.parse(config)).not.toThrow();
     });
 
-    it('should fail with invalid rows', () => {
+    it('должен завершаться неудачей с невалидным rows', () => {
       const config = {
         type: 'textarea',
         name: 'notes',
@@ -364,7 +364,7 @@ describe('fieldSchemas', () => {
       expect(() => textareaFieldSchema.parse(config)).toThrow();
     });
 
-    it('should fail with non-integer rows', () => {
+    it('должен завершаться неудачей с нецелым rows', () => {
       const config = {
         type: 'textarea',
         name: 'notes',
@@ -374,7 +374,7 @@ describe('fieldSchemas', () => {
       expect(() => textareaFieldSchema.parse(config)).toThrow();
     });
 
-    it('should fail with invalid maxLength', () => {
+    it('должен завершаться неудачей с невалидным maxLength', () => {
       const config = {
         type: 'textarea',
         name: 'bio',
@@ -386,7 +386,7 @@ describe('fieldSchemas', () => {
   });
 
   describe('validateFieldConfig', () => {
-    it('should return null for valid input config', () => {
+    it('должен возвращать null для валидной конфигурации input', () => {
       const config = {
         type: 'input',
         name: 'email',
@@ -395,7 +395,7 @@ describe('fieldSchemas', () => {
       expect(validateFieldConfig(config)).toBeNull();
     });
 
-    it('should return null for valid inputNumber config', () => {
+    it('должен возвращать null для валидной конфигурации inputNumber', () => {
       const config = {
         type: 'inputNumber',
         name: 'age',
@@ -405,7 +405,7 @@ describe('fieldSchemas', () => {
       expect(validateFieldConfig(config)).toBeNull();
     });
 
-    it('should return null for valid select config', () => {
+    it('должен возвращать null для валидной конфигурации select', () => {
       const config = {
         type: 'select',
         name: 'country',
@@ -415,7 +415,7 @@ describe('fieldSchemas', () => {
       expect(validateFieldConfig(config)).toBeNull();
     });
 
-    it('should return null for valid switch config', () => {
+    it('должен возвращать null для валидной конфигурации switch', () => {
       const config = {
         type: 'switch',
         name: 'enabled',
@@ -424,7 +424,7 @@ describe('fieldSchemas', () => {
       expect(validateFieldConfig(config)).toBeNull();
     });
 
-    it('should return null for valid date config', () => {
+    it('должен возвращать null для валидной конфигурации date', () => {
       const config = {
         type: 'date',
         name: 'date',
@@ -433,7 +433,7 @@ describe('fieldSchemas', () => {
       expect(validateFieldConfig(config)).toBeNull();
     });
 
-    it('should return null for valid textarea config', () => {
+    it('должен возвращать null для валидной конфигурации textarea', () => {
       const config = {
         type: 'textarea',
         name: 'description',
@@ -442,7 +442,7 @@ describe('fieldSchemas', () => {
       expect(validateFieldConfig(config)).toBeNull();
     });
 
-    it('should return error message for unknown field type', () => {
+    it('должен возвращать сообщение об ошибке для неизвестного типа поля', () => {
       const config = {
         type: 'unknown',
         name: 'field',
@@ -451,7 +451,7 @@ describe('fieldSchemas', () => {
       expect(validateFieldConfig(config)).toBe('Unknown field type: unknown');
     });
 
-    it('should return error message for invalid input config', () => {
+    it('должен возвращать сообщение об ошибке для невалидной конфигурации input', () => {
       const config = {
         type: 'input',
         name: '',
@@ -462,7 +462,7 @@ describe('fieldSchemas', () => {
       expect(error).toContain('name');
     });
 
-    it('should return error message for invalid select config', () => {
+    it('должен возвращать сообщение об ошибке для невалидной конфигурации select', () => {
       const config = {
         type: 'select',
         name: 'country',
@@ -474,7 +474,7 @@ describe('fieldSchemas', () => {
       expect(error).toContain('options');
     });
 
-    it('should return multiple errors joined', () => {
+    it('должен возвращать несколько ошибок объединённых вместе', () => {
       const config = {
         type: 'input',
         name: '',
@@ -486,29 +486,29 @@ describe('fieldSchemas', () => {
       expect(error).toContain('label');
     });
 
-    it('should return error for null config', () => {
+    it('должен возвращать ошибку для null конфигурации', () => {
       expect(validateFieldConfig(null)).toBe('Config must be an object');
     });
 
-    it('should return error for number config', () => {
+    it('должен возвращать ошибку для числовой конфигурации', () => {
       expect(validateFieldConfig(42)).toBe('Config must be an object');
     });
 
-    it('should return error for string config', () => {
+    it('должен возвращать ошибку для строковой конфигурации', () => {
       expect(validateFieldConfig('not an object')).toBe('Config must be an object');
     });
 
-    it('should return error for object without type', () => {
+    it('должен возвращать ошибку для объекта без type', () => {
       expect(validateFieldConfig({ name: 'test', label: 'Test' })).toBe('Config must have a type property');
     });
 
-    it('should return error for object with non-string type', () => {
+    it('должен возвращать ошибку для объекта с нестроковым type', () => {
       expect(validateFieldConfig({ type: 123, name: 'test', label: 'Test' })).toBe('Config must have a type property');
     });
 
-    it('should handle non-ZodError in catch', () => {
-      // Create a config that would cause a non-Zod error by passing
-      // an object with a getter that throws
+    it('должен обрабатывать не-ZodError в блоке catch', () => {
+      // Создаём конфигурацию которая вызовет не-Zod ошибку передав
+      // объект с геттером который выбрасывает исключение
       const config = {
         type: 'input',
         get name() { throw new Error('getter error'); },

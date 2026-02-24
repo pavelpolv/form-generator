@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { SelectField } from './SelectField';
 import { SelectField as SelectFieldConfig } from '@/types';
 
-// Wrapper component to provide react-hook-form context
+// Обёртка для предоставления контекста react-hook-form
 const TestWrapper = ({ config, error, disabled }: { config: SelectFieldConfig; error?: string; disabled?: boolean }) => {
   const { control } = useForm();
 
@@ -28,19 +28,19 @@ describe('SelectField', () => {
     ],
   };
 
-  it('should render with label', () => {
+  it('должен рендерить с лейблом', () => {
     render(<TestWrapper config={baseConfig} />);
     expect(screen.getByText('Test Select')).toBeInTheDocument();
   });
 
-  it('should display error message', () => {
+  it('должен отображать сообщение об ошибке', () => {
     render(<TestWrapper
       config={baseConfig}
       error="Selection required" />);
     expect(screen.getByText('Selection required')).toBeInTheDocument();
   });
 
-  it('should display config error for empty options', () => {
+  it('должен отображать ошибку конфигурации при пустом списке опций', () => {
     const invalidConfig: SelectFieldConfig = {
       type: 'select',
       name: 'invalid',
@@ -52,7 +52,7 @@ describe('SelectField', () => {
     expect(screen.getByText('Невозможно отобразить поле')).toBeInTheDocument();
   });
 
-  it('should display config error for missing label', () => {
+  it('должен отображать ошибку конфигурации при отсутствии лейбла', () => {
     const invalidConfig = {
       type: 'select',
       name: 'test',
@@ -64,7 +64,7 @@ describe('SelectField', () => {
     expect(screen.getByText('Невозможно отобразить поле')).toBeInTheDocument();
   });
 
-  it('should render as disabled when disabled prop is true', () => {
+  it('должен рендерить в заблокированном состоянии, когда disabled=true', () => {
     render(<TestWrapper
       config={baseConfig}
       disabled={true} />);
@@ -72,7 +72,7 @@ describe('SelectField', () => {
     expect(select).not.toBeNull();
   });
 
-  it('should render with multiple mode', () => {
+  it('должен рендерить в режиме множественного выбора', () => {
     const config: SelectFieldConfig = {
       ...baseConfig,
       multiple: true,
@@ -82,18 +82,18 @@ describe('SelectField', () => {
     expect(select).not.toBeNull();
   });
 
-  it('should render with searchable mode', () => {
+  it('должен рендерить в режиме поиска', () => {
     const config: SelectFieldConfig = {
       ...baseConfig,
       searchable: true,
     };
     render(<TestWrapper config={config} />);
-    // When searchable, the select should have a search input
+    // При включённом поиске у селекта должен быть инпут поиска
     const select = document.querySelector('.ant-select-show-search');
     expect(select).not.toBeNull();
   });
 
-  it('should render options with disabled flag', () => {
+  it('должен рендерить опции с флагом disabled', () => {
     const config: SelectFieldConfig = {
       ...baseConfig,
       options: [
@@ -105,7 +105,7 @@ describe('SelectField', () => {
     expect(screen.getByText('Test Select')).toBeInTheDocument();
   });
 
-  it('should render with default value', () => {
+  it('должен рендерить с дефолтным значением', () => {
     const config: SelectFieldConfig = {
       ...baseConfig,
       defaultValue: 'opt1',
@@ -114,25 +114,25 @@ describe('SelectField', () => {
     expect(screen.getByText('Option 1')).toBeInTheDocument();
   });
 
-  it('should filter options in searchable mode', async () => {
+  it('должен фильтровать опции в режиме поиска', async () => {
     const config: SelectFieldConfig = {
       ...baseConfig,
       searchable: true,
     };
     render(<TestWrapper config={config} />);
 
-    // Open the select dropdown
+    // Открываем выпадающий список
     const select = document.querySelector('.ant-select-selector')!;
     fireEvent.mouseDown(select);
 
-    // Type in the search input to trigger filterOption
+    // Вводим текст в поисковый инпут для вызова filterOption
     const searchInput = document.querySelector('.ant-select-selection-search-input')!;
     fireEvent.change(searchInput, { target: { value: 'Option 1' } });
 
-    // filterOption should have been called, filtering the options
+    // filterOption должен был вызваться, отфильтровав опции
   });
 
-  it('should render with placeholder', () => {
+  it('должен рендерить с плейсхолдером', () => {
     render(<TestWrapper config={baseConfig} />);
     expect(screen.getByText('Select option')).toBeInTheDocument();
   });

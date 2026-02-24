@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import moment from 'moment';
 import { DateField as DateFieldConfig } from '@/types';
 
-// Mock antd DatePicker to expose onChange and disabledDate callbacks directly
+// Мок antd DatePicker для прямого вызова колбэков onChange и disabledDate
 vi.mock('antd', async () => {
   const actual = await vi.importActual<typeof import('antd')>('antd');
 
@@ -49,7 +49,7 @@ vi.mock('antd', async () => {
   };
 });
 
-// Must import DateField AFTER the mock
+// DateField нужно импортировать ПОСЛЕ объявления мока
 const { DateField } = await import('./DateField');
 
 const TestWrapper = ({
@@ -72,7 +72,7 @@ const TestWrapper = ({
   );
 };
 
-describe('DateField callbacks (mocked DatePicker)', () => {
+describe('DateField колбэки (с моком DatePicker)', () => {
   const baseConfig: DateFieldConfig = {
     type: 'date',
     name: 'testDate',
@@ -80,38 +80,38 @@ describe('DateField callbacks (mocked DatePicker)', () => {
     placeholder: 'Select date',
   };
 
-  it('should call field.onChange with ISO string when date is selected', () => {
+  it('1. вызывает field.onChange с ISO-строкой при выборе даты', () => {
     render(<TestWrapper config={baseConfig} />);
 
-    // Click the mock "select date" button which directly calls onChange(moment('2024-06-15'))
+    // Кликаем по кнопке мока "select date", которая напрямую вызывает onChange(moment('2024-06-15'))
     fireEvent.click(screen.getByTestId('select-date'));
 
-    // The form value should now be an ISO string (timezone may shift the date)
+    // Значение формы должно быть ISO-строкой (часовой пояс может сдвинуть дату)
     const value = screen.getByTestId('current-value').textContent!;
     expect(value).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/);
     expect(value).not.toBe('empty');
   });
 
-  it('should call field.onChange with null when date is cleared', () => {
+  it('2. вызывает field.onChange с null при очистке даты', () => {
     render(<TestWrapper
       config={baseConfig}
       defaultValues={{ testDate: '2024-06-15T00:00:00.000Z' }} />);
 
-    // Click the mock "clear date" button which directly calls onChange(null)
+    // Кликаем по кнопке мока "clear date", которая напрямую вызывает onChange(null)
     fireEvent.click(screen.getByTestId('clear-date'));
 
     const value = screen.getByTestId('current-value').textContent;
     expect(value).toBe('empty');
   });
 
-  it('should return false from disabledDate when current is null/falsy', () => {
+  it('3. возвращает false из disabledDate, если current равен null/falsy', () => {
     const config: DateFieldConfig = {
       ...baseConfig,
       disabledDateBefore: new Date('2024-01-01'),
     };
     render(<TestWrapper config={config} />);
 
-    // Click the button that calls disabledDate(null)
+    // Кликаем по кнопке, которая вызывает disabledDate(null)
     fireEvent.click(screen.getByTestId('check-disabled-null'));
 
     const result = screen.getByTestId('disabled-result').textContent;

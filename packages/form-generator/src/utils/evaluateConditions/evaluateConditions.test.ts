@@ -3,7 +3,7 @@ import { evaluateConditions, collectValidationMessages, collectFieldsFromConditi
 import { ConditionGroup, ConditionValue, FormValues } from '@/types';
 
 describe('evaluateConditions', () => {
-  describe('ConditionValue - comparison operators', () => {
+  describe('ConditionValue - операторы сравнения', () => {
     const formValues: FormValues = {
       age: 25,
       price: 100,
@@ -15,7 +15,7 @@ describe('evaluateConditions', () => {
       nullValue: null,
     };
 
-    it('should handle < operator', () => {
+    it('должен обрабатывать оператор <', () => {
       const condition: ConditionValue = { field: 'age', condition: '<', value: 30 };
       expect(evaluateConditions(condition, formValues)).toBe(true);
 
@@ -23,7 +23,7 @@ describe('evaluateConditions', () => {
       expect(evaluateConditions(condition2, formValues)).toBe(false);
     });
 
-    it('should handle > operator', () => {
+    it('должен обрабатывать оператор >', () => {
       const condition: ConditionValue = { field: 'age', condition: '>', value: 20 };
       expect(evaluateConditions(condition, formValues)).toBe(true);
 
@@ -31,7 +31,7 @@ describe('evaluateConditions', () => {
       expect(evaluateConditions(condition2, formValues)).toBe(false);
     });
 
-    it('should handle <= operator', () => {
+    it('должен обрабатывать оператор <=', () => {
       const condition: ConditionValue = { field: 'age', condition: '<=', value: 25 };
       expect(evaluateConditions(condition, formValues)).toBe(true);
 
@@ -39,7 +39,7 @@ describe('evaluateConditions', () => {
       expect(evaluateConditions(condition2, formValues)).toBe(false);
     });
 
-    it('should handle >= operator', () => {
+    it('должен обрабатывать оператор >=', () => {
       const condition: ConditionValue = { field: 'age', condition: '>=', value: 25 };
       expect(evaluateConditions(condition, formValues)).toBe(true);
 
@@ -47,7 +47,7 @@ describe('evaluateConditions', () => {
       expect(evaluateConditions(condition2, formValues)).toBe(false);
     });
 
-    it('should handle === operator', () => {
+    it('должен обрабатывать оператор ===', () => {
       const condition: ConditionValue = { field: 'age', condition: '===', value: 25 };
       expect(evaluateConditions(condition, formValues)).toBe(true);
 
@@ -58,7 +58,7 @@ describe('evaluateConditions', () => {
       expect(evaluateConditions(condition3, formValues)).toBe(false);
     });
 
-    it('should handle !== operator', () => {
+    it('должен обрабатывать оператор !==', () => {
       const condition: ConditionValue = { field: 'age', condition: '!==', value: 30 };
       expect(evaluateConditions(condition, formValues)).toBe(true);
 
@@ -66,7 +66,7 @@ describe('evaluateConditions', () => {
       expect(evaluateConditions(condition2, formValues)).toBe(false);
     });
 
-    it('should handle ∅ (empty) operator', () => {
+    it('должен обрабатывать оператор ∅ (пусто)', () => {
       const condition1: ConditionValue = { field: 'emptyString', condition: '∅' };
       expect(evaluateConditions(condition1, formValues)).toBe(true);
 
@@ -80,13 +80,13 @@ describe('evaluateConditions', () => {
       expect(evaluateConditions(condition4, formValues)).toBe(false);
     });
 
-    it('should handle ∅ (empty) operator with empty object', () => {
+    it('должен обрабатывать оператор ∅ (пусто) с пустым объектом', () => {
       const values: FormValues = { emptyObj: {} };
       const condition: ConditionValue = { field: 'emptyObj', condition: '∅' };
       expect(evaluateConditions(condition, values)).toBe(true);
     });
 
-    it('should handle ∅ (empty) operator with number/boolean (not empty)', () => {
+    it('должен обрабатывать оператор ∅ (пусто) с числом/булевым (не пусто)', () => {
       const condition1: ConditionValue = { field: 'age', condition: '∅' };
       expect(evaluateConditions(condition1, formValues)).toBe(false);
 
@@ -94,7 +94,7 @@ describe('evaluateConditions', () => {
       expect(evaluateConditions(condition2, formValues)).toBe(false);
     });
 
-    it('should handle includes operator for arrays', () => {
+    it('должен обрабатывать оператор includes для массивов', () => {
       const values: FormValues = { tags: ['react', 'vue', 'angular'] };
       const condition: ConditionValue = { field: 'tags', condition: 'includes', value: 'react' };
       expect(evaluateConditions(condition, values)).toBe(true);
@@ -103,34 +103,34 @@ describe('evaluateConditions', () => {
       expect(evaluateConditions(condition2, values)).toBe(false);
     });
 
-    it('should return false for includes with non-string/non-array left value', () => {
+    it('должен возвращать false для includes с нестроковым/немассивным левым значением', () => {
       const condition: ConditionValue = { field: 'age', condition: 'includes', value: '2' };
       expect(evaluateConditions(condition, formValues)).toBe(false);
     });
 
-    it('should return false for startsWith with non-string values', () => {
+    it('должен возвращать false для startsWith с нестроковыми значениями', () => {
       const condition: ConditionValue = { field: 'age', condition: 'startsWith', value: '2' };
       expect(evaluateConditions(condition, formValues)).toBe(false);
     });
 
-    it('should return false for endsWith with non-string values', () => {
+    it('должен возвращать false для endsWith с нестроковыми значениями', () => {
       const condition: ConditionValue = { field: 'age', condition: 'endsWith', value: '5' };
       expect(evaluateConditions(condition, formValues)).toBe(false);
     });
 
-    it('should return false for match with non-string values', () => {
+    it('должен возвращать false для match с нестроковыми значениями', () => {
       const condition: ConditionValue = { field: 'age', condition: 'match', value: '\\d+' };
       expect(evaluateConditions(condition, formValues)).toBe(false);
     });
 
-    it('should return false for unknown operator', () => {
+    it('должен возвращать false для неизвестного оператора', () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       const condition = { field: 'age', condition: 'unknown' as any, value: 25 };
       expect(evaluateConditions(condition, formValues)).toBe(false);
       consoleSpy.mockRestore();
     });
 
-    it('should handle !∅ (not empty) operator', () => {
+    it('должен обрабатывать оператор !∅ (не пусто)', () => {
       const condition1: ConditionValue = { field: 'name', condition: '!∅' };
       expect(evaluateConditions(condition1, formValues)).toBe(true);
 
@@ -141,7 +141,7 @@ describe('evaluateConditions', () => {
       expect(evaluateConditions(condition3, formValues)).toBe(false);
     });
 
-    it('should handle includes operator', () => {
+    it('должен обрабатывать оператор includes', () => {
       const condition1: ConditionValue = { field: 'email', condition: 'includes', value: '@' };
       expect(evaluateConditions(condition1, formValues)).toBe(true);
 
@@ -152,7 +152,7 @@ describe('evaluateConditions', () => {
       expect(evaluateConditions(condition3, formValues)).toBe(false);
     });
 
-    it('should handle startsWith operator', () => {
+    it('должен обрабатывать оператор startsWith', () => {
       const condition1: ConditionValue = { field: 'email', condition: 'startsWith', value: 'test' };
       expect(evaluateConditions(condition1, formValues)).toBe(true);
 
@@ -160,7 +160,7 @@ describe('evaluateConditions', () => {
       expect(evaluateConditions(condition2, formValues)).toBe(false);
     });
 
-    it('should handle endsWith operator', () => {
+    it('должен обрабатывать оператор endsWith', () => {
       const condition1: ConditionValue = { field: 'email', condition: 'endsWith', value: '.com' };
       expect(evaluateConditions(condition1, formValues)).toBe(true);
 
@@ -168,7 +168,7 @@ describe('evaluateConditions', () => {
       expect(evaluateConditions(condition2, formValues)).toBe(false);
     });
 
-    it('should handle match operator', () => {
+    it('должен обрабатывать оператор match', () => {
       const condition1: ConditionValue = { field: 'email', condition: 'match', value: '^test.*\\.com$' };
       expect(evaluateConditions(condition1, formValues)).toBe(true);
 
@@ -177,7 +177,7 @@ describe('evaluateConditions', () => {
     });
   });
 
-  describe('Field references with $ prefix', () => {
+  describe('Ссылки на поля с префиксом $', () => {
     const formValues: FormValues = {
       password: 'secret123',
       confirmPassword: 'secret123',
@@ -185,7 +185,7 @@ describe('evaluateConditions', () => {
       userAge: 25,
     };
 
-    it('should compare field with another field using $ prefix', () => {
+    it('должен сравнивать поле с другим полем через префикс $', () => {
       const condition: ConditionValue = {
         field: 'password',
         condition: '===',
@@ -194,7 +194,7 @@ describe('evaluateConditions', () => {
       expect(evaluateConditions(condition, formValues)).toBe(true);
     });
 
-    it('should handle field reference in numeric comparison', () => {
+    it('должен обрабатывать ссылку на поле в числовом сравнении', () => {
       const condition: ConditionValue = {
         field: 'userAge',
         condition: '>=',
@@ -203,7 +203,7 @@ describe('evaluateConditions', () => {
       expect(evaluateConditions(condition, formValues)).toBe(true);
     });
 
-    it('should return false when field references do not match', () => {
+    it('должен возвращать false когда ссылки на поля не совпадают', () => {
       const values: FormValues = {
         password: 'secret123',
         confirmPassword: 'different',
@@ -217,14 +217,14 @@ describe('evaluateConditions', () => {
     });
   });
 
-  describe('ConditionGroup - and/or logic', () => {
+  describe('ConditionGroup - логика and/or', () => {
     const formValues: FormValues = {
       age: 25,
       country: 'USA',
       isPremium: false,
     };
 
-    it('should handle AND group (all conditions must pass)', () => {
+    it('должен обрабатывать группу AND (все условия должны выполняться)', () => {
       const condition: ConditionGroup = {
         comparisonType: 'and',
         children: [
@@ -235,7 +235,7 @@ describe('evaluateConditions', () => {
       expect(evaluateConditions(condition, formValues)).toBe(true);
     });
 
-    it('should return false for AND group if one condition fails', () => {
+    it('должен возвращать false для группы AND если одно условие не выполняется', () => {
       const condition: ConditionGroup = {
         comparisonType: 'and',
         children: [
@@ -246,7 +246,7 @@ describe('evaluateConditions', () => {
       expect(evaluateConditions(condition, formValues)).toBe(false);
     });
 
-    it('should handle OR group (at least one condition must pass)', () => {
+    it('должен обрабатывать группу OR (хотя бы одно условие должно выполняться)', () => {
       const condition: ConditionGroup = {
         comparisonType: 'or',
         children: [
@@ -257,7 +257,7 @@ describe('evaluateConditions', () => {
       expect(evaluateConditions(condition, formValues)).toBe(true);
     });
 
-    it('should return false for OR group if all conditions fail', () => {
+    it('должен возвращать false для группы OR если все условия не выполняются', () => {
       const condition: ConditionGroup = {
         comparisonType: 'or',
         children: [
@@ -268,7 +268,7 @@ describe('evaluateConditions', () => {
       expect(evaluateConditions(condition, formValues)).toBe(false);
     });
 
-    it('should handle nested condition groups', () => {
+    it('должен обрабатывать вложенные группы условий', () => {
       const condition: ConditionGroup = {
         comparisonType: 'or',
         children: [
@@ -286,7 +286,7 @@ describe('evaluateConditions', () => {
     });
   });
 
-  describe('Edge cases and error handling', () => {
+  describe('Граничные случаи и обработка ошибок', () => {
     let consoleSpy: ReturnType<typeof vi.spyOn>;
 
     beforeEach(() => {
@@ -297,11 +297,11 @@ describe('evaluateConditions', () => {
       consoleSpy.mockRestore();
     });
 
-    it('should return true when condition is undefined', () => {
+    it('должен возвращать true когда условие равно undefined', () => {
       expect(evaluateConditions(undefined, {})).toBe(true);
     });
 
-    it('should not crash when field does not exist', () => {
+    it('не должен падать когда поле не существует', () => {
       const condition: ConditionValue = {
         field: 'nonExistentField',
         condition: '===',
@@ -310,7 +310,7 @@ describe('evaluateConditions', () => {
       expect(evaluateConditions(condition, {})).toBe(false);
     });
 
-    it('should handle empty ConditionGroup children', () => {
+    it('должен обрабатывать пустой массив children в ConditionGroup', () => {
       const condition: ConditionGroup = {
         comparisonType: 'and',
         children: [],
@@ -318,7 +318,7 @@ describe('evaluateConditions', () => {
       expect(evaluateConditions(condition, {})).toBe(false);
     });
 
-    it('should handle invalid regex pattern', () => {
+    it('должен обрабатывать невалидный шаблон регулярного выражения', () => {
       const condition: ConditionValue = {
         field: 'email',
         condition: 'match',
@@ -328,8 +328,8 @@ describe('evaluateConditions', () => {
       expect(evaluateConditions(condition, formValues)).toBe(false);
     });
 
-    it('should return false when depth exceeds 50', () => {
-      // Build a deeply nested condition group (>50 levels)
+    it('должен возвращать false когда глубина превышает 50', () => {
+      // Строим глубоко вложенную группу условий (>50 уровней)
       let condition: ConditionGroup = {
         comparisonType: 'and',
         children: [{ field: 'x', condition: '===', value: 1 }],
@@ -343,7 +343,7 @@ describe('evaluateConditions', () => {
       expect(evaluateConditions(condition, { x: 1 })).toBe(false);
     });
 
-    it('should return false for unknown comparisonType', () => {
+    it('должен возвращать false для неизвестного comparisonType', () => {
       const condition = {
         comparisonType: 'xor' as any,
         children: [{ field: 'x', condition: '===', value: 1 }],
@@ -351,7 +351,7 @@ describe('evaluateConditions', () => {
       expect(evaluateConditions(condition, { x: 1 })).toBe(false);
     });
 
-    it('should return false for invalid child in ConditionGroup', () => {
+    it('должен возвращать false для невалидного дочернего элемента в ConditionGroup', () => {
       const condition: ConditionGroup = {
         comparisonType: 'and',
         children: [
@@ -362,12 +362,12 @@ describe('evaluateConditions', () => {
       expect(evaluateConditions(condition, { x: 1 })).toBe(false);
     });
 
-    it('should return false for invalid condition object', () => {
+    it('должен возвращать false для невалидного объекта условия', () => {
       const condition = { invalid: 'object' } as any;
       expect(evaluateConditions(condition, {})).toBe(false);
     });
 
-    it('should handle ISO date string without milliseconds', () => {
+    it('должен обрабатывать ISO строку даты без миллисекунд', () => {
       const formValues: FormValues = {
         date1: '2024-01-15T10:00:00Z',
         date2: '2024-02-20T10:00:00.000Z',
@@ -381,8 +381,8 @@ describe('evaluateConditions', () => {
     });
   });
 
-  describe('Date comparisons', () => {
-    it('should handle date comparison with < operator', () => {
+  describe('Сравнение дат', () => {
+    it('должен обрабатывать сравнение дат с оператором <', () => {
       const formValues: FormValues = {
         startDate: '2024-01-15T10:00:00.000Z',
         endDate: '2024-02-20T10:00:00.000Z',
@@ -395,7 +395,7 @@ describe('evaluateConditions', () => {
       expect(evaluateConditions(condition, formValues)).toBe(true);
     });
 
-    it('should handle date comparison with > operator', () => {
+    it('должен обрабатывать сравнение дат с оператором >', () => {
       const formValues: FormValues = {
         startDate: '2024-02-20T10:00:00.000Z',
         endDate: '2024-01-15T10:00:00.000Z',
@@ -408,7 +408,7 @@ describe('evaluateConditions', () => {
       expect(evaluateConditions(condition, formValues)).toBe(true);
     });
 
-    it('should handle date comparison with <= operator', () => {
+    it('должен обрабатывать сравнение дат с оператором <=', () => {
       const formValues: FormValues = {
         startDate: '2024-01-15T10:00:00.000Z',
         endDate: '2024-02-20T10:00:00.000Z',
@@ -421,7 +421,7 @@ describe('evaluateConditions', () => {
       expect(evaluateConditions(condition, formValues)).toBe(true);
     });
 
-    it('should handle date comparison with >= operator', () => {
+    it('должен обрабатывать сравнение дат с оператором >=', () => {
       const formValues: FormValues = {
         startDate: '2024-02-20T10:00:00.000Z',
         endDate: '2024-01-15T10:00:00.000Z',
@@ -434,7 +434,7 @@ describe('evaluateConditions', () => {
       expect(evaluateConditions(condition, formValues)).toBe(true);
     });
 
-    it('should validate date range correctly', () => {
+    it('должен корректно валидировать диапазон дат', () => {
       const formValues: FormValues = {
         startDate: '2024-01-15T10:00:00.000Z',
         endDate: '2024-02-20T10:00:00.000Z',
@@ -448,7 +448,7 @@ describe('evaluateConditions', () => {
       expect(evaluateConditions(condition, formValues)).toBe(true);
     });
 
-    it('should fail when start date is after end date', () => {
+    it('должен завершаться неудачей когда дата начала позже даты окончания', () => {
       const formValues: FormValues = {
         startDate: '2024-02-20T10:00:00.000Z',
         endDate: '2024-01-15T10:00:00.000Z',
@@ -469,7 +469,7 @@ describe('evaluateConditions', () => {
       email: '',
     };
 
-    it('should collect message from failed condition', () => {
+    it('должен собирать сообщение из невыполненного условия', () => {
       const condition: ConditionValue = {
         field: 'age',
         condition: '>=',
@@ -480,7 +480,7 @@ describe('evaluateConditions', () => {
       expect(messages).toEqual(['Must be 18 or older']);
     });
 
-    it('should collect messages from AND group', () => {
+    it('должен собирать сообщения из группы AND', () => {
       const condition: ConditionGroup = {
         comparisonType: 'and',
         children: [
@@ -493,7 +493,7 @@ describe('evaluateConditions', () => {
       expect(messages).toContain('Email is required');
     });
 
-    it('should return empty array when all conditions pass', () => {
+    it('должен возвращать пустой массив когда все условия выполняются', () => {
       const condition: ConditionValue = {
         field: 'age',
         condition: '>=',
@@ -504,12 +504,12 @@ describe('evaluateConditions', () => {
       expect(messages).toEqual([]);
     });
 
-    it('should return empty array when condition is undefined', () => {
+    it('должен возвращать пустой массив когда условие равно undefined', () => {
       const messages = collectValidationMessages(undefined, formValues);
       expect(messages).toEqual([]);
     });
 
-    it('should collect messages from OR group where all conditions fail', () => {
+    it('должен собирать сообщения из группы OR где все условия не выполняются', () => {
       const condition: ConditionGroup = {
         comparisonType: 'or',
         children: [
@@ -522,7 +522,7 @@ describe('evaluateConditions', () => {
       expect(messages).toContain('Email is required');
     });
 
-    it('should collect messages from nested groups', () => {
+    it('должен собирать сообщения из вложенных групп', () => {
       const condition: ConditionGroup = {
         comparisonType: 'and',
         children: [
@@ -539,7 +539,7 @@ describe('evaluateConditions', () => {
       expect(messages.length).toBeGreaterThan(0);
     });
 
-    it('should return empty messages when group condition passes', () => {
+    it('должен возвращать пустые сообщения когда групповое условие выполняется', () => {
       const condition: ConditionGroup = {
         comparisonType: 'and',
         children: [
@@ -550,7 +550,7 @@ describe('evaluateConditions', () => {
       expect(messages).toEqual([]);
     });
 
-    it('should not collect message from failed condition without message', () => {
+    it('не должен собирать сообщение из невыполненного условия без сообщения', () => {
       const condition: ConditionValue = {
         field: 'age',
         condition: '>=',
@@ -560,24 +560,24 @@ describe('evaluateConditions', () => {
       expect(messages).toEqual([]);
     });
 
-    it('should only collect messages from failed children in AND group (skip passing children)', () => {
-      // AND group fails because one child fails, but another child passes.
-      // The passing child should NOT have its message collected (covers !allResults[index] == false branch)
+    it('должен собирать сообщения только из невыполненных дочерних элементов в группе AND (пропускать выполненные)', () => {
+      // Группа AND завершается неудачей потому что один дочерний элемент не выполняется, но другой выполняется.
+      // Выполненный дочерний элемент НЕ должен иметь собранное сообщение (покрывает ветку !allResults[index] == false)
       const condition: ConditionGroup = {
         comparisonType: 'and',
         children: [
-          { field: 'age', condition: '>=', value: 18, message: 'Must be 18+' }, // passes (age=10 < 18 → fails)
-          { field: 'name', condition: '!∅', message: 'Name required' }, // passes (name='John' → not empty)
+          { field: 'age', condition: '>=', value: 18, message: 'Must be 18+' }, // проходит (age=10 < 18 → не выполняется)
+          { field: 'name', condition: '!∅', message: 'Name required' }, // проходит (name='John' → не пусто)
         ],
       };
-      // age=10 fails >=18, name='John' passes !∅
+      // age=10 не выполняет >=18, name='John' выполняет !∅
       const messages = collectValidationMessages(condition, { age: 10, name: 'John' });
-      // Only the failing child's message should be collected
+      // Должно быть собрано только сообщение невыполненного дочернего элемента
       expect(messages).toContain('Must be 18+');
       expect(messages).not.toContain('Name required');
     });
 
-    it('should handle invalid child in group during message collection', () => {
+    it('должен обрабатывать невалидный дочерний элемент в группе при сборе сообщений', () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       const condition: ConditionGroup = {
         comparisonType: 'and',
@@ -593,7 +593,7 @@ describe('evaluateConditions', () => {
   });
 
   describe('collectFieldsFromCondition', () => {
-    it('should collect field from simple condition', () => {
+    it('должен собирать поле из простого условия', () => {
       const condition: ConditionValue = {
         field: 'age',
         condition: '>=',
@@ -603,7 +603,7 @@ describe('evaluateConditions', () => {
       expect(fields).toEqual(['age']);
     });
 
-    it('should collect field and referenced field ($prefix)', () => {
+    it('должен собирать поле и поле-ссылку (префикс $)', () => {
       const condition: ConditionValue = {
         field: 'minPrice',
         condition: '<=',
@@ -615,7 +615,7 @@ describe('evaluateConditions', () => {
       expect(fields).toHaveLength(2);
     });
 
-    it('should collect all fields from AND group', () => {
+    it('должен собирать все поля из группы AND', () => {
       const condition: ConditionGroup = {
         comparisonType: 'and',
         children: [
@@ -629,7 +629,7 @@ describe('evaluateConditions', () => {
       expect(fields).toHaveLength(2);
     });
 
-    it('should collect all fields from OR group', () => {
+    it('должен собирать все поля из группы OR', () => {
       const condition: ConditionGroup = {
         comparisonType: 'or',
         children: [
@@ -643,7 +643,7 @@ describe('evaluateConditions', () => {
       expect(fields).toHaveLength(2);
     });
 
-    it('should collect fields from nested groups', () => {
+    it('должен собирать поля из вложенных групп', () => {
       const condition: ConditionGroup = {
         comparisonType: 'or',
         children: [
@@ -667,12 +667,12 @@ describe('evaluateConditions', () => {
       expect(fields).toHaveLength(2);
     });
 
-    it('should return empty array for undefined condition', () => {
+    it('должен возвращать пустой массив для условия undefined', () => {
       const fields = collectFieldsFromCondition(undefined);
       expect(fields).toEqual([]);
     });
 
-    it('should return unique field names', () => {
+    it('должен возвращать уникальные имена полей', () => {
       const condition: ConditionGroup = {
         comparisonType: 'and',
         children: [
@@ -684,7 +684,7 @@ describe('evaluateConditions', () => {
       expect(fields).toEqual(['age']);
     });
 
-    it('should skip ConditionValue with empty/falsy field name', () => {
+    it('должен пропускать ConditionValue с пустым/ложным именем поля', () => {
       const condition: ConditionGroup = {
         comparisonType: 'and',
         children: [
@@ -693,24 +693,24 @@ describe('evaluateConditions', () => {
         ],
       };
       const fields = collectFieldsFromCondition(condition);
-      // Empty string is falsy, so it should be skipped
+      // Пустая строка является ложным значением, поэтому должна быть пропущена
       expect(fields).toEqual(['validField']);
     });
 
-    it('should return empty array for invalid condition', () => {
+    it('должен возвращать пустой массив для невалидного условия', () => {
       const condition = { invalid: 'object' } as any;
       const fields = collectFieldsFromCondition(condition);
       expect(fields).toEqual([]);
     });
 
-    it('should handle error during field collection (catch block)', () => {
+    it('должен обрабатывать ошибку при сборе полей (блок catch)', () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-      // Create a condition group that passes type guard but throws during iteration
+      // Создаём группу условий которая проходит проверку типа, но выбрасывает исключение при итерации
       const badGroup = {
         comparisonType: 'and',
-        children: null as any, // forEach on null will throw
+        children: null as any, // forEach на null выбросит исключение
       };
-      // Wrap in a valid group so the outer checks pass but inner collect throws
+      // Оборачиваем в валидную группу чтобы внешние проверки прошли, но внутренний сбор выбросил исключение
       const condition = {
         comparisonType: 'and',
         children: [badGroup],
@@ -721,7 +721,7 @@ describe('evaluateConditions', () => {
     });
   });
 
-  describe('error handling - catch blocks', () => {
+  describe('обработка ошибок - блоки catch', () => {
     let consoleSpy: ReturnType<typeof vi.spyOn>;
 
     beforeEach(() => {
@@ -732,13 +732,13 @@ describe('evaluateConditions', () => {
       consoleSpy.mockRestore();
     });
 
-    it('should catch error in evaluateConditions main try-catch', () => {
-      // Create a condition that passes type guard but throws during evaluation
+    it('должен перехватывать ошибку в главном блоке try-catch evaluateConditions', () => {
+      // Создаём условие которое проходит проверку типа, но выбрасывает исключение при вычислении
       const condition = {
         field: 'x',
         condition: '===',
       };
-      // Override the field getter to throw after type guard check
+      // Переопределяем геттер поля чтобы выбросить исключение после проверки типа
       Object.defineProperty(condition, 'field', {
         get() { throw new Error('getter error'); },
         enumerable: true,
@@ -746,7 +746,7 @@ describe('evaluateConditions', () => {
       expect(evaluateConditions(condition as any, {})).toBe(false);
     });
 
-    it('should catch error in collectValidationMessages', () => {
+    it('должен перехватывать ошибку в collectValidationMessages', () => {
       const badGroup = {
         comparisonType: 'and',
         children: null as any,
@@ -759,8 +759,8 @@ describe('evaluateConditions', () => {
       expect(messages).toEqual([]);
     });
 
-    it('should catch error in compareValues outer try-catch', () => {
-      // Use a value with a valueOf that throws to trigger error in getComparableValue -> Number()
+    it('должен перехватывать ошибку в внешнем блоке try-catch compareValues', () => {
+      // Используем значение с valueOf которое выбрасывает исключение для вызова ошибки в getComparableValue -> Number()
       const throwingValue = {
         valueOf() { throw new Error('valueOf error'); },
         toString() { throw new Error('toString error'); },
