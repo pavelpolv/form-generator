@@ -28,5 +28,5 @@ export interface ComputedCase {
 // Конфиг поля
 export interface ComputedValueConfig {
   cases: ComputedCase[]
-  default?: ComputedResultValue   // если нет — поле не изменяется
+  default?: ComputedResultValue   // если нет - поле не изменяется
 }

@@ -8,10 +8,10 @@
 
 ```typescript
 interface DynamicListField {
-  /** Тип поля — всегда 'dynamicList' */
+  /** Тип поля - всегда 'dynamicList' */
   type: 'dynamicList'
 
-  /** Уникальное имя поля — используется как ключ в значениях формы */
+  /** Уникальное имя поля - используется как ключ в значениях формы */
   name: string
 
   /** Отображаемая метка */
@@ -29,7 +29,7 @@ interface DynamicListField {
   /** Условие валидации (на уровне списка, для кастомного использования) */
   validateCondition?: ConditionGroup
 
-  /** Условие блокировки — если true, кнопка добавления и кнопки удаления отключены */
+  /** Условие блокировки - если true, кнопка добавления и кнопки удаления отключены */
   disabledCondition?: ConditionGroup
 
   /** Порядок отображения (меньше = раньше) */
@@ -97,7 +97,7 @@ interface DynamicListField {
 
 ## Условия внутри item-полей
 
-Условия (`visibleCondition`, `disabledCondition`, `validateCondition`) в полях `itemFields` вычисляются в **скоупе item** — то есть относительно значений конкретного элемента списка, а не всей формы.
+Условия (`visibleCondition`, `disabledCondition`, `validateCondition`) в полях `itemFields` вычисляются в **скоупе item** - то есть относительно значений конкретного элемента списка, а не всей формы.
 
 Это значит что `$fieldRef` в условии item-поля ссылается на другое поле **того же item**, а не на глобальное поле.
 
@@ -111,7 +111,7 @@ interface DynamicListField {
       type: 'input',
       name: 'name',
       label: 'Name',
-      // Условие вычисляется в скоупе item — поле 'name' этого элемента
+      // Условие вычисляется в скоупе item - поле 'name' этого элемента
       validateCondition: {
         comparisonType: 'and',
         children: [{ field: 'name', condition: '!∅', message: 'Name is required' }],
@@ -150,7 +150,7 @@ interface DynamicListAddButtonConfig {
 }
 ```
 
-Пример — кнопка сверху, маленькая, не на всю ширину:
+Пример - кнопка сверху, маленькая, не на всю ширину:
 
 ```typescript
 {
@@ -288,6 +288,6 @@ const config: FormConfig = {
 
 ## Ограничения
 
-- **Нет вложенных `dynamicList`** — использование `dynamicList` внутри `itemFields` не поддерживается.
-- **Нет `computedValue` в item-полях** — `computedValue` в `itemFields` игнорируется. Используйте только в полях верхнего уровня.
-- **Нет `minItems`/`maxItems`** — ограничений на количество элементов нет. Если нужна такая валидация, реализуйте её на уровне `validateCondition` группы или кастомной логики формы.
+- **Нет вложенных `dynamicList`** - использование `dynamicList` внутри `itemFields` не поддерживается.
+- **Нет `computedValue` в item-полях** - `computedValue` в `itemFields` игнорируется. Используйте только в полях верхнего уровня.
+- **Нет `minItems`/`maxItems`** - ограничений на количество элементов нет. Если нужна такая валидация, реализуйте её на уровне `validateCondition` группы или кастомной логики формы.

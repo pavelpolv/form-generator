@@ -37,7 +37,7 @@ describe('DynamicListField', () => {
     ],
   };
 
-  it('1. renders with empty list — Add button visible, no items', () => {
+  it('1. renders with empty list - Add button visible, no items', () => {
     render(<TestWrapper config={baseConfig} />);
     expect(screen.getByText('Add item')).toBeInTheDocument();
     // No input placeholders rendered yet
@@ -76,7 +76,7 @@ describe('DynamicListField', () => {
     expect(screen.getByPlaceholderText('Enter name')).toHaveValue('John');
   });
 
-  it('5. visibleCondition false — list not rendered', () => {
+  it('5. visibleCondition false - list not rendered', () => {
     const config: DynamicListFieldConfig = {
       ...baseConfig,
       visibleCondition: {
@@ -88,7 +88,7 @@ describe('DynamicListField', () => {
     expect(container.innerHTML).toBe('');
   });
 
-  it('6. visibleCondition true — list rendered', () => {
+  it('6. visibleCondition true - list rendered', () => {
     const config: DynamicListFieldConfig = {
       ...baseConfig,
       visibleCondition: {
@@ -100,7 +100,7 @@ describe('DynamicListField', () => {
     expect(screen.getByText('Add item')).toBeInTheDocument();
   });
 
-  it('7. disabledCondition true — Add button disabled', () => {
+  it('7. disabledCondition true - Add button disabled', () => {
     const config: DynamicListFieldConfig = {
       ...baseConfig,
       disabledCondition: {
@@ -132,7 +132,7 @@ describe('DynamicListField', () => {
         },
       ],
     };
-    // Don't pass existing passengers — click Add to get one item with empty name
+    // Don't pass existing passengers - click Add to get one item with empty name
     render(<TestWrapper config={config} forceShowErrors={true} />);
     await user.click(screen.getByText('Add item'));
     // Item's name is empty in formValues scope → validateCondition fails → error shown
@@ -159,7 +159,7 @@ describe('DynamicListField', () => {
         },
       ],
     };
-    // Add one item — formValues empty means itemValues.name=undefined=empty
+    // Add one item - formValues empty means itemValues.name=undefined=empty
     render(<TestWrapper config={config} />);
     await user.click(screen.getByText('Add item'));
     // name is visible (no visibleCondition), passport is hidden (name is empty in item scope)
@@ -185,9 +185,9 @@ describe('DynamicListField', () => {
         },
       ],
     };
-    // Item from defaultValues — no need to click "Add item"
+    // Item from defaultValues - no need to click "Add item"
     render(<TestWrapper config={config} formValues={{ passengers: [{ name: 'locked' }] }} />);
-    // useFieldArray initializes from defaultValues — item is already rendered
+    // useFieldArray initializes from defaultValues - item is already rendered
     expect(screen.getByPlaceholderText('Enter name')).toBeDisabled();
   });
 
@@ -200,7 +200,7 @@ describe('DynamicListField', () => {
     expect(nameInput).toHaveAttribute('name', 'passengers.0.name');
   });
 
-  it('12. multiple items — each gets correct index in name', async () => {
+  it('12. multiple items - each gets correct index in name', async () => {
     const user = userEvent.setup();
     render(<TestWrapper config={baseConfig} />);
     await user.click(screen.getByText('Add item'));

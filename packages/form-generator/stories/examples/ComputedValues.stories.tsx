@@ -47,8 +47,8 @@ type Story = StoryObj<typeof FormGenerator>
  * }
  * ```
  *
- * Try: select category **B**, then toggle the switch — `orderType` switches to `manual`.
- * Switch off or change category — it reverts to `auto`.
+ * Try: select category **B**, then toggle the switch - `orderType` switches to `manual`.
+ * Switch off or change category - it reverts to `auto`.
  */
 export const ConditionalSubstitution: Story = {
   args: {
@@ -139,8 +139,8 @@ export const ConditionalSubstitution: Story = {
  * }
  * ```
  *
- * Try: set **value1** to 3, **value2** to 4, then toggle **enabled** — `result` becomes 12.
- * Toggle off — `result` is cleared (null).
+ * Try: set **value1** to 3, **value2** to 4, then toggle **enabled** - `result` becomes 12.
+ * Toggle off - `result` is cleared (null).
  */
 export const ArithmeticComputation: Story = {
   args: {
