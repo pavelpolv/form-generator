@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { TextareaField } from './TextareaField';
 import { TextareaField as TextareaFieldConfig } from '@/types';
 
-// Wrapper component to provide react-hook-form context
+// Компонент-обёртка для предоставления контекста react-hook-form
 const TextareaFieldWrapper = ({ config }: { config: TextareaFieldConfig }) => {
   const { control } = useForm();
 
@@ -28,8 +28,8 @@ export const Basic: Story = {
     config: {
       type: 'textarea',
       name: 'description',
-      label: 'Description',
-      placeholder: 'Enter a description...',
+      label: 'Описание',
+      placeholder: 'Введите описание...',
     },
   },
 };
@@ -39,8 +39,8 @@ export const WithRows: Story = {
     config: {
       type: 'textarea',
       name: 'bio',
-      label: 'Biography',
-      placeholder: 'Tell us about yourself...',
+      label: 'Биография',
+      placeholder: 'Расскажите о себе...',
       rows: 6,
     },
   },
@@ -51,8 +51,8 @@ export const WithMaxLength: Story = {
     config: {
       type: 'textarea',
       name: 'comment',
-      label: 'Comment',
-      placeholder: 'Max 200 characters',
+      label: 'Комментарий',
+      placeholder: 'Максимум 200 символов',
       maxLength: 200,
     },
   },
@@ -63,8 +63,8 @@ export const WithAutoSize: Story = {
     config: {
       type: 'textarea',
       name: 'notes',
-      label: 'Notes',
-      placeholder: 'Auto-resizing textarea (2-6 rows)',
+      label: 'Заметки',
+      placeholder: 'Textarea с автоматическим изменением размера (2–6 строк)',
       autoSize: { minRows: 2, maxRows: 6 },
     },
   },
@@ -75,10 +75,10 @@ export const WithDefaultValue: Story = {
     config: {
       type: 'textarea',
       name: 'template',
-      label: 'Template',
-      placeholder: 'Enter template...',
+      label: 'Шаблон',
+      placeholder: 'Введите шаблон...',
       rows: 4,
-      defaultValue: 'Dear Sir/Madam,\n\nI am writing to inform you that...\n\nBest regards',
+      defaultValue: 'Уважаемый(ая),\n\nСообщаю вам, что...\n\nС уважением',
     },
   },
 };
@@ -91,7 +91,7 @@ export const WithError: Story = {
       <TextareaField
         config={args.config}
         control={control}
-        error="This field is required"
+        error="Поле обязательно для заполнения"
       />
     );
   },
@@ -99,8 +99,8 @@ export const WithError: Story = {
     config: {
       type: 'textarea',
       name: 'required',
-      label: 'Required Field',
-      placeholder: 'This field has an error',
+      label: 'Обязательное поле',
+      placeholder: 'В этом поле есть ошибка',
     },
   },
 };
@@ -121,9 +121,9 @@ export const Disabled: Story = {
     config: {
       type: 'textarea',
       name: 'disabled',
-      label: 'Disabled Field',
-      placeholder: 'This field is disabled',
-      defaultValue: 'This content cannot be edited',
+      label: 'Заблокированное поле',
+      placeholder: 'Это поле недоступно для редактирования',
+      defaultValue: 'Этот текст нельзя изменить',
       rows: 3,
     },
   },

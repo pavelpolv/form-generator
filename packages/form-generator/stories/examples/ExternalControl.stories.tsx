@@ -16,32 +16,32 @@ const meta: Meta = {
 
 export default meta
 
-// --- Story 1: External Buttons ---
+// --- История 1: Внешние кнопки ---
 
 const formConfig: FormConfig = {
   groups: [
     {
-      name: 'Profile',
+      name: 'Профиль',
       fields: [
         {
           type: 'input',
           name: 'name',
-          label: 'Name',
-          placeholder: 'Enter your name',
+          label: 'Имя',
+          placeholder: 'Введите ваше имя',
           inputType: 'text',
         },
         {
           type: 'input',
           name: 'email',
-          label: 'Email',
-          placeholder: 'Enter your email',
+          label: 'Электронная почта',
+          placeholder: 'Введите вашу электронную почту',
           inputType: 'email',
         },
         {
           type: 'textarea',
           name: 'bio',
-          label: 'Bio',
-          placeholder: 'Tell us about yourself...',
+          label: 'О себе',
+          placeholder: 'Расскажите о себе...',
           rows: 3,
         },
       ],
@@ -54,10 +54,10 @@ const ExternalButtonsExample = () => {
 
   return (
     <div>
-      <Title level={4}>External Buttons</Title>
+      <Title level={4}>Внешние кнопки</Title>
       <Text type="secondary">
-        Form buttons are outside the FormGenerator component.
-        The ref provides getValues(), reset(), and submit() methods.
+        Кнопки формы расположены вне компонента FormGenerator.
+        Ref предоставляет методы getValues(), reset() и submit().
       </Text>
 
       <Card style={{ marginTop: 16 }}>
@@ -75,21 +75,21 @@ const ExternalButtonsExample = () => {
           type="primary"
           onClick={() => formRef.current?.submit()}
         >
-          Submit (external)
+          Отправить (внешняя кнопка)
         </Button>
         <Button
           onClick={() => formRef.current?.reset()}
         >
-          Reset (external)
+          Сбросить (внешняя кнопка)
         </Button>
         <Button
           onClick={() => formRef.current?.reset({
             name: 'John Doe',
             email: 'john@example.com',
-            bio: 'Software Engineer',
+            bio: 'Разработчик программного обеспечения',
           })}
         >
-          Fill with sample data
+          Заполнить тестовыми данными
         </Button>
       </Space>
     </div>
@@ -100,7 +100,7 @@ export const ExternalButtons: StoryObj = {
   render: () => <ExternalButtonsExample />,
 }
 
-// --- Story 2: Read Form Values ---
+// --- История 2: Чтение значений формы ---
 
 const ReadValuesExample = () => {
   const formRef = useRef<FormGeneratorRef>(null)
@@ -108,9 +108,9 @@ const ReadValuesExample = () => {
 
   return (
     <div>
-      <Title level={4}>Read Form Values</Title>
+      <Title level={4}>Чтение значений формы</Title>
       <Text type="secondary">
-        Use getValues() to read current form state at any time without submitting.
+        Используйте getValues() для чтения текущего состояния формы в любой момент без отправки.
       </Text>
 
       <Card style={{ marginTop: 16 }}>
@@ -128,16 +128,16 @@ const ReadValuesExample = () => {
           type="primary"
           onClick={() => setSnapshot(formRef.current?.getValues() ?? null)}
         >
-          Read current values
+          Прочитать текущие значения
         </Button>
         <Button onClick={() => setSnapshot(null)}>
-          Clear snapshot
+          Очистить снимок
         </Button>
       </Space>
 
       {snapshot && (
         <Card style={{ marginTop: 16, background: '#f6f6f6' }}>
-          <Text strong>Snapshot:</Text>
+          <Text strong>Снимок:</Text>
           <pre style={{ marginTop: 8, fontSize: 13 }}>
             {JSON.stringify(snapshot, null, 2)}
           </pre>
@@ -151,25 +151,25 @@ export const ReadValues: StoryObj = {
   render: () => <ReadValuesExample />,
 }
 
-// --- Story 3: Wizard / Multi-step ---
+// --- История 3: Мастер / Многошаговая форма ---
 
 const step1Config: FormConfig = {
   groups: [
     {
-      name: 'Step 1: Personal Info',
+      name: 'Шаг 1: Личные данные',
       fields: [
         {
           type: 'input',
           name: 'firstName',
-          label: 'First Name',
-          placeholder: 'Enter first name',
+          label: 'Имя',
+          placeholder: 'Введите имя',
           inputType: 'text',
         },
         {
           type: 'input',
           name: 'lastName',
-          label: 'Last Name',
-          placeholder: 'Enter last name',
+          label: 'Фамилия',
+          placeholder: 'Введите фамилию',
           inputType: 'text',
         },
       ],
@@ -180,20 +180,20 @@ const step1Config: FormConfig = {
 const step2Config: FormConfig = {
   groups: [
     {
-      name: 'Step 2: Contact',
+      name: 'Шаг 2: Контакты',
       fields: [
         {
           type: 'input',
           name: 'email',
-          label: 'Email',
-          placeholder: 'Enter email',
+          label: 'Электронная почта',
+          placeholder: 'Введите электронную почту',
           inputType: 'email',
         },
         {
           type: 'input',
           name: 'phone',
-          label: 'Phone',
-          placeholder: 'Enter phone number',
+          label: 'Телефон',
+          placeholder: 'Введите номер телефона',
           inputType: 'tel',
         },
       ],
@@ -204,21 +204,21 @@ const step2Config: FormConfig = {
 const step3Config: FormConfig = {
   groups: [
     {
-      name: 'Step 3: Additional Info',
+      name: 'Шаг 3: Дополнительная информация',
       fields: [
         {
           type: 'textarea',
           name: 'notes',
-          label: 'Notes',
-          placeholder: 'Any additional notes...',
+          label: 'Примечания',
+          placeholder: 'Любые дополнительные примечания...',
           rows: 4,
         },
         {
           type: 'switch',
           name: 'subscribe',
-          label: 'Subscribe to newsletter',
-          checkedText: 'Yes',
-          uncheckedText: 'No',
+          label: 'Подписаться на рассылку',
+          checkedText: 'Да',
+          uncheckedText: 'Нет',
         },
       ],
     },
@@ -254,9 +254,9 @@ const WizardExample = () => {
   if (submitted) {
     return (
       <div>
-        <Title level={4}>Wizard Complete</Title>
+        <Title level={4}>Мастер завершён</Title>
         <Card style={{ background: '#f6ffed' }}>
-          <Text strong>Collected data from all steps:</Text>
+          <Text strong>Собранные данные со всех шагов:</Text>
           <pre style={{ marginTop: 8, fontSize: 13 }}>
             {JSON.stringify(collectedData, null, 2)}
           </pre>
@@ -265,7 +265,7 @@ const WizardExample = () => {
           style={{ marginTop: 16 }}
           onClick={() => { setSubmitted(false); setCurrentStep(0); setCollectedData({}) }}
         >
-          Start over
+          Начать заново
         </Button>
       </div>
     )
@@ -273,10 +273,10 @@ const WizardExample = () => {
 
   return (
     <div>
-      <Title level={4}>Multi-step Wizard</Title>
+      <Title level={4}>Многошаговый мастер</Title>
       <Text type="secondary">
-        Each step is a separate FormGenerator. The ref is used to collect values
-        before moving to the next step.
+        Каждый шаг — отдельный FormGenerator. Ref используется для сбора значений
+        перед переходом к следующему шагу.
       </Text>
 
       <div style={{ margin: '16px 0' }}>
@@ -287,7 +287,7 @@ const WizardExample = () => {
               strong={i === currentStep}
               type={i === currentStep ? undefined : 'secondary'}
             >
-              Step {i + 1}{i < steps.length - 1 ? ' →' : ''}
+              Шаг {i + 1}{i < steps.length - 1 ? ' →' : ''}
             </Text>
           ))}
         </Space>
@@ -309,10 +309,10 @@ const WizardExample = () => {
           disabled={currentStep === 0}
           onClick={handleBack}
         >
-          Back
+          Назад
         </Button>
         <Button type="primary" onClick={handleNext}>
-          {currentStep === steps.length - 1 ? 'Finish' : 'Next'}
+          {currentStep === steps.length - 1 ? 'Завершить' : 'Далее'}
         </Button>
       </Space>
     </div>
@@ -323,7 +323,7 @@ export const Wizard: StoryObj = {
   render: () => <WizardExample />,
 }
 
-// --- Story 4: SetValue ---
+// --- История 4: SetValue ---
 
 const SetValueExample = () => {
   const formRef = useRef<FormGeneratorRef>(null)
@@ -335,9 +335,9 @@ const SetValueExample = () => {
 
   return (
     <div>
-      <Title level={4}>Set Individual Field Values</Title>
+      <Title level={4}>Установка значений отдельных полей</Title>
       <Text type="secondary">
-        Use setValue() to programmatically set values for individual fields without resetting the entire form.
+        Используйте setValue() для программной установки значений отдельных полей без сброса всей формы.
       </Text>
 
       <Card style={{ marginTop: 16 }}>
@@ -352,30 +352,30 @@ const SetValueExample = () => {
 
       <Space wrap>
         <Button onClick={() => { formRef.current?.setValue('name', 'John Doe'); refreshSnapshot() }}>
-          Fill Name
+          Заполнить имя
         </Button>
         <Button onClick={() => { formRef.current?.setValue('email', 'john@example.com'); refreshSnapshot() }}>
-          Fill Email
+          Заполнить почту
         </Button>
         <Button onClick={() => {
           formRef.current?.setValue('name', 'Jane Smith')
           formRef.current?.setValue('email', 'jane@example.com')
-          formRef.current?.setValue('bio', 'Full-stack developer')
+          formRef.current?.setValue('bio', 'Fullstack-разработчик')
           refreshSnapshot()
         }}>
-          Fill All
+          Заполнить всё
         </Button>
         <Button onClick={() => { formRef.current?.setValue('name', ''); refreshSnapshot() }}>
-          Clear Name
+          Очистить имя
         </Button>
         <Button onClick={refreshSnapshot}>
-          Refresh Snapshot
+          Обновить снимок
         </Button>
       </Space>
 
       {snapshot && (
         <Card style={{ marginTop: 16, background: '#f6f6f6' }}>
-          <Text strong>Current values:</Text>
+          <Text strong>Текущие значения:</Text>
           <pre style={{ marginTop: 8, fontSize: 13 }}>
             {JSON.stringify(snapshot, null, 2)}
           </pre>

@@ -8,29 +8,29 @@ const Introduction = () => {
     <div style={{ padding: '20px', maxWidth: '800px' }}>
       <Title>Form Generator</Title>
       <Paragraph>
-        Configurable form generator with conditional logic for React applications.
+        Настраиваемый генератор форм с поддержкой условной логики для React-приложений.
       </Paragraph>
 
-      <Title level={2}>Features</Title>
+      <Title level={2}>Возможности</Title>
       <ul>
         <li>
-          <Text strong>Conditional Visibility:</Text> Show/hide fields and groups based on form values
+          <Text strong>Условная видимость:</Text> Показывать/скрывать поля и группы на основе значений формы
         </li>
         <li>
-          <Text strong>Conditional Validation:</Text> Dynamic validation rules with custom error messages
+          <Text strong>Условная валидация:</Text> Динамические правила валидации с пользовательскими сообщениями об ошибках
         </li>
         <li>
-          <Text strong>Disabled State:</Text> Enable/disable fields based on conditions
+          <Text strong>Состояние блокировки:</Text> Включать/отключать поля на основе условий
         </li>
         <li>
-          <Text strong>Type Safe:</Text> Fully typed with TypeScript
+          <Text strong>Типобезопасность:</Text> Полная типизация с TypeScript
         </li>
         <li>
-          <Text strong>Performance Optimized:</Text> Minimal re-renders with React Hook Form
+          <Text strong>Оптимизация производительности:</Text> Минимальное количество перерисовок с React Hook Form
         </li>
       </ul>
 
-      <Title level={2}>Tech Stack</Title>
+      <Title level={2}>Технологический стек</Title>
       <ul>
         <li>React 17</li>
         <li>TypeScript</li>
@@ -38,9 +38,9 @@ const Introduction = () => {
         <li>React Hook Form</li>
       </ul>
 
-      <Title level={2}>Examples</Title>
+      <Title level={2}>Примеры</Title>
       <Paragraph>
-        Check the sidebar for various examples and field documentation.
+        Смотрите боковую панель для просмотра различных примеров и документации по полям.
       </Paragraph>
     </div>
   )

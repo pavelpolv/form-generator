@@ -20,23 +20,23 @@ type Story = StoryObj<typeof FormGenerator>
 const conditionalVisibilityConfig: FormConfig = {
   groups: [
     {
-      name: 'User Type',
+      name: 'Тип пользователя',
       fields: [
         {
           type: 'select',
           name: 'userType',
-          label: 'I am a',
-          placeholder: 'Select user type',
+          label: 'Я являюсь',
+          placeholder: 'Выберите тип пользователя',
           options: [
-            { label: 'Student', value: 'student' },
-            { label: 'Professional', value: 'professional' },
-            { label: 'Retired', value: 'retired' },
+            { label: 'Студент', value: 'student' },
+            { label: 'Специалист', value: 'professional' },
+            { label: 'Пенсионер', value: 'retired' },
           ],
         },
       ],
     },
     {
-      name: 'Student Information',
+      name: 'Информация о студенте',
       visibleCondition: {
         comparisonType: 'and',
         children: [
@@ -47,37 +47,37 @@ const conditionalVisibilityConfig: FormConfig = {
         {
           type: 'input',
           name: 'university',
-          label: 'University',
-          placeholder: 'Enter your university name',
+          label: 'Университет',
+          placeholder: 'Введите название университета',
           inputType: 'text',
         },
         {
           type: 'input',
           name: 'studentId',
-          label: 'Student ID',
-          placeholder: 'Enter your student ID',
+          label: 'Студенческий билет',
+          placeholder: 'Введите номер студенческого билета',
           inputType: 'text',
         },
         {
           type: 'inputNumber',
           name: 'expectedGraduation',
-          label: 'Expected Graduation Year',
-          placeholder: 'e.g., 2025',
+          label: 'Ожидаемый год окончания',
+          placeholder: 'напр. 2025',
           min: 2024,
           max: 2030,
         },
         {
           type: 'textarea',
           name: 'researchInterests',
-          label: 'Research Interests',
-          placeholder: 'Describe your research interests...',
+          label: 'Научные интересы',
+          placeholder: 'Опишите ваши научные интересы...',
           rows: 3,
           autoSize: { minRows: 2, maxRows: 6 },
         },
       ],
     },
     {
-      name: 'Professional Information',
+      name: 'Профессиональная информация',
       visibleCondition: {
         comparisonType: 'and',
         children: [
@@ -88,49 +88,49 @@ const conditionalVisibilityConfig: FormConfig = {
         {
           type: 'input',
           name: 'company',
-          label: 'Company',
-          placeholder: 'Enter your company name',
+          label: 'Компания',
+          placeholder: 'Введите название компании',
           inputType: 'text',
         },
         {
           type: 'input',
           name: 'position',
-          label: 'Position',
-          placeholder: 'Enter your position',
+          label: 'Должность',
+          placeholder: 'Введите вашу должность',
           inputType: 'text',
         },
         {
           type: 'inputNumber',
           name: 'yearsExperience',
-          label: 'Years of Experience',
+          label: 'Лет опыта',
           min: 0,
           max: 50,
         },
         {
           type: 'textarea',
           name: 'jobDescription',
-          label: 'Job Description',
-          placeholder: 'Describe your role and responsibilities...',
+          label: 'Описание работы',
+          placeholder: 'Опишите вашу роль и обязанности...',
           rows: 3,
         },
       ],
     },
     {
-      name: 'Additional Details',
+      name: 'Дополнительные сведения',
       fields: [
         {
           type: 'switch',
           name: 'hasLicense',
-          label: 'Do you have a driving license?',
-          checkedText: 'Yes',
-          uncheckedText: 'No',
+          label: 'Есть ли у вас водительские права?',
+          checkedText: 'Да',
+          uncheckedText: 'Нет',
           defaultValue: false,
         },
         {
           type: 'input',
           name: 'licenseNumber',
-          label: 'License Number',
-          placeholder: 'Enter your license number',
+          label: 'Номер водительского удостоверения',
+          placeholder: 'Введите номер водительского удостоверения',
           inputType: 'text',
           visibleCondition: {
             comparisonType: 'and',
@@ -149,24 +149,24 @@ export const ConditionalGroups: Story = {
     config: {
       ...conditionalVisibilityConfig,
       buttons: [
-        { key: 'submit', label: 'Submit', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
-        { key: 'reset', label: 'Reset', action: 'reset' },
+        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+        { key: 'reset', label: 'Сбросить', action: 'reset' },
       ],
     },
     // Начальные значения заданы для СКРЫТЫХ полей и групп.
     // Цель: проверить, применяются ли они, когда поле/группа не видны.
     initialValues: {
-      // Группа "Student Information" скрыта (userType не выбран)
+      // Группа "Информация о студенте" скрыта (userType не выбран)
       university: 'MIT',
       studentId: 'S-98765',
       expectedGraduation: 2027,
       researchInterests: 'Machine learning & NLP',
-      // Группа "Professional Information" скрыта
+      // Группа "Профессиональная информация" скрыта
       company: 'Acme Corp',
       position: 'Senior Engineer',
       yearsExperience: 8,
       jobDescription: 'Building scalable systems',
-      // Поле "License Number" скрыто (hasLicense = false по умолчанию)
+      // Поле "Номер водительского удостоверения" скрыто (hasLicense = false по умолчанию)
       licenseNumber: 'AB 1234 CD',
     },
   },
@@ -175,35 +175,35 @@ export const ConditionalGroups: Story = {
 const nestedConditionsConfig: FormConfig = {
   groups: [
     {
-      name: 'Account Settings',
+      name: 'Настройки аккаунта',
       fields: [
         {
           type: 'switch',
           name: 'isPremium',
-          label: 'Premium Account',
-          checkedText: 'Yes',
-          uncheckedText: 'No',
+          label: 'Премиум-аккаунт',
+          checkedText: 'Да',
+          uncheckedText: 'Нет',
           defaultValue: false,
         },
         {
           type: 'inputNumber',
           name: 'age',
-          label: 'Age',
+          label: 'Возраст',
           min: 0,
           max: 120,
         },
         {
           type: 'switch',
           name: 'hasParentalConsent',
-          label: 'Has Parental Consent',
-          checkedText: 'Yes',
-          uncheckedText: 'No',
+          label: 'Есть согласие родителей',
+          checkedText: 'Да',
+          uncheckedText: 'Нет',
           defaultValue: false,
         },
       ],
     },
     {
-      name: 'Premium Features',
+      name: 'Премиум-функции',
       visibleCondition: {
         comparisonType: 'or',
         children: [
@@ -221,18 +221,18 @@ const nestedConditionsConfig: FormConfig = {
         {
           type: 'input',
           name: 'referralCode',
-          label: 'Referral Code',
-          placeholder: 'Enter referral code',
+          label: 'Реферальный код',
+          placeholder: 'Введите реферальный код',
           inputType: 'text',
         },
         {
           type: 'select',
           name: 'plan',
-          label: 'Premium Plan',
+          label: 'Премиум-план',
           options: [
-            { label: 'Basic - $9.99/month', value: 'basic' },
-            { label: 'Pro - $19.99/month', value: 'pro' },
-            { label: 'Enterprise - $49.99/month', value: 'enterprise' },
+            { label: 'Базовый — 9.99$/мес.', value: 'basic' },
+            { label: 'Про — 19.99$/мес.', value: 'pro' },
+            { label: 'Корпоративный — 49.99$/мес.', value: 'enterprise' },
           ],
         },
       ],
@@ -245,8 +245,8 @@ export const NestedConditions: Story = {
     config: {
       ...nestedConditionsConfig,
       buttons: [
-        { key: 'submit', label: 'Submit', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
-        { key: 'reset', label: 'Reset', action: 'reset' },
+        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+        { key: 'reset', label: 'Сбросить', action: 'reset' },
       ],
     },
   },

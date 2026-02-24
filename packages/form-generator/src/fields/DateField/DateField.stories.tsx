@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { DateField } from './DateField';
 import { DateField as DateFieldConfig } from '@/types';
 
-// Wrapper component to provide react-hook-form context
+// Компонент-обёртка для предоставления контекста react-hook-form
 const DateFieldWrapper = ({ config }: { config: DateFieldConfig }) => {
   const { control } = useForm();
 
@@ -28,8 +28,8 @@ export const BasicDate: Story = {
     config: {
       type: 'date',
       name: 'birthDate',
-      label: 'Birth Date',
-      placeholder: 'Select your birth date',
+      label: 'Дата рождения',
+      placeholder: 'Выберите дату рождения',
     },
   },
 };
@@ -39,8 +39,8 @@ export const WithCustomFormat: Story = {
     config: {
       type: 'date',
       name: 'eventDate',
-      label: 'Event Date',
-      placeholder: 'Select event date',
+      label: 'Дата события',
+      placeholder: 'Выберите дату события',
       format: 'DD/MM/YYYY',
     },
   },
@@ -51,8 +51,8 @@ export const WithTime: Story = {
     config: {
       type: 'date',
       name: 'appointmentDateTime',
-      label: 'Appointment Date & Time',
-      placeholder: 'Select appointment date and time',
+      label: 'Дата и время приёма',
+      placeholder: 'Выберите дату и время приёма',
       format: 'YYYY-MM-DD HH:mm',
       showTime: true,
     },
@@ -64,8 +64,8 @@ export const WithDefaultValue: Story = {
     config: {
       type: 'date',
       name: 'joinDate',
-      label: 'Join Date',
-      placeholder: 'Select join date',
+      label: 'Дата вступления',
+      placeholder: 'Выберите дату вступления',
       format: 'YYYY-MM-DD',
       defaultValue: '2024-01-15T10:00:00.000Z',
     },
@@ -77,8 +77,8 @@ export const WithDisabledDateBefore: Story = {
     config: {
       type: 'date',
       name: 'futureDate',
-      label: 'Future Date (no past dates)',
-      placeholder: 'Select a future date',
+      label: 'Будущая дата (прошедшие даты недоступны)',
+      placeholder: 'Выберите будущую дату',
       format: 'YYYY-MM-DD',
       disabledDateBefore: new Date(),
     },
@@ -93,7 +93,7 @@ export const WithError: Story = {
       <DateField
         config={args.config}
         control={control}
-        error="This date is required"
+        error="Дата обязательна для заполнения"
       />
     );
   },
@@ -101,8 +101,8 @@ export const WithError: Story = {
     config: {
       type: 'date',
       name: 'requiredDate',
-      label: 'Required Date',
-      placeholder: 'Select a date',
+      label: 'Обязательная дата',
+      placeholder: 'Выберите дату',
       format: 'YYYY-MM-DD',
     },
   },
@@ -124,8 +124,8 @@ export const Disabled: Story = {
     config: {
       type: 'date',
       name: 'disabledDate',
-      label: 'Disabled Date',
-      placeholder: 'This date picker is disabled',
+      label: 'Заблокированная дата',
+      placeholder: 'Выбор даты недоступен',
       format: 'YYYY-MM-DD',
       defaultValue: '2024-01-15T10:00:00.000Z',
     },

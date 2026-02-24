@@ -20,13 +20,13 @@ type Story = StoryObj<typeof FormGenerator>
 const validationConfig: FormConfig = {
   groups: [
     {
-      name: 'Registration Form',
+      name: 'Форма регистрации',
       fields: [
         {
           type: 'input',
           name: 'username',
-          label: 'Username',
-          placeholder: 'Enter username',
+          label: 'Имя пользователя',
+          placeholder: 'Введите имя пользователя',
           inputType: 'text',
           validateCondition: {
             comparisonType: 'and',
@@ -34,7 +34,7 @@ const validationConfig: FormConfig = {
               {
                 field: 'username',
                 condition: '!∅',
-                message: 'Username is required',
+                message: 'Имя пользователя обязательно',
               },
             ],
           },
@@ -42,8 +42,8 @@ const validationConfig: FormConfig = {
         {
           type: 'input',
           name: 'email',
-          label: 'Email',
-          placeholder: 'Enter email',
+          label: 'Электронная почта',
+          placeholder: 'Введите электронную почту',
           inputType: 'text',
           validateCondition: {
             comparisonType: 'and',
@@ -51,13 +51,13 @@ const validationConfig: FormConfig = {
               {
                 field: 'email',
                 condition: '!∅',
-                message: 'Email is required',
+                message: 'Электронная почта обязательна',
               },
               {
                 field: 'email',
                 condition: 'includes',
                 value: '@',
-                message: 'Email must contain @',
+                message: 'Электронная почта должна содержать @',
               },
             ],
           },
@@ -65,8 +65,8 @@ const validationConfig: FormConfig = {
         {
           type: 'input',
           name: 'password',
-          label: 'Password',
-          placeholder: 'Enter password',
+          label: 'Пароль',
+          placeholder: 'Введите пароль',
           inputType: 'password',
           validateCondition: {
             comparisonType: 'and',
@@ -74,7 +74,7 @@ const validationConfig: FormConfig = {
               {
                 field: 'password',
                 condition: '!∅',
-                message: 'Password is required',
+                message: 'Пароль обязателен',
               },
             ],
           },
@@ -82,8 +82,8 @@ const validationConfig: FormConfig = {
         {
           type: 'input',
           name: 'confirmPassword',
-          label: 'Confirm Password',
-          placeholder: 'Confirm your password',
+          label: 'Подтверждение пароля',
+          placeholder: 'Подтвердите ваш пароль',
           inputType: 'password',
           validateCondition: {
             comparisonType: 'and',
@@ -91,13 +91,13 @@ const validationConfig: FormConfig = {
               {
                 field: 'confirmPassword',
                 condition: '!∅',
-                message: 'Please confirm your password',
+                message: 'Пожалуйста, подтвердите пароль',
               },
               {
                 field: 'confirmPassword',
                 condition: '===',
                 value: '$password',
-                message: 'Passwords must match',
+                message: 'Пароли должны совпадать',
               },
             ],
           },
@@ -105,12 +105,12 @@ const validationConfig: FormConfig = {
       ],
     },
     {
-      name: 'Age Verification',
+      name: 'Подтверждение возраста',
       fields: [
         {
           type: 'inputNumber',
           name: 'age',
-          label: 'Age',
+          label: 'Возраст',
           min: 0,
           max: 120,
           validateCondition: {
@@ -119,13 +119,13 @@ const validationConfig: FormConfig = {
               {
                 field: 'age',
                 condition: '!∅',
-                message: 'Age is required',
+                message: 'Возраст обязателен',
               },
               {
                 field: 'age',
                 condition: '>=',
                 value: 18,
-                message: 'You must be 18 or older',
+                message: 'Вам должно быть 18 лет или старше',
               },
             ],
           },
@@ -141,12 +141,12 @@ export const RequiredFields: Story = {
       ...validationConfig,
       buttons: [
         {
-          key: 'submit', label: 'Submit', type: 'primary', action: 'submit',
+          key: 'submit', label: 'Отправить', type: 'primary', action: 'submit',
           requiresValidation: true, url: 'https://httpbin.org/post',
           successNotification: { message: 'Успешно', description: 'Данные успешно отправлены' },
           errorNotification: { message: 'Ошибка', description: 'Не удалось отправить данные' },
         },
-        { key: 'reset', label: 'Reset', action: 'reset' },
+        { key: 'reset', label: 'Сбросить', action: 'reset' },
       ],
     },
   },
@@ -155,7 +155,7 @@ export const RequiredFields: Story = {
 const complexValidationConfig: FormConfig = {
   groups: [
     {
-      name: 'Price Range Filter',
+      name: 'Фильтр по диапазону цен',
       validateCondition: {
         comparisonType: 'or',
         children: [
@@ -170,7 +170,7 @@ const complexValidationConfig: FormConfig = {
             field: 'minPrice',
             condition: '<=',
             value: '$maxPrice',
-            message: 'Minimum price must be less than or equal to maximum price',
+            message: 'Минимальная цена должна быть меньше или равна максимальной',
           },
         ],
       },
@@ -178,28 +178,28 @@ const complexValidationConfig: FormConfig = {
         {
           type: 'inputNumber',
           name: 'minPrice',
-          label: 'Minimum Price',
-          placeholder: 'Enter minimum price',
+          label: 'Минимальная цена',
+          placeholder: 'Введите минимальную цену',
           min: 0,
         },
         {
           type: 'inputNumber',
           name: 'maxPrice',
-          label: 'Maximum Price',
-          placeholder: 'Enter maximum price',
+          label: 'Максимальная цена',
+          placeholder: 'Введите максимальную цену',
           min: 0,
         },
         {
           type: 'textarea',
           name: 'priceComment',
-          label: 'Comment (not in validation)',
-          placeholder: 'This field does not affect validation',
+          label: 'Комментарий (не участвует в валидации)',
+          placeholder: 'Это поле не влияет на валидацию',
           rows: 2,
         },
       ],
     },
     {
-      name: 'Date Range Filter',
+      name: 'Фильтр по диапазону дат',
       validateCondition: {
         comparisonType: 'or',
         children: [
@@ -214,7 +214,7 @@ const complexValidationConfig: FormConfig = {
             field: 'startDate',
             condition: '<=',
             value: '$endDate',
-            message: 'Start date must be before or equal to end date',
+            message: 'Дата начала должна быть раньше или равна дате окончания',
           },
         ],
       },
@@ -222,20 +222,20 @@ const complexValidationConfig: FormConfig = {
         {
           type: 'date',
           name: 'startDate',
-          label: 'Start Date',
-          placeholder: 'Select start date',
+          label: 'Дата начала',
+          placeholder: 'Выберите дату начала',
         },
         {
           type: 'date',
           name: 'endDate',
-          label: 'End Date',
-          placeholder: 'Select end date',
+          label: 'Дата окончания',
+          placeholder: 'Выберите дату окончания',
         },
         {
           type: 'textarea',
           name: 'dateComment',
-          label: 'Comment (not in validation)',
-          placeholder: 'This field does not affect validation',
+          label: 'Комментарий (не участвует в валидации)',
+          placeholder: 'Это поле не влияет на валидацию',
           rows: 2,
         },
       ],
@@ -248,8 +248,8 @@ export const ComplexValidation: Story = {
     config: {
       ...complexValidationConfig,
       buttons: [
-        { key: 'submit', label: 'Submit', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
-        { key: 'reset', label: 'Reset', action: 'reset' },
+        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+        { key: 'reset', label: 'Сбросить', action: 'reset' },
       ],
     },
   },
@@ -258,21 +258,21 @@ export const ComplexValidation: Story = {
 const switchRequiredConfig: FormConfig = {
   groups: [
     {
-      name: 'Conditional Required Field',
+      name: 'Условное обязательное поле',
       fields: [
         {
           type: 'switch',
           name: 'enableFeature',
-          label: 'Enable feature',
-          checkedText: 'Yes',
-          uncheckedText: 'No',
+          label: 'Включить функцию',
+          checkedText: 'Да',
+          uncheckedText: 'Нет',
           defaultValue: false,
         },
         {
           type: 'input',
           name: 'featureCode',
-          label: 'Feature Code',
-          placeholder: 'Enter feature code',
+          label: 'Код функции',
+          placeholder: 'Введите код функции',
           inputType: 'text',
           validateCondition: {
             comparisonType: 'or',
@@ -281,7 +281,7 @@ const switchRequiredConfig: FormConfig = {
               {
                 field: 'featureCode',
                 condition: '!∅',
-                message: 'Feature Code is required when feature is enabled',
+                message: 'Код функции обязателен, когда функция включена',
               },
             ],
           },
@@ -296,8 +296,8 @@ export const SwitchRequiredField: Story = {
     config: {
       ...switchRequiredConfig,
       buttons: [
-        { key: 'submit', label: 'Submit', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
-        { key: 'reset', label: 'Reset', action: 'reset' },
+        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+        { key: 'reset', label: 'Сбросить', action: 'reset' },
       ],
     },
   },

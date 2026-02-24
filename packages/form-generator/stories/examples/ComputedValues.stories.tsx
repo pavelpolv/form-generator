@@ -18,17 +18,17 @@ export default meta
 type Story = StoryObj<typeof FormGenerator>
 
 /**
- * ConditionalSubstitution demonstrates the `computedValue` feature with conditional value substitution.
+ * ConditionalSubstitution демонстрирует функцию `computedValue` с условной подстановкой значений.
  *
- * The `orderType` field is automatically computed based on other field values:
+ * Поле `orderType` вычисляется автоматически на основе других значений формы:
  *
  * ```ts
  * computedValue: {
- *   // `cases` is an array of { condition, value } pairs.
- *   // The first matching case wins.
+ *   // `cases` — массив пар { condition, value }.
+ *   // Побеждает первое совпавшее условие.
  *   cases: [
  *     {
- *       // `condition` accepts a ConditionGroup or ConditionValue (same as visibleCondition)
+ *       // `condition` принимает ConditionGroup или ConditionValue (аналогично visibleCondition)
  *       condition: {
  *         comparisonType: 'and',
  *         children: [
@@ -36,55 +36,55 @@ type Story = StoryObj<typeof FormGenerator>
  *           { field: 'enabled', condition: '===', value: true },
  *         ],
  *       },
- *       // `value` is assigned when the condition matches.
- *       // Can be a literal (string, number, boolean, null) or a '$fieldRef'.
+ *       // `value` присваивается при совпадении условия.
+ *       // Может быть литералом (string, number, boolean, null) или '$fieldRef'.
  *       value: 'manual',
  *     },
  *   ],
- *   // `default` is used when no case matches.
- *   // Omitting `default` means the field is left unchanged.
+ *   // `default` используется, когда ни одно условие не совпало.
+ *   // Отсутствие `default` означает, что значение поля остаётся без изменений.
  *   default: 'auto',
  * }
  * ```
  *
- * Try: select category **B**, then toggle the switch - `orderType` switches to `manual`.
- * Switch off or change category - it reverts to `auto`.
+ * Попробуйте: выберите категорию **B**, затем переключите свитч — `orderType` переключится на `manual`.
+ * Выключите свитч или смените категорию — значение вернётся к `auto`.
  */
 export const ConditionalSubstitution: Story = {
   args: {
     config: {
       groups: [
         {
-          name: 'Order Settings',
+          name: 'Настройки заказа',
           fields: [
             {
               type: 'select',
               name: 'category',
-              label: 'Category',
-              placeholder: 'Select category',
+              label: 'Категория',
+              placeholder: 'Выберите категорию',
               options: [
-                { label: 'Category A', value: 'A' },
-                { label: 'Category B', value: 'B' },
-                { label: 'Category C', value: 'C' },
+                { label: 'Категория A', value: 'A' },
+                { label: 'Категория B', value: 'B' },
+                { label: 'Категория C', value: 'C' },
               ],
               defaultValue: 'A',
             },
             {
               type: 'switch',
               name: 'enabled',
-              label: 'Enable manual override',
-              checkedText: 'On',
-              uncheckedText: 'Off',
+              label: 'Включить ручное управление',
+              checkedText: 'Вкл',
+              uncheckedText: 'Выкл',
               defaultValue: false,
             },
             {
               type: 'select',
               name: 'orderType',
-              label: 'Order Type (computed)',
+              label: 'Тип заказа (вычисляемый)',
               options: [
-                { label: 'Auto', value: 'auto' },
-                { label: 'User', value: 'user' },
-                { label: 'Manual', value: 'manual' },
+                { label: 'Авто', value: 'auto' },
+                { label: 'Пользователь', value: 'user' },
+                { label: 'Вручную', value: 'manual' },
               ],
               defaultValue: 'auto',
               disabledCondition: {
@@ -117,63 +117,63 @@ export const ConditionalSubstitution: Story = {
 }
 
 /**
- * ArithmeticComputation demonstrates the `computedValue` feature with arithmetic expressions.
+ * ArithmeticComputation демонстрирует функцию `computedValue` с арифметическими выражениями.
  *
- * The `result` field is automatically computed as `value1 * value2` when `enabled` is true:
+ * Поле `result` автоматически вычисляется как `value1 * value2`, когда `enabled` равно true:
  *
  * ```ts
  * computedValue: {
  *   cases: [
  *     {
  *       condition: { field: 'enabled', condition: '===', value: true },
- *       // `value` can be an ArithmeticExpression: { left, operator, right }
- *       // `operator` is one of: '+' | '-' | '*' | '/'
- *       // `left` and `right` are ComputedOperand: string | number | boolean | null
- *       // String operands starting with '$' are resolved as field references.
+ *       // `value` может быть ArithmeticExpression: { left, operator, right }
+ *       // `operator` — одно из: '+' | '-' | '*' | '/'
+ *       // `left` и `right` — ComputedOperand: string | number | boolean | null
+ *       // Строковые операнды, начинающиеся с '$', разрешаются как ссылки на поля.
  *       value: { left: '$value1', operator: '*', right: '$value2' },
  *     },
  *   ],
- *   // When `enabled` is false, result is set to null.
- *   // Note: arithmetic with null/undefined operands also returns null.
+ *   // Когда `enabled` равно false, результат устанавливается в null.
+ *   // Примечание: арифметика с null/undefined операндами также возвращает null.
  *   default: null,
  * }
  * ```
  *
- * Try: set **value1** to 3, **value2** to 4, then toggle **enabled** - `result` becomes 12.
- * Toggle off - `result` is cleared (null).
+ * Попробуйте: установите **value1** = 3, **value2** = 4, затем включите **enabled** — `result` станет 12.
+ * Выключите — `result` будет очищен (null).
  */
 export const ArithmeticComputation: Story = {
   args: {
     config: {
       groups: [
         {
-          name: 'Calculator',
+          name: 'Калькулятор',
           fields: [
             {
               type: 'select',
               name: 'value1',
-              label: 'Value 1',
+              label: 'Значение 1',
               options: Array.from({ length: 11 }, (_, i) => ({ label: String(i), value: i })),
               defaultValue: 0,
             },
             {
               type: 'inputNumber',
               name: 'value2',
-              label: 'Value 2',
+              label: 'Значение 2',
               defaultValue: 0,
             },
             {
               type: 'switch',
               name: 'enabled',
-              label: 'Compute result',
-              checkedText: 'On',
-              uncheckedText: 'Off',
+              label: 'Вычислить результат',
+              checkedText: 'Вкл',
+              uncheckedText: 'Выкл',
               defaultValue: false,
             },
             {
               type: 'inputNumber',
               name: 'result',
-              label: 'Result = value1 × value2 (computed)',
+              label: 'Результат = значение1 × значение2 (вычисляемый)',
               disabledCondition: {
                 comparisonType: 'or',
                 children: [

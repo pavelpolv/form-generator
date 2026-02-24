@@ -20,13 +20,13 @@ type Story = StoryObj<typeof FormGenerator>
 const requiredFieldsConfig: FormConfig = {
   groups: [
     {
-      name: 'Contact Form',
+      name: 'Контактная форма',
       fields: [
         {
           type: 'input',
           name: 'fullName',
-          label: 'Full Name *',
-          placeholder: 'Enter your full name',
+          label: 'Полное имя *',
+          placeholder: 'Введите ваше полное имя',
           inputType: 'text',
           validateCondition: {
             comparisonType: 'and',
@@ -34,7 +34,7 @@ const requiredFieldsConfig: FormConfig = {
               {
                 field: 'fullName',
                 condition: '!∅',
-                message: 'Full name is required',
+                message: 'Полное имя обязательно',
               },
             ],
           },
@@ -42,7 +42,7 @@ const requiredFieldsConfig: FormConfig = {
         {
           type: 'input',
           name: 'email',
-          label: 'Email Address *',
+          label: 'Адрес электронной почты *',
           placeholder: 'your.email@example.com',
           inputType: 'email',
           validateCondition: {
@@ -51,19 +51,19 @@ const requiredFieldsConfig: FormConfig = {
               {
                 field: 'email',
                 condition: '!∅',
-                message: 'Email is required',
+                message: 'Электронная почта обязательна',
               },
               {
                 field: 'email',
                 condition: 'includes',
                 value: '@',
-                message: 'Please enter a valid email address',
+                message: 'Пожалуйста, введите корректный адрес электронной почты',
               },
               {
                 field: 'email',
                 condition: 'includes',
                 value: '.',
-                message: 'Please enter a valid email address',
+                message: 'Пожалуйста, введите корректный адрес электронной почты',
               },
             ],
           },
@@ -71,20 +71,20 @@ const requiredFieldsConfig: FormConfig = {
         {
           type: 'input',
           name: 'phone',
-          label: 'Phone Number',
-          placeholder: '+1 (555) 123-4567',
+          label: 'Номер телефона',
+          placeholder: '+7 (999) 123-45-67',
           inputType: 'tel',
         },
         {
           type: 'select',
           name: 'subject',
-          label: 'Subject *',
-          placeholder: 'Select a subject',
+          label: 'Тема *',
+          placeholder: 'Выберите тему',
           options: [
-            { label: 'General Inquiry', value: 'general' },
-            { label: 'Technical Support', value: 'support' },
-            { label: 'Sales', value: 'sales' },
-            { label: 'Feedback', value: 'feedback' },
+            { label: 'Общий вопрос', value: 'general' },
+            { label: 'Техническая поддержка', value: 'support' },
+            { label: 'Продажи', value: 'sales' },
+            { label: 'Отзыв', value: 'feedback' },
           ],
           validateCondition: {
             comparisonType: 'and',
@@ -92,7 +92,7 @@ const requiredFieldsConfig: FormConfig = {
               {
                 field: 'subject',
                 condition: '!∅',
-                message: 'Please select a subject',
+                message: 'Пожалуйста, выберите тему',
               },
             ],
           },
@@ -100,17 +100,17 @@ const requiredFieldsConfig: FormConfig = {
         {
           type: 'textarea',
           name: 'message',
-          label: 'Message',
-          placeholder: 'Your message here...',
+          label: 'Сообщение',
+          placeholder: 'Ваше сообщение здесь...',
           rows: 4,
           maxLength: 1000,
         },
         {
           type: 'switch',
           name: 'agreeToTerms',
-          label: 'I agree to the terms and conditions *',
-          checkedText: 'Yes',
-          uncheckedText: 'No',
+          label: 'Я принимаю условия пользовательского соглашения *',
+          checkedText: 'Да',
+          uncheckedText: 'Нет',
           defaultValue: false,
           validateCondition: {
             comparisonType: 'and',
@@ -119,7 +119,7 @@ const requiredFieldsConfig: FormConfig = {
                 field: 'agreeToTerms',
                 condition: '===',
                 value: true,
-                message: 'You must agree to the terms and conditions',
+                message: 'Вы должны принять условия пользовательского соглашения',
               },
             ],
           },
@@ -134,8 +134,8 @@ export const BasicRequiredFields: Story = {
     config: {
       ...requiredFieldsConfig,
       buttons: [
-        { key: 'submit', label: 'Submit Form', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
-        { key: 'reset', label: 'Clear Form', action: 'reset' },
+        { key: 'submit', label: 'Отправить форму', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+        { key: 'reset', label: 'Очистить форму', action: 'reset' },
       ],
     },
   },
@@ -144,17 +144,17 @@ export const BasicRequiredFields: Story = {
 const conditionalRequiredConfig: FormConfig = {
   groups: [
     {
-      name: 'Shipping Information',
+      name: 'Информация о доставке',
       fields: [
         {
           type: 'select',
           name: 'shippingMethod',
-          label: 'Shipping Method *',
-          placeholder: 'Select shipping method',
+          label: 'Способ доставки *',
+          placeholder: 'Выберите способ доставки',
           options: [
-            { label: 'Standard Shipping', value: 'standard' },
-            { label: 'Express Shipping', value: 'express' },
-            { label: 'Pick Up In Store', value: 'pickup' },
+            { label: 'Стандартная доставка', value: 'standard' },
+            { label: 'Экспресс-доставка', value: 'express' },
+            { label: 'Самовывоз из магазина', value: 'pickup' },
           ],
           validateCondition: {
             comparisonType: 'and',
@@ -162,7 +162,7 @@ const conditionalRequiredConfig: FormConfig = {
               {
                 field: 'shippingMethod',
                 condition: '!∅',
-                message: 'Please select a shipping method',
+                message: 'Пожалуйста, выберите способ доставки',
               },
             ],
           },
@@ -170,8 +170,8 @@ const conditionalRequiredConfig: FormConfig = {
         {
           type: 'input',
           name: 'address',
-          label: 'Shipping Address *',
-          placeholder: 'Enter your address',
+          label: 'Адрес доставки *',
+          placeholder: 'Введите ваш адрес',
           inputType: 'text',
           visibleCondition: {
             comparisonType: 'or',
@@ -190,7 +190,7 @@ const conditionalRequiredConfig: FormConfig = {
                   {
                     field: 'address',
                     condition: '!∅',
-                    message: 'Address is required for shipping',
+                    message: 'Адрес обязателен для доставки',
                   },
                 ],
               },
@@ -200,8 +200,8 @@ const conditionalRequiredConfig: FormConfig = {
         {
           type: 'input',
           name: 'city',
-          label: 'City *',
-          placeholder: 'Enter your city',
+          label: 'Город *',
+          placeholder: 'Введите ваш город',
           inputType: 'text',
           visibleCondition: {
             comparisonType: 'or',
@@ -220,7 +220,7 @@ const conditionalRequiredConfig: FormConfig = {
                   {
                     field: 'city',
                     condition: '!∅',
-                    message: 'City is required for shipping',
+                    message: 'Город обязателен для доставки',
                   },
                 ],
               },
@@ -230,8 +230,8 @@ const conditionalRequiredConfig: FormConfig = {
         {
           type: 'input',
           name: 'zipCode',
-          label: 'ZIP Code *',
-          placeholder: 'Enter ZIP code',
+          label: 'Почтовый индекс *',
+          placeholder: 'Введите почтовый индекс',
           inputType: 'text',
           visibleCondition: {
             comparisonType: 'or',
@@ -250,7 +250,7 @@ const conditionalRequiredConfig: FormConfig = {
                   {
                     field: 'zipCode',
                     condition: '!∅',
-                    message: 'ZIP code is required for shipping',
+                    message: 'Почтовый индекс обязателен для доставки',
                   },
                 ],
               },
@@ -260,8 +260,8 @@ const conditionalRequiredConfig: FormConfig = {
         {
           type: 'input',
           name: 'storeName',
-          label: 'Store Name *',
-          placeholder: 'Store name will appear here',
+          label: 'Название магазина *',
+          placeholder: 'Здесь появится название магазина',
           inputType: 'text',
           visibleCondition: {
             comparisonType: 'and',
@@ -275,7 +275,7 @@ const conditionalRequiredConfig: FormConfig = {
               { field: 'shippingMethod', condition: '===', value: 'pickup' },
             ],
           },
-          defaultValue: 'Main Street Store - 123 Main St',
+          defaultValue: 'Магазин на Главной улице — ул. Главная, 123',
         },
       ],
     },
@@ -287,8 +287,8 @@ export const ConditionalRequired: Story = {
     config: {
       ...conditionalRequiredConfig,
       buttons: [
-        { key: 'submit', label: 'Submit', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
-        { key: 'reset', label: 'Reset', action: 'reset' },
+        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+        { key: 'reset', label: 'Сбросить', action: 'reset' },
       ],
     },
   },

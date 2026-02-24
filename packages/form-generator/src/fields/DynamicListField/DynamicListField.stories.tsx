@@ -40,10 +40,10 @@ export const Default: Story = {
     config: {
       type: 'dynamicList',
       name: 'items',
-      label: 'Items',
+      label: 'Элементы',
       itemFields: [
-        { type: 'input', name: 'title', label: 'Title', placeholder: 'Enter title' },
-        { type: 'inputNumber', name: 'quantity', label: 'Quantity', placeholder: 'Enter quantity', min: 1 },
+        { type: 'input', name: 'title', label: 'Название', placeholder: 'Введите название' },
+        { type: 'inputNumber', name: 'quantity', label: 'Количество', placeholder: 'Введите количество', min: 1 },
       ],
     },
   },
@@ -54,11 +54,11 @@ export const WithCustomAddLabel: Story = {
     config: {
       type: 'dynamicList',
       name: 'contacts',
-      label: 'Contacts',
-      addButton: { label: 'Add contact' },
+      label: 'Контакты',
+      addButton: { label: 'Добавить контакт' },
       itemFields: [
-        { type: 'input', name: 'name', label: 'Name', placeholder: 'Enter name' },
-        { type: 'input', name: 'email', label: 'Email', placeholder: 'Enter email', inputType: 'email' },
+        { type: 'input', name: 'name', label: 'Имя', placeholder: 'Введите имя' },
+        { type: 'input', name: 'email', label: 'Электронная почта', placeholder: 'Введите e-mail', inputType: 'email' },
       ],
     },
   },
@@ -69,10 +69,10 @@ export const TopPosition: Story = {
     config: {
       type: 'dynamicList',
       name: 'items',
-      label: 'Items',
+      label: 'Элементы',
       addButton: { position: 'top', size: 'small', block: false },
       itemFields: [
-        { type: 'input', name: 'title', label: 'Title', placeholder: 'Enter title' },
+        { type: 'input', name: 'title', label: 'Название', placeholder: 'Введите название' },
       ],
     },
   },
@@ -83,19 +83,19 @@ export const WithDefaultValues: Story = {
     config: {
       type: 'dynamicList',
       name: 'passengers',
-      label: 'Passengers',
-      addButton: { label: 'Add passenger' },
+      label: 'Пассажиры',
+      addButton: { label: 'Добавить пассажира' },
       itemFields: [
-        { type: 'input', name: 'name', label: 'Name', placeholder: 'Passenger name' },
+        { type: 'input', name: 'name', label: 'Имя', placeholder: 'Имя пассажира' },
         {
           type: 'select',
           name: 'class',
-          label: 'Class',
+          label: 'Класс',
           defaultValue: 'economy',
           options: [
-            { label: 'Economy', value: 'economy' },
-            { label: 'Business', value: 'business' },
-            { label: 'First', value: 'first' },
+            { label: 'Эконом', value: 'economy' },
+            { label: 'Бизнес', value: 'business' },
+            { label: 'Первый', value: 'first' },
           ],
         },
       ],

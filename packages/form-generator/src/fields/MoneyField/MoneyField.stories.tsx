@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { MoneyField } from './MoneyField';
 import { MoneyField as MoneyFieldConfig } from '@/types';
 
-// Wrapper component to provide react-hook-form context
+// Компонент-обёртка для предоставления контекста react-hook-form
 const MoneyFieldWrapper = ({ config }: { config: MoneyFieldConfig }) => {
   const { control } = useForm();
 
@@ -28,8 +28,8 @@ export const Basic: Story = {
     config: {
       type: 'money',
       name: 'amount',
-      label: 'Amount',
-      placeholder: 'Enter amount',
+      label: 'Сумма',
+      placeholder: 'Введите сумму',
     },
   },
 };
@@ -39,8 +39,8 @@ export const WithPrefix: Story = {
     config: {
       type: 'money',
       name: 'price',
-      label: 'Price',
-      placeholder: 'Enter price',
+      label: 'Цена',
+      placeholder: 'Введите цену',
       prefix: '$',
     },
   },
@@ -51,8 +51,8 @@ export const WithSuffix: Story = {
     config: {
       type: 'money',
       name: 'salary',
-      label: 'Salary',
-      placeholder: 'Enter salary',
+      label: 'Зарплата',
+      placeholder: 'Введите зарплату',
       suffix: 'RUB',
     },
   },
@@ -63,8 +63,8 @@ export const CustomDecimalPlaces: Story = {
     config: {
       type: 'money',
       name: 'wholeAmount',
-      label: 'Whole Amount (no decimals)',
-      placeholder: 'Enter amount',
+      label: 'Целая сумма (без дробной части)',
+      placeholder: 'Введите сумму',
       decimalPlaces: 0,
     },
   },
@@ -75,8 +75,8 @@ export const AllowNegative: Story = {
     config: {
       type: 'money',
       name: 'balance',
-      label: 'Balance (can be negative)',
-      placeholder: 'Enter balance',
+      label: 'Баланс (может быть отрицательным)',
+      placeholder: 'Введите баланс',
       allowNegative: true,
       suffix: 'EUR',
     },
@@ -99,8 +99,8 @@ export const Disabled: Story = {
     config: {
       type: 'money',
       name: 'total',
-      label: 'Total',
-      placeholder: 'Total is locked',
+      label: 'Итого',
+      placeholder: 'Итого заблокировано',
       defaultValue: 1250000,
       prefix: '$',
     },

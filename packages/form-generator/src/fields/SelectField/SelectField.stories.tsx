@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { SelectField } from './SelectField';
 import { SelectField as SelectFieldConfig } from '@/types';
 
-// Wrapper component to provide react-hook-form context
+// Компонент-обёртка для предоставления контекста react-hook-form
 const SelectFieldWrapper = ({ config }: { config: SelectFieldConfig }) => {
   const { control } = useForm();
 
@@ -24,12 +24,12 @@ export default meta;
 type Story = StoryObj<typeof SelectFieldWrapper>
 
 const countryOptions = [
-  { label: 'United States', value: 'US' },
-  { label: 'United Kingdom', value: 'UK' },
-  { label: 'Canada', value: 'CA' },
-  { label: 'Australia', value: 'AU' },
-  { label: 'Germany', value: 'DE' },
-  { label: 'France', value: 'FR' },
+  { label: 'Соединённые Штаты', value: 'US' },
+  { label: 'Великобритания', value: 'UK' },
+  { label: 'Канада', value: 'CA' },
+  { label: 'Австралия', value: 'AU' },
+  { label: 'Германия', value: 'DE' },
+  { label: 'Франция', value: 'FR' },
 ];
 
 export const SingleSelect: Story = {
@@ -37,8 +37,8 @@ export const SingleSelect: Story = {
     config: {
       type: 'select',
       name: 'country',
-      label: 'Country',
-      placeholder: 'Select your country',
+      label: 'Страна',
+      placeholder: 'Выберите вашу страну',
       options: countryOptions,
     },
   },
@@ -49,8 +49,8 @@ export const MultipleSelect: Story = {
     config: {
       type: 'select',
       name: 'countries',
-      label: 'Countries',
-      placeholder: 'Select multiple countries',
+      label: 'Страны',
+      placeholder: 'Выберите несколько стран',
       options: countryOptions,
       multiple: true,
     },
@@ -62,8 +62,8 @@ export const SearchableSelect: Story = {
     config: {
       type: 'select',
       name: 'country',
-      label: 'Country (Searchable)',
-      placeholder: 'Search and select country',
+      label: 'Страна (с поиском)',
+      placeholder: 'Найдите и выберите страну',
       options: countryOptions,
       searchable: true,
     },
@@ -75,8 +75,8 @@ export const WithDefaultValue: Story = {
     config: {
       type: 'select',
       name: 'country',
-      label: 'Country',
-      placeholder: 'Select your country',
+      label: 'Страна',
+      placeholder: 'Выберите вашу страну',
       options: countryOptions,
       defaultValue: 'US',
     },
@@ -88,12 +88,12 @@ export const WithDisabledOptions: Story = {
     config: {
       type: 'select',
       name: 'country',
-      label: 'Country',
-      placeholder: 'Select your country',
+      label: 'Страна',
+      placeholder: 'Выберите вашу страну',
       options: [
-        { label: 'United States', value: 'US' },
-        { label: 'United Kingdom', value: 'UK', disabled: true },
-        { label: 'Canada', value: 'CA' },
+        { label: 'Соединённые Штаты', value: 'US' },
+        { label: 'Великобритания', value: 'UK', disabled: true },
+        { label: 'Канада', value: 'CA' },
       ],
     },
   },
@@ -107,7 +107,7 @@ export const WithError: Story = {
       <SelectField
         config={args.config}
         control={control}
-        error="Please select a country"
+        error="Пожалуйста, выберите страну"
       />
     );
   },
@@ -115,8 +115,8 @@ export const WithError: Story = {
     config: {
       type: 'select',
       name: 'country',
-      label: 'Country',
-      placeholder: 'Select your country',
+      label: 'Страна',
+      placeholder: 'Выберите вашу страну',
       options: countryOptions,
     },
   },
@@ -138,8 +138,8 @@ export const Disabled: Story = {
     config: {
       type: 'select',
       name: 'country',
-      label: 'Country',
-      placeholder: 'Select your country',
+      label: 'Страна',
+      placeholder: 'Выберите вашу страну',
       options: countryOptions,
       defaultValue: 'US',
     },

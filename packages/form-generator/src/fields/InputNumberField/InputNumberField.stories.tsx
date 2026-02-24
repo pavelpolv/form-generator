@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { InputNumberField } from './InputNumberField';
 import { InputNumberField as InputNumberFieldConfig } from '@/types';
 
-// Wrapper component to provide react-hook-form context
+// Компонент-обёртка для предоставления контекста react-hook-form
 const InputNumberFieldWrapper = ({ config }: { config: InputNumberFieldConfig }) => {
   const { control } = useForm();
 
@@ -28,8 +28,8 @@ export const Basic: Story = {
     config: {
       type: 'inputNumber',
       name: 'age',
-      label: 'Age',
-      placeholder: 'Enter your age',
+      label: 'Возраст',
+      placeholder: 'Введите ваш возраст',
     },
   },
 };
@@ -39,8 +39,8 @@ export const WithMinMax: Story = {
     config: {
       type: 'inputNumber',
       name: 'age',
-      label: 'Age (0-120)',
-      placeholder: 'Enter your age',
+      label: 'Возраст (0–120)',
+      placeholder: 'Введите ваш возраст',
       min: 0,
       max: 120,
     },
@@ -52,8 +52,8 @@ export const WithStep: Story = {
     config: {
       type: 'inputNumber',
       name: 'price',
-      label: 'Price',
-      placeholder: 'Enter price',
+      label: 'Цена',
+      placeholder: 'Введите цену',
       step: 0.01,
       min: 0,
     },
@@ -68,7 +68,7 @@ export const WithError: Story = {
       <InputNumberField
         config={args.config}
         control={control}
-        error="Value must be between 0 and 100"
+        error="Значение должно быть от 0 до 100"
       />
     );
   },
@@ -76,8 +76,8 @@ export const WithError: Story = {
     config: {
       type: 'inputNumber',
       name: 'percentage',
-      label: 'Percentage',
-      placeholder: 'Enter percentage',
+      label: 'Процент',
+      placeholder: 'Введите процент',
       min: 0,
       max: 100,
     },
@@ -100,8 +100,8 @@ export const Disabled: Story = {
     config: {
       type: 'inputNumber',
       name: 'score',
-      label: 'Score',
-      placeholder: 'Score is locked',
+      label: 'Счёт',
+      placeholder: 'Счёт заблокирован',
       defaultValue: 100,
     },
   },

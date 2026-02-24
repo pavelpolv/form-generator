@@ -21,43 +21,43 @@ type Story = StoryObj<typeof FormGenerator>
 const basicListConfig: FormConfig = {
   groups: [
     {
-      name: 'Flight Booking',
+      name: 'Бронирование рейса',
       fields: [
         {
           type: 'input',
           name: 'flightNumber',
-          label: 'Flight Number',
-          placeholder: 'e.g. SU 1234',
+          label: 'Номер рейса',
+          placeholder: 'напр. SU 1234',
         },
         {
           type: 'dynamicList',
           name: 'passengers',
-          label: 'Passengers',
-          addButton: { label: 'Add passenger' },
+          label: 'Пассажиры',
+          addButton: { label: 'Добавить пассажира' },
           itemFields: [
             {
               type: 'input',
               name: 'name',
-              label: 'Name',
-              placeholder: 'Full name',
+              label: 'Имя',
+              placeholder: 'Полное имя',
             },
             {
               type: 'inputNumber',
               name: 'age',
-              label: 'Age',
-              placeholder: 'Age',
+              label: 'Возраст',
+              placeholder: 'Возраст',
               min: 0,
               max: 120,
             },
             {
               type: 'select',
               name: 'class',
-              label: 'Class',
+              label: 'Класс',
               defaultValue: 'economy',
               options: [
-                { label: 'Economy', value: 'economy' },
-                { label: 'Business', value: 'business' },
-                { label: 'First Class', value: 'first' },
+                { label: 'Эконом', value: 'economy' },
+                { label: 'Бизнес', value: 'business' },
+                { label: 'Первый класс', value: 'first' },
               ],
             },
           ],
@@ -72,8 +72,8 @@ export const BasicList: Story = {
     config: {
       ...basicListConfig,
       buttons: [
-        { key: 'submit', label: 'Submit', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
-        { key: 'reset', label: 'Reset', action: 'reset' },
+        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+        { key: 'reset', label: 'Сбросить', action: 'reset' },
       ],
     },
     initialValues: {},
@@ -83,36 +83,36 @@ export const BasicList: Story = {
 const validationConfig: FormConfig = {
   groups: [
     {
-      name: 'Contact List',
+      name: 'Список контактов',
       fields: [
         {
           type: 'dynamicList',
           name: 'contacts',
-          label: 'Contacts',
-          addButton: { label: 'Add contact' },
+          label: 'Контакты',
+          addButton: { label: 'Добавить контакт' },
           itemFields: [
             {
               type: 'input',
               name: 'name',
-              label: 'Name',
-              placeholder: 'Full name',
+              label: 'Имя',
+              placeholder: 'Полное имя',
               validateCondition: {
                 comparisonType: 'and',
                 children: [
-                  { field: 'name', condition: '!∅', message: 'Name is required' },
+                  { field: 'name', condition: '!∅', message: 'Имя обязательно' },
                 ],
               },
             },
             {
               type: 'input',
               name: 'email',
-              label: 'Email',
-              placeholder: 'Email address',
+              label: 'Электронная почта',
+              placeholder: 'Адрес электронной почты',
               inputType: 'email',
               validateCondition: {
                 comparisonType: 'and',
                 children: [
-                  { field: 'email', condition: '!∅', message: 'Email is required' },
+                  { field: 'email', condition: '!∅', message: 'Электронная почта обязательна' },
                 ],
               },
             },
@@ -128,8 +128,8 @@ export const WithValidation: Story = {
     config: {
       ...validationConfig,
       buttons: [
-        { key: 'submit', label: 'Submit', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
-        { key: 'reset', label: 'Reset', action: 'reset' },
+        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+        { key: 'reset', label: 'Сбросить', action: 'reset' },
       ],
     },
     initialValues: {},

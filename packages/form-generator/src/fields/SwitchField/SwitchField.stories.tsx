@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { SwitchField } from './SwitchField';
 import { SwitchField as SwitchFieldConfig } from '@/types';
 
-// Wrapper component to provide react-hook-form context
+// Компонент-обёртка для предоставления контекста react-hook-form
 const SwitchFieldWrapper = ({ config }: { config: SwitchFieldConfig }) => {
   const { control } = useForm();
 
@@ -28,7 +28,7 @@ export const BasicSwitch: Story = {
     config: {
       type: 'switch',
       name: 'enabled',
-      label: 'Enable Feature',
+      label: 'Включить функцию',
     },
   },
 };
@@ -38,9 +38,9 @@ export const WithCheckedText: Story = {
     config: {
       type: 'switch',
       name: 'newsletter',
-      label: 'Subscribe to Newsletter',
-      checkedText: 'Yes',
-      uncheckedText: 'No',
+      label: 'Подписаться на рассылку',
+      checkedText: 'Да',
+      uncheckedText: 'Нет',
     },
   },
 };
@@ -50,10 +50,10 @@ export const DefaultChecked: Story = {
     config: {
       type: 'switch',
       name: 'agree',
-      label: 'I agree to terms and conditions',
+      label: 'Я принимаю условия использования',
       defaultValue: true,
-      checkedText: 'Yes',
-      uncheckedText: 'No',
+      checkedText: 'Да',
+      uncheckedText: 'Нет',
     },
   },
 };
@@ -66,7 +66,7 @@ export const WithError: Story = {
       <SwitchField
         config={args.config}
         control={control}
-        error="You must agree to continue"
+        error="Необходимо принять условия для продолжения"
       />
     );
   },
@@ -74,9 +74,9 @@ export const WithError: Story = {
     config: {
       type: 'switch',
       name: 'terms',
-      label: 'I agree to terms and conditions',
-      checkedText: 'Agree',
-      uncheckedText: 'Disagree',
+      label: 'Я принимаю условия использования',
+      checkedText: 'Принимаю',
+      uncheckedText: 'Не принимаю',
     },
   },
 };
@@ -97,10 +97,10 @@ export const Disabled: Story = {
     config: {
       type: 'switch',
       name: 'disabled',
-      label: 'This switch is disabled',
+      label: 'Этот переключатель заблокирован',
       defaultValue: true,
-      checkedText: 'ON',
-      uncheckedText: 'OFF',
+      checkedText: 'ВКЛ',
+      uncheckedText: 'ВЫКЛ',
     },
   },
 };

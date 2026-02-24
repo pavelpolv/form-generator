@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { InputField } from './InputField';
 import { InputField as InputFieldConfig } from '@/types';
 
-// Wrapper component to provide react-hook-form context
+// Компонент-обёртка для предоставления контекста react-hook-form
 const InputFieldWrapper = ({ config }: { config: InputFieldConfig }) => {
   const { control } = useForm();
 
@@ -28,8 +28,8 @@ export const Basic: Story = {
     config: {
       type: 'input',
       name: 'firstName',
-      label: 'First Name',
-      placeholder: 'Enter your first name',
+      label: 'Имя',
+      placeholder: 'Введите ваше имя',
       inputType: 'text',
     },
   },
@@ -40,8 +40,8 @@ export const Password: Story = {
     config: {
       type: 'input',
       name: 'password',
-      label: 'Password',
-      placeholder: 'Enter your password',
+      label: 'Пароль',
+      placeholder: 'Введите ваш пароль',
       inputType: 'password',
     },
   },
@@ -55,7 +55,7 @@ export const WithError: Story = {
       <InputField
         config={args.config}
         control={control}
-        error="This field is required"
+        error="Это поле обязательно для заполнения"
       />
     );
   },
@@ -63,8 +63,8 @@ export const WithError: Story = {
     config: {
       type: 'input',
       name: 'required',
-      label: 'Required Field',
-      placeholder: 'This field has an error',
+      label: 'Обязательное поле',
+      placeholder: 'В этом поле есть ошибка',
       inputType: 'text',
     },
   },
@@ -86,10 +86,10 @@ export const Disabled: Story = {
     config: {
       type: 'input',
       name: 'disabled',
-      label: 'Disabled Field',
-      placeholder: 'This field is disabled',
+      label: 'Заблокированное поле',
+      placeholder: 'Это поле заблокировано',
       inputType: 'text',
-      defaultValue: 'Cannot edit this',
+      defaultValue: 'Редактирование недоступно',
     },
   },
 };
