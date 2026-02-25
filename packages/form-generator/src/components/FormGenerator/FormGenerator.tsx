@@ -49,8 +49,22 @@ export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
     },
     ref,
   ) => {
+    // Собираем defaultValue из конфига и мержим с initialValues (initialValues имеет приоритет)
+    const mergedDefaultValues = useMemo(() => {
+      const defaults: FormValues = {};
+      for (const group of config.groups) {
+        for (const field of group.fields) {
+          if (field.defaultValue !== undefined) {
+            defaults[field.name] = field.defaultValue;
+          }
+        }
+      }
+
+      return { ...defaults, ...initialValues };
+    }, [config.groups, initialValues]);
+
     const { control, handleSubmit, watch, reset, getValues, setValue } = useForm({
-      defaultValues: initialValues,
+      defaultValues: mergedDefaultValues,
       mode: 'onBlur', // Валидация при потере фокуса (первая ошибка)
       reValidateMode: 'onChange', // Повторная валидация при изменении (если уже есть ошибка)
     });
@@ -151,7 +165,7 @@ export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
           description: button.successNotification?.description,
         });
         if (button.resetAfterSubmit) {
-          reset(initialValues);
+          reset(mergedDefaultValues);
         }
         onSubmit?.(values);
       } catch (error) {
@@ -196,14 +210,14 @@ export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
     // Открываем методы формы через ref
     useImperativeHandle(ref, () => ({
       getValues: () => formValues,
-      reset: (values?: FormValues) => reset(values || initialValues),
+      reset: (values?: FormValues) => reset(values || mergedDefaultValues),
       submit: () => handleSubmit(handleFormSubmit)(),
       setValue: (name: string, value: unknown) => setValue(name, value),
     }));
 
     const handleReset = useCallback(() => {
-      reset(initialValues);
-    }, [initialValues, reset]);
+      reset(mergedDefaultValues);
+    }, [mergedDefaultValues, reset]);
 
     const sortedGroups = useMemo(
       () => [...config.groups].sort((a, b) => (a.order ?? 0) - (b.order ?? 0)),
