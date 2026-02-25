@@ -176,3 +176,101 @@ export const WithInitialValues: Story = {
     },
   },
 }
+
+// Конфиг с defaultValue у нескольких полей
+const defaultValueConfig: FormConfig = {
+  groups: [
+    {
+      name: 'Личная информация',
+      fields: [
+        {
+          type: 'input',
+          name: 'firstName',
+          label: 'Имя',
+          placeholder: 'Введите ваше имя',
+          defaultValue: 'Иван',
+        },
+        {
+          type: 'input',
+          name: 'lastName',
+          label: 'Фамилия',
+          placeholder: 'Введите вашу фамилию',
+          defaultValue: 'Иванов',
+        },
+        {
+          type: 'input',
+          name: 'email',
+          label: 'Электронная почта',
+          placeholder: 'Введите вашу электронную почту',
+        },
+        {
+          type: 'inputNumber',
+          name: 'age',
+          label: 'Возраст',
+          placeholder: 'Введите ваш возраст',
+          min: 0,
+          max: 120,
+          defaultValue: 25,
+        },
+      ],
+    },
+    {
+      name: 'Предпочтения',
+      fields: [
+        {
+          type: 'select',
+          name: 'country',
+          label: 'Страна',
+          placeholder: 'Выберите вашу страну',
+          defaultValue: 'DE',
+          options: [
+            { label: 'США', value: 'US' },
+            { label: 'Великобритания', value: 'UK' },
+            { label: 'Канада', value: 'CA' },
+            { label: 'Австралия', value: 'AU' },
+            { label: 'Германия', value: 'DE' },
+          ],
+        },
+        {
+          type: 'switch',
+          name: 'newsletter',
+          label: 'Подписаться на рассылку',
+          checkedText: 'Да',
+          uncheckedText: 'Нет',
+          defaultValue: true,
+        },
+      ],
+    },
+  ],
+}
+
+// Поля имеют defaultValue из конфига, initialValues не передаётся
+export const WithDefaultValues: Story = {
+  args: {
+    config: {
+      ...defaultValueConfig,
+      buttons: [
+        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: false, url: 'https://httpbin.org/post' },
+        { key: 'reset', label: 'Сбросить', action: 'reset' },
+      ],
+    },
+  },
+}
+
+// initialValues переопределяет defaultValue из конфига для совпадающих полей
+export const DefaultValuesOverriddenByInitialValues: Story = {
+  args: {
+    config: {
+      ...defaultValueConfig,
+      buttons: [
+        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: false, url: 'https://httpbin.org/post' },
+        { key: 'reset', label: 'Сбросить', action: 'reset' },
+      ],
+    },
+    // firstName и country переопределены, остальные берутся из defaultValue
+    initialValues: {
+      firstName: 'Пётр',
+      country: 'US',
+    },
+  },
+}

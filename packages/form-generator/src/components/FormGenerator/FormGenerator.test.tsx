@@ -741,4 +741,98 @@ describe('FormGenerator', () => {
     });
   });
 
+  describe('defaultValue из конфига полей', () => {
+    const configWithDefaults: FormConfig = {
+      groups: [
+        {
+          name: 'Group',
+          fields: [
+            { type: 'input', name: 'firstName', label: 'First Name', placeholder: 'Enter first name', defaultValue: 'Иван' },
+            { type: 'input', name: 'lastName', label: 'Last Name', placeholder: 'Enter last name', defaultValue: 'Иванов' },
+            { type: 'inputNumber', name: 'age', label: 'Age', placeholder: 'Enter age', defaultValue: 25 },
+          ],
+        },
+      ],
+    };
+
+    it('должен применять defaultValue из конфига при инициализации формы', () => {
+      const ref = createRef<FormGeneratorRef>();
+      render(<FormGenerator ref={ref} config={configWithDefaults} />);
+
+      const values = ref.current!.getValues();
+      expect(values.firstName).toBe('Иван');
+      expect(values.lastName).toBe('Иванов');
+      expect(values.age).toBe(25);
+    });
+
+    it('должен отображать defaultValue в инпутах', () => {
+      render(<FormGenerator config={configWithDefaults} />);
+
+      expect(screen.getByPlaceholderText('Enter first name')).toHaveValue('Иван');
+      expect(screen.getByPlaceholderText('Enter last name')).toHaveValue('Иванов');
+    });
+
+    it('initialValues должен переопределять defaultValue для совпадающих полей', () => {
+      const ref = createRef<FormGeneratorRef>();
+      render(
+        <FormGenerator
+          ref={ref}
+          config={configWithDefaults}
+          initialValues={{ firstName: 'Пётр' }}
+        />,
+      );
+
+      const values = ref.current!.getValues();
+      // firstName переопределён initialValues
+      expect(values.firstName).toBe('Пётр');
+      // lastName берётся из defaultValue (нет в initialValues)
+      expect(values.lastName).toBe('Иванов');
+    });
+
+    it('поле без defaultValue и без initialValues должно быть пустым', () => {
+      const config: FormConfig = {
+        groups: [
+          {
+            name: 'Group',
+            fields: [
+              { type: 'input', name: 'firstName', label: 'First Name', placeholder: 'Enter first name', defaultValue: 'Иван' },
+              { type: 'input', name: 'comment', label: 'Comment', placeholder: 'Enter comment' },
+            ],
+          },
+        ],
+      };
+      const ref = createRef<FormGeneratorRef>();
+      render(<FormGenerator ref={ref} config={config} />);
+
+      const values = ref.current!.getValues();
+      expect(values.firstName).toBe('Иван');
+      expect(values.comment).toBeUndefined();
+    });
+
+    it('сброс формы должен возвращать к merged значениям (defaultValue + initialValues)', async () => {
+      const config: FormConfig = {
+        ...configWithDefaults,
+        buttons: [{ key: 'reset', label: 'Reset', action: 'reset' }],
+      };
+      const user = userEvent.setup();
+      render(
+        <FormGenerator
+          config={config}
+          initialValues={{ firstName: 'Пётр' }}
+        />,
+      );
+
+      const input = screen.getByPlaceholderText('Enter first name');
+      await user.clear(input);
+      await user.type(input, 'Изменено');
+      expect(input).toHaveValue('Изменено');
+
+      await user.click(screen.getByText('Reset'));
+
+      // После сброса: firstName из initialValues, lastName из defaultValue
+      expect(input).toHaveValue('Пётр');
+      expect(screen.getByPlaceholderText('Enter last name')).toHaveValue('Иванов');
+    });
+  });
+
 });
