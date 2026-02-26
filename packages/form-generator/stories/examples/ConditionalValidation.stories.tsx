@@ -338,7 +338,7 @@ const selectSwitchRequiredConfig: FormConfig = {
         {
           type: 'input',
           name: 'comment',
-          label: 'Поле 3 - Комментарий *',
+          label: 'Поле 3 - Комментарий',
           placeholder: 'Обязательно при Категория=В и Включить=Да',
           inputType: 'text',
           validateCondition: {

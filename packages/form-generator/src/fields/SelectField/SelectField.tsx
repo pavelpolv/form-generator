@@ -72,6 +72,7 @@ export const SelectField: FC<SelectFieldProps> = memo(({
             disabled={disabled}
             showSearch={searchable}
             filterOption={searchable ? filterOption : undefined}
+            onChange={(value) => { field.onChange(value); field.onBlur(); }}
             onBlur={field.onBlur}
             style={{ width: '100%' }}
           >

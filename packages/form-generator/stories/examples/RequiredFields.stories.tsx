@@ -25,7 +25,7 @@ const requiredFieldsConfig: FormConfig = {
         {
           type: 'input',
           name: 'fullName',
-          label: 'Полное имя *',
+          label: 'Полное имя',
           placeholder: 'Введите ваше полное имя',
           inputType: 'text',
           validateCondition: {
@@ -42,7 +42,7 @@ const requiredFieldsConfig: FormConfig = {
         {
           type: 'input',
           name: 'email',
-          label: 'Адрес электронной почты *',
+          label: 'Адрес электронной почты',
           placeholder: 'your.email@example.com',
           inputType: 'email',
           validateCondition: {
@@ -78,7 +78,7 @@ const requiredFieldsConfig: FormConfig = {
         {
           type: 'select',
           name: 'subject',
-          label: 'Тема *',
+          label: 'Тема',
           placeholder: 'Выберите тему',
           options: [
             { label: 'Общий вопрос', value: 'general' },
@@ -108,7 +108,7 @@ const requiredFieldsConfig: FormConfig = {
         {
           type: 'switch',
           name: 'agreeToTerms',
-          label: 'Я принимаю условия пользовательского соглашения *',
+          label: 'Я принимаю условия пользовательского соглашения',
           checkedText: 'Да',
           uncheckedText: 'Нет',
           defaultValue: false,
@@ -149,7 +149,7 @@ const conditionalRequiredConfig: FormConfig = {
         {
           type: 'select',
           name: 'shippingMethod',
-          label: 'Способ доставки *',
+          label: 'Способ доставки',
           placeholder: 'Выберите способ доставки',
           options: [
             { label: 'Стандартная доставка', value: 'standard' },
@@ -170,7 +170,7 @@ const conditionalRequiredConfig: FormConfig = {
         {
           type: 'input',
           name: 'address',
-          label: 'Адрес доставки *',
+          label: 'Адрес доставки',
           placeholder: 'Введите ваш адрес',
           inputType: 'text',
           visibleCondition: {
@@ -200,7 +200,7 @@ const conditionalRequiredConfig: FormConfig = {
         {
           type: 'input',
           name: 'city',
-          label: 'Город *',
+          label: 'Город',
           placeholder: 'Введите ваш город',
           inputType: 'text',
           visibleCondition: {
@@ -230,7 +230,7 @@ const conditionalRequiredConfig: FormConfig = {
         {
           type: 'input',
           name: 'zipCode',
-          label: 'Почтовый индекс *',
+          label: 'Почтовый индекс',
           placeholder: 'Введите почтовый индекс',
           inputType: 'text',
           visibleCondition: {
@@ -260,7 +260,7 @@ const conditionalRequiredConfig: FormConfig = {
         {
           type: 'input',
           name: 'storeName',
-          label: 'Название магазина *',
+          label: 'Название магазина',
           placeholder: 'Здесь появится название магазина',
           inputType: 'text',
           visibleCondition: {

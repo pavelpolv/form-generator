@@ -49,18 +49,24 @@ export const SwitchField: FC<SwitchFieldProps> = memo(({
       defaultValue={defaultValue ?? false}
       render={({ field }) => (
         <Form.Item
-          label={label}
           validateStatus={error ? 'error' : undefined}
           help={error}
-          required={required}
         >
-          <Switch
-            checked={field.value}
-            onChange={field.onChange}
-            disabled={disabled}
-            checkedChildren={checkedText}
-            unCheckedChildren={uncheckedText}
-          />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <Switch
+              checked={field.value}
+              onChange={field.onChange}
+              disabled={disabled}
+              checkedChildren={checkedText}
+              unCheckedChildren={uncheckedText}
+            />
+            <span>
+              {required && (
+                <span style={{ color: '#ff4d4f', marginRight: 4 }}>*</span>
+              )}
+              {label}
+            </span>
+          </div>
         </Form.Item>
       )}
     />
