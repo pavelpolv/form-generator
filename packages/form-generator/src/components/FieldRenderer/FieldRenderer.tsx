@@ -8,6 +8,7 @@ interface FieldRendererProps {
   control: Control<FormValues>
   error?: string
   disabled?: boolean
+  required?: boolean
 }
 
 /**
@@ -22,7 +23,8 @@ const arePropsEqual = (
     prevProps.field === nextProps.field &&
     prevProps.control === nextProps.control &&
     prevProps.error === nextProps.error &&
-    prevProps.disabled === nextProps.disabled
+    prevProps.disabled === nextProps.disabled &&
+    prevProps.required === nextProps.required
   );
 };
 
@@ -35,6 +37,7 @@ export const FieldRenderer: FC<FieldRendererProps> = memo(({
   control,
   error,
   disabled,
+  required,
 }) => {
   switch (field.type) {
   case 'input':
@@ -44,6 +47,7 @@ export const FieldRenderer: FC<FieldRendererProps> = memo(({
         control={control}
         error={error}
         disabled={disabled}
+        required={required}
       />
     );
 
@@ -54,6 +58,7 @@ export const FieldRenderer: FC<FieldRendererProps> = memo(({
         control={control}
         error={error}
         disabled={disabled}
+        required={required}
       />
     );
 
@@ -64,6 +69,7 @@ export const FieldRenderer: FC<FieldRendererProps> = memo(({
         control={control}
         error={error}
         disabled={disabled}
+        required={required}
       />
     );
 
@@ -74,6 +80,7 @@ export const FieldRenderer: FC<FieldRendererProps> = memo(({
         control={control}
         error={error}
         disabled={disabled}
+        required={required}
       />
     );
 
@@ -84,6 +91,7 @@ export const FieldRenderer: FC<FieldRendererProps> = memo(({
         control={control}
         error={error}
         disabled={disabled}
+        required={required}
       />
     );
 
@@ -94,6 +102,7 @@ export const FieldRenderer: FC<FieldRendererProps> = memo(({
         control={control}
         error={error}
         disabled={disabled}
+        required={required}
       />
     );
 
@@ -104,6 +113,7 @@ export const FieldRenderer: FC<FieldRendererProps> = memo(({
         control={control}
         error={error}
         disabled={disabled}
+        required={required}
       />
     );
 

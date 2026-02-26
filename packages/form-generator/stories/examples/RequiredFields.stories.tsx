@@ -293,3 +293,97 @@ export const ConditionalRequired: Story = {
     },
   },
 }
+
+// Звёздочка появляется автоматически из validateCondition - вручную в label не нужна
+const autoAsteriskConfig: FormConfig = {
+  groups: [
+    {
+      name: 'Регистрация',
+      fields: [
+        {
+          type: 'select',
+          name: 'accountType',
+          label: 'Тип аккаунта',
+          placeholder: 'Выберите тип',
+          defaultValue: 'personal',
+          options: [
+            { label: 'Физическое лицо', value: 'personal' },
+            { label: 'Юридическое лицо', value: 'business' },
+          ],
+          validateCondition: {
+            comparisonType: 'and',
+            children: [
+              { field: 'accountType', condition: '!∅', message: 'Выберите тип аккаунта' },
+            ],
+          },
+        },
+        {
+          type: 'input',
+          name: 'fullName',
+          label: 'Полное имя',
+          placeholder: 'Иван Иванов',
+          validateCondition: {
+            comparisonType: 'and',
+            children: [
+              { field: 'fullName', condition: '!∅', message: 'Имя обязательно' },
+            ],
+          },
+        },
+        {
+          // Обязательно только для юрлица - звёздочка появляется/исчезает динамически
+          type: 'input',
+          name: 'inn',
+          label: 'ИНН',
+          placeholder: '1234567890',
+          visibleCondition: {
+            comparisonType: 'and',
+            children: [
+              { field: 'accountType', condition: '===', value: 'business' },
+            ],
+          },
+          validateCondition: {
+            comparisonType: 'and',
+            children: [
+              { field: 'accountType', condition: '===', value: 'business' },
+              { field: 'inn', condition: '!∅', message: 'ИНН обязателен для юрлица' },
+            ],
+          },
+        },
+        {
+          // Обязательно только для юрлица
+          type: 'input',
+          name: 'companyName',
+          label: 'Название компании',
+          placeholder: 'ООО "Ромашка"',
+          visibleCondition: {
+            comparisonType: 'and',
+            children: [
+              { field: 'accountType', condition: '===', value: 'business' },
+            ],
+          },
+          validateCondition: {
+            comparisonType: 'and',
+            children: [
+              { field: 'accountType', condition: '===', value: 'business' },
+              { field: 'companyName', condition: '!∅', message: 'Название компании обязательно' },
+            ],
+          },
+        },
+      ],
+    },
+  ],
+}
+
+// Звёздочка у ИНН и Названия компании появляется автоматически при выборе "Юридическое лицо"
+export const AutoAsteriskFromCondition: Story = {
+  args: {
+    config: {
+      ...autoAsteriskConfig,
+      buttons: [
+        { key: 'submit', label: 'Зарегистрироваться', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+        { key: 'reset', label: 'Сбросить', action: 'reset' },
+      ],
+    },
+    initialValues: { accountType: 'personal' },
+  },
+}

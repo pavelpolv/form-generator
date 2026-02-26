@@ -9,6 +9,7 @@ interface InputFieldProps {
   control: Control<FormValues>
   error?: string
   disabled?: boolean
+  required?: boolean
 }
 
 /**
@@ -20,6 +21,7 @@ export const InputField: FC<InputFieldProps> = memo(({
   control,
   error,
   disabled = false,
+  required = false,
 }) => {
   // Валидация конфига — мемоизирована, так как конфиг не изменяется после инициализации
   const configError = useMemo(() => validateFieldConfig(config), [config]);
@@ -51,6 +53,7 @@ export const InputField: FC<InputFieldProps> = memo(({
           label={label}
           validateStatus={error ? 'error' : undefined}
           help={error}
+          required={required}
         >
           {inputType === 'password' ? (
             <Input.Password

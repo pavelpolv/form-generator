@@ -58,6 +58,7 @@ interface MoneyFieldProps {
   control: Control<FormValues>
   error?: string
   disabled?: boolean
+  required?: boolean
 }
 
 // Мемоизированный внутренний компонент для использования хуков с field из render prop
@@ -73,7 +74,8 @@ const MoneyInner: FC<{
   min?: number
   max?: number
   error?: string
-}> = memo(({ field, label, placeholder, disabled, decimalPlaces, prefix, suffix, allowNegative, min, max, error }) => {
+  required?: boolean
+}> = memo(({ field, label, placeholder, disabled, decimalPlaces, prefix, suffix, allowNegative, min, max, error, required }) => {
   const [displayValue, setDisplayValue] = useState(() =>
     formatMoney(field.value as number | undefined | null, decimalPlaces),
   );
@@ -155,6 +157,7 @@ const MoneyInner: FC<{
       label={label}
       validateStatus={error ? 'error' : undefined}
       help={error}
+      required={required}
     >
       <Input
         ref={field.ref}
@@ -183,6 +186,7 @@ export const MoneyField: FC<MoneyFieldProps> = memo(({
   control,
   error,
   disabled = false,
+  required = false,
 }) => {
   // Валидация конфига — мемоизирована, так как конфиг не изменяется после инициализации
   const configError = useMemo(() => validateFieldConfig(config), [config]);
@@ -226,6 +230,7 @@ export const MoneyField: FC<MoneyFieldProps> = memo(({
           min={min}
           max={max}
           error={error}
+          required={required}
         />
       )}
     />

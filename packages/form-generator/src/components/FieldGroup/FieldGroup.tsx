@@ -2,7 +2,7 @@ import { FC, memo, useMemo } from 'react';
 import { Card } from 'antd';
 import { Control } from 'react-hook-form';
 import { GroupField, FormValues, Field, DynamicListField as DynamicListFieldConfig } from '@/types';
-import { evaluateConditions, collectValidationMessages, collectFieldsFromCondition } from '@/utils';
+import { evaluateConditions, collectValidationMessages, collectFieldsFromCondition, isFieldRequired } from '@/utils';
 import { FieldRenderer } from '@/components/FieldRenderer';
 import { DynamicListField } from '@/fields/DynamicListField';
 
@@ -54,6 +54,13 @@ const MemoizedField: FC<MemoizedFieldProps> = memo(
       },
       [isFieldValid, shouldShowErrors, field.validateCondition, formValues],
     );
+
+    // Динамически вычисляем обязательность поля по validateCondition
+    const required = useMemo(
+      () => isFieldRequired(field.validateCondition, formValues),
+      [field.validateCondition, formValues],
+    );
+
     if (!isFieldVisible) {
       return null;
     }
@@ -64,6 +71,7 @@ const MemoizedField: FC<MemoizedFieldProps> = memo(
         control={control}
         error={fieldValidationMessages}
         disabled={isFieldDisabled}
+        required={required}
       />
     );
   },

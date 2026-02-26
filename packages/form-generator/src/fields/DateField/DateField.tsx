@@ -10,6 +10,7 @@ interface DateFieldProps {
   control: Control<FormValues>
   error?: string
   disabled?: boolean
+  required?: boolean
 }
 
 /**
@@ -21,6 +22,7 @@ export const DateField: FC<DateFieldProps> = memo(({
   control,
   error,
   disabled = false,
+  required = false,
 }) => {
   // Валидация конфига — мемоизирована, так как конфиг не изменяется после инициализации
   const configError = useMemo(() => validateFieldConfig(config), [config]);
@@ -71,6 +73,7 @@ export const DateField: FC<DateFieldProps> = memo(({
           label={label}
           validateStatus={error ? 'error' : undefined}
           help={error}
+          required={required}
         >
           <DatePicker
             value={field.value ? moment(field.value) : null}

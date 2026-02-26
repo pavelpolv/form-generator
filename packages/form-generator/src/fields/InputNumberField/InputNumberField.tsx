@@ -9,6 +9,7 @@ interface InputNumberFieldProps {
   control: Control<FormValues>
   error?: string
   disabled?: boolean
+  required?: boolean
 }
 
 // Мемоизированный внутренний компонент для использования хуков с field из render prop
@@ -21,7 +22,8 @@ const InputNumberInner: FC<{
   max?: number
   step?: number
   error?: string
-}> = memo(({ field, label, placeholder, disabled, min, max, step, error }) => {
+  required?: boolean
+}> = memo(({ field, label, placeholder, disabled, min, max, step, error, required }) => {
   const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     field.onChange(value === '' ? undefined : Number(value));
@@ -36,6 +38,7 @@ const InputNumberInner: FC<{
       label={label}
       validateStatus={error ? 'error' : undefined}
       help={error}
+      required={required}
     >
       <Input
         {...field}
@@ -63,6 +66,7 @@ export const InputNumberField: FC<InputNumberFieldProps> = memo(({
   control,
   error,
   disabled = false,
+  required = false,
 }) => {
   // Валидация конфига — мемоизирована, так как конфиг не изменяется после инициализации
   const configError = useMemo(() => validateFieldConfig(config), [config]);
@@ -100,6 +104,7 @@ export const InputNumberField: FC<InputNumberFieldProps> = memo(({
           max={max}
           step={step}
           error={error}
+          required={required}
         />
       )}
     />

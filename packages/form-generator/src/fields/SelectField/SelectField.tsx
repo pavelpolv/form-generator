@@ -11,6 +11,7 @@ interface SelectFieldProps {
   control: Control<FormValues>
   error?: string
   disabled?: boolean
+  required?: boolean
 }
 
 /**
@@ -22,6 +23,7 @@ export const SelectField: FC<SelectFieldProps> = memo(({
   control,
   error,
   disabled = false,
+  required = false,
 }) => {
   // Валидация конфига — мемоизирована, так как конфиг не изменяется после инициализации
   const configError = useMemo(() => validateFieldConfig(config), [config]);
@@ -61,6 +63,7 @@ export const SelectField: FC<SelectFieldProps> = memo(({
           label={label}
           validateStatus={error ? 'error' : undefined}
           help={error}
+          required={required}
         >
           <Select
             {...field}

@@ -9,6 +9,7 @@ interface SwitchFieldProps {
   control: Control<FormValues>
   error?: string
   disabled?: boolean
+  required?: boolean
 }
 
 /**
@@ -20,6 +21,7 @@ export const SwitchField: FC<SwitchFieldProps> = memo(({
   control,
   error,
   disabled = false,
+  required = false,
 }) => {
   // Валидация конфига — мемоизирована, так как конфиг не изменяется после инициализации
   const configError = useMemo(() => validateFieldConfig(config), [config]);
@@ -50,6 +52,7 @@ export const SwitchField: FC<SwitchFieldProps> = memo(({
           label={label}
           validateStatus={error ? 'error' : undefined}
           help={error}
+          required={required}
         >
           <Switch
             checked={field.value}

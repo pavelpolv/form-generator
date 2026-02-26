@@ -3,7 +3,7 @@ import { Form, Button } from 'antd';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { Control, useFieldArray, useFormState } from 'react-hook-form';
 import { DynamicListField as DynamicListFieldConfig, FormValues } from '@/types';
-import { evaluateConditions, collectValidationMessages } from '@/utils';
+import { evaluateConditions, collectValidationMessages, isFieldRequired } from '@/utils';
 import { FieldRenderer } from '@/components/FieldRenderer';
 
 interface DynamicListFieldComponentProps {
@@ -104,6 +104,7 @@ export const DynamicListField: FC<DynamicListFieldComponentProps> = ({
               const error = !isItemValid && (isTouched || forceShowErrors)
                 ? collectValidationMessages(itemField.validateCondition, itemValues).join(', ')
                 : undefined;
+              const isItemRequired = isFieldRequired(itemField.validateCondition, itemValues);
 
               return (
                 <FieldRenderer
@@ -112,6 +113,7 @@ export const DynamicListField: FC<DynamicListFieldComponentProps> = ({
                   control={control}
                   error={error}
                   disabled={isItemDisabled}
+                  required={isItemRequired}
                 />
               );
             })}
