@@ -65,6 +65,7 @@ export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
 
     const { control, handleSubmit, watch, reset, getValues, setValue } = useForm({
       defaultValues: mergedDefaultValues,
+      shouldUnregister: true, // Удалять значение поля из стейта при его скрытии
       mode: 'onBlur', // Валидация при потере фокуса (первая ошибка)
       reValidateMode: 'onChange', // Повторная валидация при изменении (если уже есть ошибка)
     });
