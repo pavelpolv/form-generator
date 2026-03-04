@@ -84,7 +84,7 @@ describe('FormGenerator', () => {
             type: 'primary',
             action: 'submit',
             requiresValidation: true,
-            url: 'https://api.example.com/save',
+            url: 'http://localhost:9999',
           },
           {
             key: 'reset',
@@ -155,7 +155,7 @@ describe('FormGenerator', () => {
             type: 'primary',
             action: 'submit',
             requiresValidation: false,
-            url: 'https://api.example.com/save',
+            url: 'http://localhost:9999',
             method: 'PUT',
           },
         ],
@@ -172,7 +172,7 @@ describe('FormGenerator', () => {
       await user.click(screen.getByText('Save'));
 
       await waitFor(() => {
-        expect(fetchMock).toHaveBeenCalledWith('https://api.example.com/save', {
+        expect(fetchMock).toHaveBeenCalledWith('http://localhost:9999', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: expect.any(String),
@@ -192,7 +192,7 @@ describe('FormGenerator', () => {
             label: 'Save',
             action: 'submit',
             requiresValidation: false,
-            url: 'https://api.example.com/save',
+            url: 'http://localhost:9999',
           },
         ],
       };
@@ -203,7 +203,7 @@ describe('FormGenerator', () => {
       await user.click(screen.getByText('Save'));
 
       await waitFor(() => {
-        expect(fetchMock).toHaveBeenCalledWith('https://api.example.com/save', expect.objectContaining({
+        expect(fetchMock).toHaveBeenCalledWith('http://localhost:9999', expect.objectContaining({
           method: 'POST',
         }));
       });
@@ -222,7 +222,7 @@ describe('FormGenerator', () => {
             label: 'Save',
             action: 'submit',
             requiresValidation: false,
-            url: 'https://api.example.com/save',
+            url: 'http://localhost:9999',
           },
         ],
       };
@@ -255,7 +255,7 @@ describe('FormGenerator', () => {
             label: 'Save',
             action: 'submit',
             requiresValidation: false,
-            url: 'https://api.example.com/save',
+            url: 'http://localhost:9999',
           },
         ],
       };
@@ -289,7 +289,7 @@ describe('FormGenerator', () => {
             label: 'Save',
             action: 'submit',
             requiresValidation: false,
-            url: 'https://api.example.com/save',
+            url: 'http://localhost:9999',
           },
         ],
       };
@@ -316,7 +316,7 @@ describe('FormGenerator', () => {
             label: 'Save',
             action: 'submit',
             requiresValidation: false,
-            url: 'https://api.example.com/save',
+            url: 'http://localhost:9999',
             resetAfterSubmit: true,
           },
         ],
@@ -396,7 +396,7 @@ describe('FormGenerator', () => {
       const config: FormConfig = {
         ...simpleConfig,
         buttons: [
-          { key: 'submit', label: 'Submit', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://api.example.com/save' },
+          { key: 'submit', label: 'Submit', type: 'primary', action: 'submit', requiresValidation: true, url: 'http://localhost:9999' },
           { key: 'reset', label: 'Reset', action: 'reset' },
         ],
       };
@@ -612,7 +612,7 @@ describe('FormGenerator', () => {
             type: 'primary',
             action: 'submit',
             requiresValidation: true,
-            url: 'https://api.example.com/save',
+            url: 'http://localhost:9999',
           },
         ],
       };
@@ -652,7 +652,7 @@ describe('FormGenerator', () => {
             type: 'primary',
             action: 'submit',
             requiresValidation: true,
-            url: 'https://api.example.com/save',
+            url: 'http://localhost:9999',
           },
         ],
       };
@@ -693,7 +693,7 @@ describe('FormGenerator', () => {
             type: 'primary',
             action: 'submit',
             requiresValidation: true,
-            url: 'https://api.example.com/save',
+            url: 'http://localhost:9999',
           },
         ],
       };

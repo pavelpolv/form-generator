@@ -134,7 +134,7 @@ export const BasicRequiredFields: Story = {
     config: {
       ...requiredFieldsConfig,
       buttons: [
-        { key: 'submit', label: 'Отправить форму', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+        { key: 'submit', label: 'Отправить форму', type: 'primary', action: 'submit', requiresValidation: true, url: 'http://localhost:9999' },
         { key: 'reset', label: 'Очистить форму', action: 'reset' },
       ],
     },
@@ -287,7 +287,7 @@ export const ConditionalRequired: Story = {
     config: {
       ...conditionalRequiredConfig,
       buttons: [
-        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: true, url: 'http://localhost:9999' },
         { key: 'reset', label: 'Сбросить', action: 'reset' },
       ],
     },
@@ -380,7 +380,7 @@ export const AutoAsteriskFromCondition: Story = {
     config: {
       ...autoAsteriskConfig,
       buttons: [
-        { key: 'submit', label: 'Зарегистрироваться', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+        { key: 'submit', label: 'Зарегистрироваться', type: 'primary', action: 'submit', requiresValidation: true, url: 'http://localhost:9999' },
         { key: 'reset', label: 'Сбросить', action: 'reset' },
       ],
     },

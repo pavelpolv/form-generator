@@ -142,7 +142,7 @@ export const RequiredFields: Story = {
       buttons: [
         {
           key: 'submit', label: 'Отправить', type: 'primary', action: 'submit',
-          requiresValidation: true, url: 'https://httpbin.org/post',
+          requiresValidation: true, url: 'http://localhost:9999',
           successNotification: { message: 'Успешно', description: 'Данные успешно отправлены' },
           errorNotification: { message: 'Ошибка', description: 'Не удалось отправить данные' },
         },
@@ -248,7 +248,7 @@ export const ComplexValidation: Story = {
     config: {
       ...complexValidationConfig,
       buttons: [
-        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: true, url: 'http://localhost:9999' },
         { key: 'reset', label: 'Сбросить', action: 'reset' },
       ],
     },
@@ -296,7 +296,7 @@ export const SwitchRequiredField: Story = {
     config: {
       ...switchRequiredConfig,
       buttons: [
-        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: true, url: 'http://localhost:9999' },
         { key: 'reset', label: 'Сбросить', action: 'reset' },
       ],
     },
@@ -367,7 +367,7 @@ export const SelectSwitchConditionalRequired: Story = {
     config: {
       ...selectSwitchRequiredConfig,
       buttons: [
-        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: true, url: 'http://localhost:9999' },
         { key: 'reset', label: 'Сбросить', action: 'reset' },
       ],
     },

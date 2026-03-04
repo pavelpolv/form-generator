@@ -149,7 +149,7 @@ export const ConditionalGroups: Story = {
     config: {
       ...conditionalVisibilityConfig,
       buttons: [
-        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: true, url: 'http://localhost:9999' },
         { key: 'reset', label: 'Сбросить', action: 'reset' },
       ],
     },
@@ -245,7 +245,7 @@ export const NestedConditions: Story = {
     config: {
       ...nestedConditionsConfig,
       buttons: [
-        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: true, url: 'http://localhost:9999' },
         { key: 'reset', label: 'Сбросить', action: 'reset' },
       ],
     },

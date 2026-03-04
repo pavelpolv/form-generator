@@ -10,7 +10,7 @@ const submitButton: SubmitButtonConfig = {
   type: 'primary',
   action: 'submit',
   requiresValidation: true,
-  url: 'https://api.example.com/save',
+  url: 'http://localhost:9999',
 };
 
 const resetButton: ButtonConfig = {

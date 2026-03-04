@@ -15,7 +15,7 @@ describe('buttonSchemas', () => {
         label: 'Save',
         action: 'submit',
         requiresValidation: true,
-        url: 'https://api.example.com/save',
+        url: 'http://localhost:9999',
       };
       expect(() => submitButtonSchema.parse(config)).not.toThrow();
     });
@@ -27,7 +27,7 @@ describe('buttonSchemas', () => {
         type: 'primary',
         action: 'submit',
         requiresValidation: true,
-        url: 'https://api.example.com/save',
+        url: 'http://localhost:9999',
         method: 'PUT',
         resetAfterSubmit: true,
       };
@@ -40,7 +40,7 @@ describe('buttonSchemas', () => {
         label: 'Save',
         action: 'submit',
         requiresValidation: true,
-        url: 'https://api.example.com/save',
+        url: 'http://localhost:9999',
       };
       expect(() => submitButtonSchema.parse(config)).toThrow();
     });
@@ -51,7 +51,7 @@ describe('buttonSchemas', () => {
         label: '',
         action: 'submit',
         requiresValidation: true,
-        url: 'https://api.example.com/save',
+        url: 'http://localhost:9999',
       };
       expect(() => submitButtonSchema.parse(config)).toThrow();
     });
@@ -73,7 +73,7 @@ describe('buttonSchemas', () => {
         label: 'Save',
         action: 'submit',
         requiresValidation: true,
-        url: 'https://api.example.com/save',
+        url: 'http://localhost:9999',
         method: 'GET',
       };
       expect(() => submitButtonSchema.parse(config)).toThrow();
@@ -86,7 +86,7 @@ describe('buttonSchemas', () => {
         type: 'invalid',
         action: 'submit',
         requiresValidation: true,
-        url: 'https://api.example.com/save',
+        url: 'http://localhost:9999',
       };
       expect(() => submitButtonSchema.parse(config)).toThrow();
     });
@@ -96,7 +96,7 @@ describe('buttonSchemas', () => {
         key: 'save',
         label: 'Save',
         action: 'submit',
-        url: 'https://api.example.com/save',
+        url: 'http://localhost:9999',
       };
       expect(() => submitButtonSchema.parse(config)).toThrow();
     });
@@ -139,7 +139,7 @@ describe('buttonSchemas', () => {
         label: 'Save',
         action: 'submit',
         requiresValidation: true,
-        url: 'https://api.example.com/save',
+        url: 'http://localhost:9999',
       };
       expect(() => buttonConfigSchema.parse(config)).not.toThrow();
     });
@@ -171,7 +171,7 @@ describe('buttonSchemas', () => {
           label: 'Save',
           action: 'submit',
           requiresValidation: true,
-          url: 'https://api.example.com/save',
+          url: 'http://localhost:9999',
         },
         {
           key: 'reset',
@@ -193,14 +193,14 @@ describe('buttonSchemas', () => {
           label: 'Save',
           action: 'submit',
           requiresValidation: true,
-          url: 'https://api.example.com/save',
+          url: 'http://localhost:9999',
         },
         {
           key: 'save',
           label: 'Save Draft',
           action: 'submit',
           requiresValidation: false,
-          url: 'https://api.example.com/draft',
+          url: 'http://localhost:9999/draft',
         },
       ];
       expect(() => buttonsArraySchema.parse(config)).toThrow();
@@ -215,7 +215,7 @@ describe('buttonSchemas', () => {
           label: 'Save',
           action: 'submit',
           requiresValidation: true,
-          url: 'https://api.example.com/save',
+          url: 'http://localhost:9999',
         },
       ];
       expect(validateButtonsConfig(config)).toBeNull();
@@ -240,7 +240,7 @@ describe('buttonSchemas', () => {
           label: 'Save',
           action: 'submit',
           requiresValidation: true,
-          url: 'https://api.example.com/save',
+          url: 'http://localhost:9999',
         },
       ];
       const error = validateButtonsConfig(config);
@@ -255,7 +255,7 @@ describe('buttonSchemas', () => {
           label: 'Button 1',
           action: 'submit',
           requiresValidation: true,
-          url: 'https://api.example.com/a',
+          url: 'http://localhost:9999',
         },
         {
           key: 'btn',

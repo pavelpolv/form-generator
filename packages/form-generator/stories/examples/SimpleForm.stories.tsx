@@ -104,7 +104,7 @@ export const BasicForm: Story = {
     config: {
       ...simpleFormConfig,
       buttons: [
-        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: true, url: 'http://localhost:9999' },
         { key: 'reset', label: 'Сбросить', action: 'reset' },
       ],
     },
@@ -150,7 +150,7 @@ export const NoTitleNoBorder: Story = {
     config: {
       ...noTitleNoBorderConfig,
       buttons: [
-        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: true, url: 'http://localhost:9999' },
       ],
     },
     initialValues: {},
@@ -162,7 +162,7 @@ export const WithInitialValues: Story = {
     config: {
       ...simpleFormConfig,
       buttons: [
-        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: true, url: 'https://httpbin.org/post' },
+        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: true, url: 'http://localhost:9999' },
         { key: 'reset', label: 'Сбросить', action: 'reset' },
       ],
     },
@@ -250,7 +250,7 @@ export const WithDefaultValues: Story = {
     config: {
       ...defaultValueConfig,
       buttons: [
-        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: false, url: 'https://httpbin.org/post' },
+        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: false, url: 'http://localhost:9999' },
         { key: 'reset', label: 'Сбросить', action: 'reset' },
       ],
     },
@@ -263,7 +263,7 @@ export const DefaultValuesOverriddenByInitialValues: Story = {
     config: {
       ...defaultValueConfig,
       buttons: [
-        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: false, url: 'https://httpbin.org/post' },
+        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: false, url: 'http://localhost:9999' },
         { key: 'reset', label: 'Сбросить', action: 'reset' },
       ],
     },
