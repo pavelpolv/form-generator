@@ -2,7 +2,7 @@ import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRe
 import { useForm, useFormState } from 'react-hook-form';
 import { Button, Form, Space, notification } from 'antd';
 import { ComputedValueConfig, FormConfig, FormValues, SubmitButtonConfig } from '@/types';
-import { evaluateComputedValue, evaluateConditions } from '@/utils';
+import { collectValidationMessages, evaluateComputedValue, evaluateConditions } from '@/utils';
 import { FieldGroup } from '@/components/FieldGroup';
 import { FormButtons } from '@/components/FormButtons';
 
@@ -33,6 +33,11 @@ export interface FormGeneratorProps {
    * Колбэк при отправке формы
    */
   onSubmit?: (values: FormValues) => void
+
+  /**
+   * Режим отладки: ошибки валидации при вызове submit() выводятся в консоль
+   */
+  debug?: boolean
 }
 
 /**
@@ -46,6 +51,7 @@ export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
       initialValues = {},
       onChange,
       onSubmit,
+      debug = false,
     },
     ref,
   ) => {
@@ -185,23 +191,44 @@ export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
       const values = getValues();
       let hasErrors = false;
 
+      type ValidationError = { type: 'group' | 'field'; name: string; messages: string[] }
+      const errors: ValidationError[] = [];
+
       for (const group of config.groups) {
         if (!evaluateConditions(group.validateCondition, values)) {
           hasErrors = true;
+          errors.push({
+            type: 'group',
+            name: group.name,
+            messages: collectValidationMessages(group.validateCondition, values),
+          });
         }
         for (const field of group.fields) {
           if (!evaluateConditions(field.validateCondition, values)) {
             hasErrors = true;
+            errors.push({
+              type: 'field',
+              name: field.name,
+              messages: collectValidationMessages(field.validateCondition, values),
+            });
           }
         }
       }
 
       if (hasErrors) {
         setForceShowErrors(true);
+        if (debug) {
+          console.group('[FormGenerator] Ошибки валидации при submit()');
+          console.log('Значения формы:', values);
+          for (const err of errors) {
+            console.error(`[${err.type}] ${err.name}:`, err.messages.join(', ') || '(без сообщения)');
+          }
+          console.groupEnd();
+        }
       }
 
       return !hasErrors;
-    }, [config.groups, getValues]);
+    }, [config.groups, debug, getValues]);
 
     const handleSubmitButtonClick = useCallback((button: SubmitButtonConfig) => {
       const values = getValues();

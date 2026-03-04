@@ -388,3 +388,95 @@ const SetValueExample = () => {
 export const SetValue: StoryObj = {
   render: () => <SetValueExample />,
 }
+
+// --- История 5: submit() + onSubmit ---
+
+const submitOnSubmitConfig: FormConfig = {
+  groups: [
+    {
+      name: 'Данные пользователя',
+      fields: [
+        {
+          type: 'input',
+          name: 'name',
+          label: 'Имя',
+          placeholder: 'Введите имя',
+          inputType: 'text',
+          validateCondition: {
+            comparisonType: 'and',
+            children: [{ field: 'name', condition: '!∅', message: 'Имя обязательно' }],
+          },
+        },
+        {
+          type: 'input',
+          name: 'email',
+          label: 'Email',
+          placeholder: 'Введите email',
+          inputType: 'email',
+          validateCondition: {
+            comparisonType: 'and',
+            children: [{ field: 'email', condition: '!∅', message: 'Email обязателен' }],
+          },
+        },
+      ],
+    },
+  ],
+  buttons: [],
+}
+
+const SubmitWithOnSubmitExample = () => {
+  const formRef = useRef<FormGeneratorRef>(null)
+  const [submittedData, setSubmittedData] = useState<FormValues | null>(null)
+  const [submitCount, setSubmitCount] = useState(0)
+
+  return (
+    <div>
+      <Title level={4}>submit() + onSubmit</Title>
+      <Text type="secondary">
+        Нажмите «Отправить» без заполнения полей — сработает валидация.
+        Заполните поля и нажмите снова — сработает onSubmit.
+      </Text>
+
+      <Card style={{ marginTop: 16 }}>
+        <FormGenerator
+          ref={formRef}
+          config={submitOnSubmitConfig}
+          debug
+          onSubmit={(values) => {
+            setSubmittedData(values)
+            setSubmitCount(c => c + 1)
+          }}
+        />
+      </Card>
+
+      <Divider />
+
+      <Space>
+        <Button
+          type="primary"
+          onClick={() => formRef.current?.submit()}
+        >
+          Отправить (внешняя кнопка)
+        </Button>
+        <Button onClick={() => { formRef.current?.reset(); setSubmittedData(null) }}>
+          Сбросить
+        </Button>
+      </Space>
+
+      {submittedData && (
+        <Card style={{ marginTop: 16, background: '#f6ffed', borderColor: '#52c41a' }}>
+          <Text strong style={{ color: '#52c41a' }}>
+            onSubmit вызван {submitCount} раз
+          </Text>
+          <pre style={{ marginTop: 8, fontSize: 13 }}>
+            {JSON.stringify(submittedData, null, 2)}
+          </pre>
+        </Card>
+      )}
+    </div>
+  )
+}
+
+export const SubmitWithOnSubmit: StoryObj = {
+  render: () => <SubmitWithOnSubmitExample />,
+}

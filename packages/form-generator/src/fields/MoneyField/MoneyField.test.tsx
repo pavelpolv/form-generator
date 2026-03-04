@@ -296,7 +296,6 @@ describe('MoneyField', () => {
   });
 
   it('должен корректно обрабатывать selectionStart=null (фолбэк ?? 0)', async () => {
-    const user = userEvent.setup();
     render(<TestWrapper config={baseConfig} />);
 
     const input = screen.getByPlaceholderText('Enter amount') as HTMLInputElement;
