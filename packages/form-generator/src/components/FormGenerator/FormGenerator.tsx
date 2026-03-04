@@ -180,39 +180,44 @@ export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
       }
     }, [initialValues, onSubmit, reset]);
 
-    const handleSubmitButtonClick = useCallback((button: SubmitButtonConfig) => {
-      if (button.requiresValidation) {
-        const values = getValues();
-        let hasValidationErrors = false;
+    // Проверяет все validateCondition полей и групп, при ошибках включает forceShowErrors
+    const validate = useCallback((): boolean => {
+      const values = getValues();
+      let hasErrors = false;
 
-        for (const group of config.groups) {
-          if (!evaluateConditions(group.validateCondition, values)) {
-            hasValidationErrors = true;
-          }
-          for (const field of group.fields) {
-            if (!evaluateConditions(field.validateCondition, values)) {
-              hasValidationErrors = true;
-            }
+      for (const group of config.groups) {
+        if (!evaluateConditions(group.validateCondition, values)) {
+          hasErrors = true;
+        }
+        for (const field of group.fields) {
+          if (!evaluateConditions(field.validateCondition, values)) {
+            hasErrors = true;
           }
         }
-
-        if (hasValidationErrors) {
-          setForceShowErrors(true);
-          return;
-        }
-
-        handleButtonSubmit(button, values);
-      } else {
-        const values = getValues();
-        handleButtonSubmit(button, values);
       }
-    }, [config.groups, getValues, handleButtonSubmit]);
+
+      if (hasErrors) {
+        setForceShowErrors(true);
+      }
+
+      return !hasErrors;
+    }, [config.groups, getValues]);
+
+    const handleSubmitButtonClick = useCallback((button: SubmitButtonConfig) => {
+      const values = getValues();
+      if (button.requiresValidation && !validate()) return;
+      handleButtonSubmit(button, values);
+    }, [getValues, validate, handleButtonSubmit]);
 
     // Открываем методы формы через ref
     useImperativeHandle(ref, () => ({
       getValues: () => formValues,
       reset: (values?: FormValues) => reset(values || mergedDefaultValues),
-      submit: () => handleSubmit(handleFormSubmit)(),
+      submit: () => {
+        if (validate()) {
+          handleSubmit(handleFormSubmit)();
+        }
+      },
       setValue: (name: string, value: unknown) => setValue(name, value),
     }));
 
