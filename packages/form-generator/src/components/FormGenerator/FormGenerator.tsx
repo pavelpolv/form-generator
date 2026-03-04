@@ -195,6 +195,9 @@ export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
       const errors: ValidationError[] = [];
 
       for (const group of config.groups) {
+        // Скрытые группы не валидируем
+        if (!evaluateConditions(group.visibleCondition, values)) continue;
+
         if (!evaluateConditions(group.validateCondition, values)) {
           hasErrors = true;
           errors.push({
@@ -204,6 +207,9 @@ export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
           });
         }
         for (const field of group.fields) {
+          // Скрытые поля не валидируем
+          if (!evaluateConditions(field.visibleCondition, values)) continue;
+
           if (!evaluateConditions(field.validateCondition, values)) {
             hasErrors = true;
             errors.push({
