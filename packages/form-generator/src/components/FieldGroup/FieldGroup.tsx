@@ -180,6 +180,7 @@ export const FieldGroup: FC<FieldGroupProps> = memo(
             const listError = !isListValid && forceShowErrors
               ? collectValidationMessages(field.validateCondition, formValues).join(', ')
               : undefined;
+            const isListRequired = isFieldRequired(field.validateCondition, formValues);
             return (
               <DynamicListField
                 key={field.name}
@@ -188,6 +189,7 @@ export const FieldGroup: FC<FieldGroupProps> = memo(
                 formValues={formValues}
                 forceShowErrors={forceShowErrors}
                 error={listError}
+                required={isListRequired}
               />
             );
           }
