@@ -410,9 +410,11 @@ const passToTrancheConfig: FormConfig = {
             children: [
               { field: 'passToTranche', condition: '===', value: false },
               {
-                field: 'chargeShift',
-                condition: '!∅',
-                message: 'Поле "Сдвиг даты" не должно быть пустым',
+                comparisonType: 'and',
+                children: [
+                  { field: 'chargeShift', condition: '!∅', message: 'Поле "Сдвиг даты" не должно быть пустым' },
+                  { field: 'chargeShift', condition: '!==', value: '1w', message: 'Сдвиг "1 неделя" недоступен при передаче в транш' },
+                ],
               },
             ],
           },

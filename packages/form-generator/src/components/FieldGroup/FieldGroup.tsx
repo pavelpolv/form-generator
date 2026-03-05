@@ -57,7 +57,7 @@ const MemoizedField: FC<MemoizedFieldProps> = memo(
 
     // Динамически вычисляем обязательность поля по validateCondition
     const required = useMemo(
-      () => isFieldRequired(field.validateCondition, formValues),
+      () => isFieldRequired(field.validateCondition, formValues, field.name),
       [field.validateCondition, formValues],
     );
 
@@ -180,7 +180,7 @@ export const FieldGroup: FC<FieldGroupProps> = memo(
             const listError = !isListValid && forceShowErrors
               ? collectValidationMessages(field.validateCondition, formValues).join(', ')
               : undefined;
-            const isListRequired = isFieldRequired(field.validateCondition, formValues);
+            const isListRequired = isFieldRequired(field.validateCondition, formValues, field.name);
             return (
               <DynamicListField
                 key={field.name}

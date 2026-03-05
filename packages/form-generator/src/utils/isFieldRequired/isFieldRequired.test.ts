@@ -224,7 +224,7 @@ describe('isFieldRequired', () => {
           { field: 'chargeShift', condition: '!∅', message: 'Поле "Сдвиг даты" не должно быть пустым' },
         ],
       };
-      expect(isFieldRequired(condition, { passToTranche: false })).toBe(false);
+      expect(isFieldRequired(condition, { passToTranche: false }, 'chargeShift')).toBe(false);
     });
 
     it('кейс passToTranche + chargeShift: обязателен когда passToTranche === true', () => {
@@ -236,7 +236,7 @@ describe('isFieldRequired', () => {
           { field: 'chargeShift', condition: '!∅', message: 'Поле "Сдвиг даты" не должно быть пустым' },
         ],
       };
-      expect(isFieldRequired(condition, { passToTranche: true })).toBe(true);
+      expect(isFieldRequired(condition, { passToTranche: true }, 'chargeShift')).toBe(true);
     });
 
     it('кейс passToTranche + chargeShift: обязателен когда passToTranche не задан', () => {
@@ -247,7 +247,33 @@ describe('isFieldRequired', () => {
           { field: 'chargeShift', condition: '!∅', message: 'Поле "Сдвиг даты" не должно быть пустым' },
         ],
       };
-      expect(isFieldRequired(condition, {})).toBe(true);
+      expect(isFieldRequired(condition, {}, 'chargeShift')).toBe(true);
+    });
+
+    it('кейс passToTranche + chargeShift c дополнительным правилом (!== 1w): звёздочка всегда когда passToTranche === true', () => {
+      // { or: [passToTranche === false, AND [chargeShift !∅, chargeShift !== '1w']] }
+      // chargeShift !== '1w' не должно влиять на обязательность
+      const condition: ConditionGroup = {
+        comparisonType: 'or',
+        children: [
+          { field: 'passToTranche', condition: '===', value: false },
+          {
+            comparisonType: 'and',
+            children: [
+              { field: 'chargeShift', condition: '!∅', message: 'Поле "Сдвиг даты" не должно быть пустым' },
+              { field: 'chargeShift', condition: '!==', value: '1w', message: 'Сдвиг "1 неделя" недоступен' },
+            ],
+          },
+        ],
+      };
+      // passToTranche=true, chargeShift пустой → обязателен
+      expect(isFieldRequired(condition, { passToTranche: true, chargeShift: '' }, 'chargeShift')).toBe(true);
+      // passToTranche=true, chargeShift='1d' (валидное значение) → обязателен (уже заполнен, но всё равно required)
+      expect(isFieldRequired(condition, { passToTranche: true, chargeShift: '1d' }, 'chargeShift')).toBe(true);
+      // passToTranche=true, chargeShift='1w' (недопустимое) → обязателен
+      expect(isFieldRequired(condition, { passToTranche: true, chargeShift: '1w' }, 'chargeShift')).toBe(true);
+      // passToTranche=false → не обязателен
+      expect(isFieldRequired(condition, { passToTranche: false, chargeShift: '' }, 'chargeShift')).toBe(false);
     });
 
     it('должен возвращать false если несколько контекст-условий в or выполнены хотя бы одно', () => {

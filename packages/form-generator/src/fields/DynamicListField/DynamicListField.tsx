@@ -108,7 +108,7 @@ export const DynamicListField: FC<DynamicListFieldComponentProps> = ({
               const error = !isItemValid && (isTouched || forceShowErrors)
                 ? collectValidationMessages(itemField.validateCondition, itemValues).join(', ')
                 : undefined;
-              const isItemRequired = isFieldRequired(itemField.validateCondition, itemValues);
+              const isItemRequired = isFieldRequired(itemField.validateCondition, itemValues, itemField.name);
 
               return (
                 <FieldRenderer
