@@ -1,7 +1,7 @@
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { useForm, useFormState } from 'react-hook-form';
 import { Button, Form, Space, notification } from 'antd';
-import { ComputedValueConfig, FormConfig, FormValues, SubmitButtonConfig } from '@/types';
+import { ComputedValueConfig, DynamicListField as DynamicListFieldConfig, FormConfig, FormValues, SubmitButtonConfig } from '@/types';
 import { collectValidationMessages, evaluateComputedValue, evaluateConditions } from '@/utils';
 import { FieldGroup } from '@/components/FieldGroup';
 import { FormButtons } from '@/components/FormButtons';
@@ -216,6 +216,25 @@ export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
               type: 'field',
               name: field.name,
               messages: collectValidationMessages(field.validateCondition, values),
+            });
+          }
+
+          // Для dynamicList дополнительно валидируем поля каждого элемента
+          if (field.type === 'dynamicList') {
+            const listField = field as DynamicListFieldConfig;
+            const items = (values[field.name] as Array<Record<string, unknown>>) ?? [];
+            items.forEach((itemValues, index) => {
+              for (const itemField of listField.itemFields) {
+                if (!evaluateConditions(itemField.visibleCondition, itemValues as FormValues)) continue;
+                if (!evaluateConditions(itemField.validateCondition, itemValues as FormValues)) {
+                  hasErrors = true;
+                  errors.push({
+                    type: 'field',
+                    name: `${field.name}[${index}].${itemField.name}`,
+                    messages: collectValidationMessages(itemField.validateCondition, itemValues as FormValues),
+                  });
+                }
+              }
             });
           }
         }

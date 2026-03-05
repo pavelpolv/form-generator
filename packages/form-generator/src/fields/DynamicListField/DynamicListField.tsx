@@ -11,6 +11,7 @@ interface DynamicListFieldComponentProps {
   control: Control<FormValues>
   formValues: FormValues
   forceShowErrors: boolean
+  error?: string
 }
 
 /**
@@ -23,6 +24,7 @@ export const DynamicListField: FC<DynamicListFieldComponentProps> = ({
   control,
   formValues,
   forceShowErrors,
+  error,
 }) => {
   const { fields: items, append, remove } = useFieldArray({
     control,
@@ -80,7 +82,7 @@ export const DynamicListField: FC<DynamicListFieldComponentProps> = ({
   );
 
   return (
-    <Form.Item label={config.label}>
+    <Form.Item label={config.label} validateStatus={error ? 'error' : undefined} help={error}>
       {position === 'top' && addBtn}
       {items.map((item, index) => {
         const itemValues = ((formValues[config.name] as Array<Record<string, unknown>>)?.[index] ?? {}) as FormValues;

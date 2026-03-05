@@ -396,11 +396,15 @@ const passToTrancheConfig: FormConfig = {
           defaultValue: true,
         },
         {
-          type: 'input',
+          type: 'select',
           name: 'chargeShift',
           label: 'Сдвиг даты',
-          placeholder: 'Введите сдвиг даты',
-          inputType: 'text',
+          placeholder: 'Выберите сдвиг даты',
+          options: [
+            { label: '1 день', value: '1d' },
+            { label: '1 неделя', value: '1w' },
+            { label: '1 месяц', value: '1m' },
+          ],
           validateCondition: {
             comparisonType: 'or',
             children: [

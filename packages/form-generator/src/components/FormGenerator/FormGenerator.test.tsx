@@ -835,4 +835,99 @@ describe('FormGenerator', () => {
     });
   });
 
+  describe('валидация dynamicList через ref.submit()', () => {
+    const dynamicListConfig: FormConfig = {
+      groups: [
+        {
+          name: 'Получатели',
+          fields: [
+            {
+              type: 'dynamicList',
+              name: 'recipients',
+              label: 'Получатели',
+              validateCondition: {
+                comparisonType: 'and',
+                children: [
+                  { field: 'recipients', condition: '!∅', message: 'Добавьте хотя бы одного получателя' },
+                ],
+              },
+              itemFields: [
+                {
+                  type: 'input',
+                  name: 'name',
+                  label: 'Имя',
+                  placeholder: 'Полное имя',
+                  validateCondition: {
+                    comparisonType: 'and',
+                    children: [
+                      { field: 'name', condition: '!∅', message: 'Имя обязательно' },
+                    ],
+                  },
+                },
+                {
+                  type: 'input',
+                  name: 'email',
+                  label: 'Email',
+                  placeholder: 'email@example.com',
+                  validateCondition: {
+                    comparisonType: 'and',
+                    children: [
+                      { field: 'email', condition: '!∅', message: 'Email обязателен' },
+                    ],
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+
+    it('должен блокировать сабмит и показывать ошибку когда список пуст', async () => {
+      const onSubmit = vi.fn();
+      const ref = createRef<FormGeneratorRef>();
+      render(<FormGenerator ref={ref} config={dynamicListConfig} onSubmit={onSubmit} />);
+
+      await act(async () => { ref.current?.submit(); });
+
+      expect(onSubmit).not.toHaveBeenCalled();
+      expect(screen.getByText('Добавьте хотя бы одного получателя')).toBeInTheDocument();
+    });
+
+    it('должен блокировать сабмит когда элементы есть но поля не заполнены', async () => {
+      const user = userEvent.setup();
+      const onSubmit = vi.fn();
+      const ref = createRef<FormGeneratorRef>();
+      render(<FormGenerator ref={ref} config={dynamicListConfig} onSubmit={onSubmit} />);
+
+      // Добавляем элемент, не заполняем поля
+      await user.click(screen.getByText('Add item'));
+      await act(async () => { ref.current?.submit(); });
+
+      expect(onSubmit).not.toHaveBeenCalled();
+      expect(screen.getByText('Имя обязательно')).toBeInTheDocument();
+      expect(screen.getByText('Email обязателен')).toBeInTheDocument();
+    });
+
+    it('должен пропускать сабмит когда список заполнен и все поля валидны', async () => {
+      const user = userEvent.setup();
+      const onSubmit = vi.fn();
+      const ref = createRef<FormGeneratorRef>();
+      render(<FormGenerator ref={ref} config={dynamicListConfig} onSubmit={onSubmit} />);
+
+      await user.click(screen.getByText('Add item'));
+      await user.type(screen.getByPlaceholderText('Полное имя'), 'Иван Петров');
+      await user.type(screen.getByPlaceholderText('email@example.com'), 'ivan@example.com');
+
+      await act(async () => { ref.current?.submit(); });
+
+      await waitFor(() => expect(onSubmit).toHaveBeenCalledOnce());
+    });
+
+    it('не должен показывать ошибки списка до попытки сабмита', async () => {
+      render(<FormGenerator config={dynamicListConfig} />);
+      expect(screen.queryByText('Добавьте хотя бы одного получателя')).not.toBeInTheDocument();
+    });
+  });
+
 });

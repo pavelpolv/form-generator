@@ -176,6 +176,10 @@ export const FieldGroup: FC<FieldGroupProps> = memo(
         {/* Рендерим поля через MemoizedField для лучшей производительности */}
         {sortedFields.map((field) => {
           if (field.type === 'dynamicList') {
+            const isListValid = evaluateConditions(field.validateCondition, formValues);
+            const listError = !isListValid && forceShowErrors
+              ? collectValidationMessages(field.validateCondition, formValues).join(', ')
+              : undefined;
             return (
               <DynamicListField
                 key={field.name}
@@ -183,6 +187,7 @@ export const FieldGroup: FC<FieldGroupProps> = memo(
                 control={control}
                 formValues={formValues}
                 forceShowErrors={forceShowErrors}
+                error={listError}
               />
             );
           }

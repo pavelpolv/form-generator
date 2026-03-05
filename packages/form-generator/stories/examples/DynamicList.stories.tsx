@@ -135,3 +135,71 @@ export const WithValidation: Story = {
     initialValues: {},
   },
 }
+
+/**
+ * Список обязателен (хотя бы один элемент) и все поля в каждом элементе обязательны.
+ * При попытке сабмита с пустым списком — ошибка на уровне списка.
+ * При попытке сабмита с незаполненными полями — ошибки на уровне полей.
+ */
+const requiredListConfig: FormConfig = {
+  groups: [
+    {
+      name: 'Список получателей',
+      fields: [
+        {
+          type: 'dynamicList',
+          name: 'recipients',
+          label: 'Получатели',
+          addButton: { label: 'Добавить получателя' },
+          validateCondition: {
+            comparisonType: 'and',
+            children: [
+              { field: 'recipients', condition: '!∅', message: 'Добавьте хотя бы одного получателя' },
+            ],
+          },
+          itemFields: [
+            {
+              type: 'input',
+              name: 'name',
+              label: 'Имя',
+              placeholder: 'Полное имя',
+              validateCondition: {
+                comparisonType: 'and',
+                children: [
+                  { field: 'name', condition: '!∅', message: 'Имя обязательно' },
+                ],
+              },
+            },
+            {
+              type: 'input',
+              name: 'email',
+              label: 'Email',
+              placeholder: 'email@example.com',
+              inputType: 'email',
+              validateCondition: {
+                comparisonType: 'and',
+                children: [
+                  { field: 'email', condition: '!∅', message: 'Email обязателен' },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    },
+  ],
+}
+
+export const RequiredList: Story = {
+  args: {
+    config: {
+      ...requiredListConfig,
+      buttons: [
+        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: true, url: 'http://localhost:9999' },
+        { key: 'reset', label: 'Сбросить', action: 'reset' },
+      ],
+    },
+    initialValues: {},
+    debug: true,
+  },
+}
