@@ -76,6 +76,13 @@ export function isFieldRequired(
   // Все условия были !∅ - поле всегда обязательно
   if (!contextCondition) return true;
 
-  // Оцениваем оставшиеся контекстные условия
+  // Для OR-группы: поле обязательно когда контекстные условия НЕ выполняются.
+  // Логика: { or: [A, field !∅] } — валидно если A выполнено (field не нужен)
+  // или field заполнен. Значит field обязателен только когда A НЕ выполнено.
+  if (isConditionGroup(validateCondition) && validateCondition.comparisonType === 'or') {
+    return !evaluateConditions(contextCondition, formValues);
+  }
+
+  // Для AND-группы: поле обязательно когда контекстные условия выполняются
   return evaluateConditions(contextCondition, formValues);
 }

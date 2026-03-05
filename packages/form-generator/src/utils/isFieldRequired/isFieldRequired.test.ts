@@ -166,7 +166,7 @@ describe('isFieldRequired', () => {
 
   describe('or-группа с !∅', () => {
     it('должен возвращать true, если or-группа содержит только !∅ (все условия — !∅, контекста нет)', () => {
-      // После stripRequiredChecks children станут пустыми → contextCondition === null → всегда обязательно
+      // После stripRequiredChecks children пусты → contextCondition === null → всегда обязательно
       const condition: ConditionGroup = {
         comparisonType: 'or',
         children: [
@@ -176,9 +176,9 @@ describe('isFieldRequired', () => {
       expect(isFieldRequired(condition, {})).toBe(true);
     });
 
-    it('должен возвращать true, если or-группа содержит !∅ и контекст-условие, и контекст-условие выполнено', () => {
-      // После stripRequiredChecks остаётся or [type === 'business'],
-      // evaluateConditions для or вернёт true, т.к. контекст выполнен
+    it('должен возвращать false, если or-группа содержит !∅ и контекст-условие, и контекст-условие выполнено', () => {
+      // { or: [type === 'business', inn !∅] } — когда type === 'business',
+      // OR уже выполнен без проверки inn → inn НЕ обязателен
       const condition: ConditionGroup = {
         comparisonType: 'or',
         children: [
@@ -186,12 +186,12 @@ describe('isFieldRequired', () => {
           { field: 'inn', condition: '!∅' },
         ],
       };
-      expect(isFieldRequired(condition, { type: 'business' })).toBe(true);
+      expect(isFieldRequired(condition, { type: 'business' })).toBe(false);
     });
 
-    it('должен возвращать false, если or-группа содержит !∅ и контекст-условие, и контекст-условие не выполнено', () => {
-      // После stripRequiredChecks остаётся or [type === 'business'],
-      // evaluateConditions вернёт false, т.к. контекст не выполнен
+    it('должен возвращать true, если or-группа содержит !∅ и контекст-условие, и контекст-условие не выполнено', () => {
+      // { or: [type === 'business', inn !∅] } — когда type !== 'business',
+      // единственный способ пройти валидацию — заполнить inn → inn обязателен
       const condition: ConditionGroup = {
         comparisonType: 'or',
         children: [
@@ -199,10 +199,11 @@ describe('isFieldRequired', () => {
           { field: 'inn', condition: '!∅' },
         ],
       };
-      expect(isFieldRequired(condition, { type: 'personal' })).toBe(false);
+      expect(isFieldRequired(condition, { type: 'personal' })).toBe(true);
     });
 
-    it('должен возвращать false, если or-группа содержит !∅ и контекст-условие, formValues пустой', () => {
+    it('должен возвращать true, если or-группа содержит !∅ и контекст-условие, formValues пустой', () => {
+      // type не задан → контекст-условие не выполнено → inn обязателен
       const condition: ConditionGroup = {
         comparisonType: 'or',
         children: [
@@ -210,7 +211,70 @@ describe('isFieldRequired', () => {
           { field: 'inn', condition: '!∅' },
         ],
       };
-      expect(isFieldRequired(condition, {})).toBe(false);
+      expect(isFieldRequired(condition, {})).toBe(true);
+    });
+
+    it('кейс passToTranche + chargeShift: не обязателен когда passToTranche === false', () => {
+      // { or: [passToTranche === false, chargeShift !∅] }
+      // Когда passToTranche === false — OR уже выполнен → chargeShift не обязателен
+      const condition: ConditionGroup = {
+        comparisonType: 'or',
+        children: [
+          { field: 'passToTranche', condition: '===', value: false },
+          { field: 'chargeShift', condition: '!∅', message: 'Поле "Сдвиг даты" не должно быть пустым' },
+        ],
+      };
+      expect(isFieldRequired(condition, { passToTranche: false })).toBe(false);
+    });
+
+    it('кейс passToTranche + chargeShift: обязателен когда passToTranche === true', () => {
+      // Когда passToTranche !== false — нужно заполнить chargeShift
+      const condition: ConditionGroup = {
+        comparisonType: 'or',
+        children: [
+          { field: 'passToTranche', condition: '===', value: false },
+          { field: 'chargeShift', condition: '!∅', message: 'Поле "Сдвиг даты" не должно быть пустым' },
+        ],
+      };
+      expect(isFieldRequired(condition, { passToTranche: true })).toBe(true);
+    });
+
+    it('кейс passToTranche + chargeShift: обязателен когда passToTranche не задан', () => {
+      const condition: ConditionGroup = {
+        comparisonType: 'or',
+        children: [
+          { field: 'passToTranche', condition: '===', value: false },
+          { field: 'chargeShift', condition: '!∅', message: 'Поле "Сдвиг даты" не должно быть пустым' },
+        ],
+      };
+      expect(isFieldRequired(condition, {})).toBe(true);
+    });
+
+    it('должен возвращать false если несколько контекст-условий в or выполнены хотя бы одно', () => {
+      // { or: [A, B, field !∅] } — когда A выполнено → field не обязателен
+      const condition: ConditionGroup = {
+        comparisonType: 'or',
+        children: [
+          { field: 'type', condition: '===', value: 'business' },
+          { field: 'age', condition: '>=', value: 18 },
+          { field: 'inn', condition: '!∅' },
+        ],
+      };
+      expect(isFieldRequired(condition, { type: 'business', age: 10 })).toBe(false);
+      expect(isFieldRequired(condition, { type: 'personal', age: 20 })).toBe(false);
+    });
+
+    it('должен возвращать true если все контекст-условия в or не выполнены', () => {
+      // { or: [A, B, field !∅] } — когда ни A, ни B → field обязателен
+      const condition: ConditionGroup = {
+        comparisonType: 'or',
+        children: [
+          { field: 'type', condition: '===', value: 'business' },
+          { field: 'age', condition: '>=', value: 18 },
+          { field: 'inn', condition: '!∅' },
+        ],
+      };
+      expect(isFieldRequired(condition, { type: 'personal', age: 16 })).toBe(true);
     });
   });
 
