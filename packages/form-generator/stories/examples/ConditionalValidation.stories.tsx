@@ -373,3 +373,60 @@ export const SelectSwitchConditionalRequired: Story = {
     },
   },
 }
+
+/**
+ * Поле "Сдвиг даты" (chargeShift) обязательно только когда passToTranche = true.
+ *
+ * validateCondition через or:
+ *   валидно если passToTranche === false (передаём в транш, сдвиг не нужен)
+ *   ИЛИ chargeShift заполнен
+ *   → звёздочка появляется только когда passToTranche === true
+ */
+const passToTrancheConfig: FormConfig = {
+  groups: [
+    {
+      name: 'Настройки транша',
+      fields: [
+        {
+          type: 'switch',
+          name: 'passToTranche',
+          label: 'Передать в транш',
+          checkedText: 'Да',
+          uncheckedText: 'Нет',
+          defaultValue: true,
+        },
+        {
+          type: 'input',
+          name: 'chargeShift',
+          label: 'Сдвиг даты',
+          placeholder: 'Введите сдвиг даты',
+          inputType: 'text',
+          validateCondition: {
+            comparisonType: 'or',
+            children: [
+              { field: 'passToTranche', condition: '===', value: false },
+              {
+                field: 'chargeShift',
+                condition: '!∅',
+                message: 'Поле "Сдвиг даты" не должно быть пустым',
+              },
+            ],
+          },
+        },
+      ],
+    },
+  ],
+}
+
+export const PassToTrancheChargeShift: Story = {
+  args: {
+    config: {
+      ...passToTrancheConfig,
+      buttons: [
+        { key: 'submit', label: 'Отправить', type: 'primary', action: 'submit', requiresValidation: true, url: 'http://localhost:9999' },
+        { key: 'reset', label: 'Сбросить', action: 'reset' },
+      ],
+    },
+    debug: true,
+  },
+}
