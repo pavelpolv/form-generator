@@ -85,6 +85,12 @@ export interface InputFieldProps {
    * Максимальная длина
    */
   maxLength?: number
+
+  /**
+   * Показывать кнопку очистки значения
+   * @default false
+   */
+  allowClear?: boolean
 }
 
 /**
@@ -134,6 +140,12 @@ export interface SelectFieldProps {
    * Разрешить поиск/фильтрацию вариантов
    */
   searchable?: boolean
+
+  /**
+   * Показывать кнопку очистки выбранного значения
+   * @default false
+   */
+  allowClear?: boolean
 }
 
 /**
@@ -175,6 +187,12 @@ export interface DateFieldProps {
    * Отключить даты после указанной
    */
   disabledDateAfter?: Date
+
+  /**
+   * Показывать кнопку очистки выбранной даты
+   * @default true
+   */
+  allowClear?: boolean
 }
 
 /**

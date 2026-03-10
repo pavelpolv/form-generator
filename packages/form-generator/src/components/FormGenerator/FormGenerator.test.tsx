@@ -930,4 +930,119 @@ describe('FormGenerator', () => {
     });
   });
 
+  describe('disabledCondition', () => {
+    const disabledConfig: FormConfig = {
+      groups: [{
+        name: 'Test',
+        fields: [
+          {
+            type: 'switch',
+            name: 'lock',
+            label: 'Lock',
+            defaultValue: false,
+          },
+          {
+            type: 'input',
+            name: 'target',
+            label: 'Target',
+            placeholder: 'Target field',
+            disabledCondition: {
+              comparisonType: 'and',
+              children: [{ field: 'lock', condition: '===', value: true }],
+            },
+          },
+        ],
+      }],
+    };
+
+    it('не должен блокировать поле при начальном состоянии disabledCondition=false', () => {
+      render(<FormGenerator config={disabledConfig} />);
+      expect(screen.getByPlaceholderText('Target field')).not.toBeDisabled();
+    });
+
+    it('должен немедленно блокировать поле когда disabledCondition становится истинным', async () => {
+      const user = userEvent.setup();
+      render(<FormGenerator config={disabledConfig} />);
+
+      expect(screen.getByPlaceholderText('Target field')).not.toBeDisabled();
+
+      // Переключаем свитч → lock = true → disabledCondition становится истинным
+      const switchEl = screen.getByRole('switch');
+      await user.click(switchEl);
+
+      expect(screen.getByPlaceholderText('Target field')).toBeDisabled();
+    });
+
+    it('должен снимать блокировку поля когда disabledCondition становится ложным', async () => {
+      const user = userEvent.setup();
+      const config: FormConfig = {
+        groups: [{
+          name: 'Test',
+          fields: [
+            {
+              type: 'switch',
+              name: 'lock',
+              label: 'Lock',
+              defaultValue: true,
+            },
+            {
+              type: 'input',
+              name: 'target',
+              label: 'Target',
+              placeholder: 'Target field',
+              disabledCondition: {
+                comparisonType: 'and',
+                children: [{ field: 'lock', condition: '===', value: true }],
+              },
+            },
+          ],
+        }],
+      };
+
+      render(<FormGenerator config={config} />);
+
+      expect(screen.getByPlaceholderText('Target field')).toBeDisabled();
+
+      const switchEl = screen.getByRole('switch');
+      await user.click(switchEl);
+
+      expect(screen.getByPlaceholderText('Target field')).not.toBeDisabled();
+    });
+
+    it('должен блокировать поле на основе значения текстового поля', async () => {
+      const user = userEvent.setup();
+      const config: FormConfig = {
+        groups: [{
+          name: 'Test',
+          fields: [
+            {
+              type: 'input',
+              name: 'source',
+              label: 'Source',
+              placeholder: 'Source field',
+            },
+            {
+              type: 'input',
+              name: 'target',
+              label: 'Target',
+              placeholder: 'Target field',
+              disabledCondition: {
+                comparisonType: 'and',
+                children: [{ field: 'source', condition: '!∅' }],
+              },
+            },
+          ],
+        }],
+      };
+
+      render(<FormGenerator config={config} />);
+
+      expect(screen.getByPlaceholderText('Target field')).not.toBeDisabled();
+
+      await user.type(screen.getByPlaceholderText('Source field'), 'some value');
+
+      expect(screen.getByPlaceholderText('Target field')).toBeDisabled();
+    });
+  });
+
 });

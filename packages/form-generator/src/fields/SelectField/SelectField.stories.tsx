@@ -145,3 +145,17 @@ export const Disabled: Story = {
     },
   },
 };
+
+export const WithAllowClear: Story = {
+  args: {
+    config: {
+      type: 'select',
+      name: 'country',
+      label: 'Страна (с очисткой)',
+      placeholder: 'Выберите страну',
+      options: countryOptions,
+      defaultValue: 'US',
+      allowClear: true,
+    },
+  },
+};

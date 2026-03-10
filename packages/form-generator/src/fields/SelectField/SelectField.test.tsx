@@ -136,4 +136,21 @@ describe('SelectField', () => {
     render(<TestWrapper config={baseConfig} />);
     expect(screen.getByText('Select option')).toBeInTheDocument();
   });
+
+  it('должен отображать кнопку очистки когда allowClear=true и значение выбрано', () => {
+    const config: SelectFieldConfig = {
+      ...baseConfig,
+      allowClear: true,
+      defaultValue: 'opt1',
+    };
+    render(<TestWrapper config={config} />);
+    const select = document.querySelector('.ant-select-allow-clear');
+    expect(select).not.toBeNull();
+  });
+
+  it('не должен отображать кнопку очистки по умолчанию', () => {
+    render(<TestWrapper config={baseConfig} />);
+    const select = document.querySelector('.ant-select-allow-clear');
+    expect(select).toBeNull();
+  });
 });

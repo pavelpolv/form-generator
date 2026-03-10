@@ -44,6 +44,7 @@ export const SelectField: FC<SelectFieldProps> = memo(({
     options,
     multiple = false,
     searchable = false,
+    allowClear,
   } = config;
 
   // Мемоизация функции фильтрации для предотвращения пересоздания при каждом рендере
@@ -74,6 +75,7 @@ export const SelectField: FC<SelectFieldProps> = memo(({
             filterOption={searchable ? filterOption : undefined}
             onChange={(value) => { field.onChange(value); field.onBlur(); }}
             onBlur={field.onBlur}
+            allowClear={allowClear}
             style={{ width: '100%' }}
           >
             {options.map((option) => (

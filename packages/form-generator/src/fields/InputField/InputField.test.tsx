@@ -116,4 +116,21 @@ describe('InputField', () => {
     const input = screen.getByPlaceholderText('Enter value');
     expect(input).toHaveAttribute('maxlength', '50');
   });
+
+  it('должен отображать кнопку очистки когда allowClear=true и поле заполнено', async () => {
+    const config: InputFieldConfig = {
+      ...baseConfig,
+      allowClear: true,
+      defaultValue: 'some value',
+    };
+    render(<TestWrapper config={config} />);
+    const clearIcon = document.querySelector('.ant-input-clear-icon');
+    expect(clearIcon).not.toBeNull();
+  });
+
+  it('не должен отображать кнопку очистки по умолчанию', () => {
+    render(<TestWrapper config={baseConfig} />);
+    const clearIcon = document.querySelector('.ant-input-clear-icon');
+    expect(clearIcon).toBeNull();
+  });
 });

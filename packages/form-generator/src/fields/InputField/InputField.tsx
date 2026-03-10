@@ -41,6 +41,7 @@ export const InputField: FC<InputFieldProps> = memo(({
     defaultValue,
     inputType = 'text',
     maxLength,
+    allowClear,
   } = config;
 
   return (
@@ -69,6 +70,7 @@ export const InputField: FC<InputFieldProps> = memo(({
               placeholder={placeholder}
               disabled={disabled}
               maxLength={maxLength}
+              allowClear={allowClear}
             />
           )}
         </Form.Item>

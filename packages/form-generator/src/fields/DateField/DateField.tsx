@@ -44,6 +44,7 @@ export const DateField: FC<DateFieldProps> = memo(({
     showTime = false,
     disabledDateBefore,
     disabledDateAfter,
+    allowClear,
   } = config;
 
   // Мемоизация функции disabledDate для предотвращения пересоздания при каждом рендере
@@ -86,6 +87,7 @@ export const DateField: FC<DateFieldProps> = memo(({
             disabled={disabled}
             showTime={showTime}
             disabledDate={disabledDateBefore || disabledDateAfter ? disabledDate : undefined}
+            {...(allowClear !== undefined && { allowClear })}
             style={{ width: '100%' }}
           />
         </Form.Item>

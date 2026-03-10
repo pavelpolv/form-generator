@@ -131,3 +131,31 @@ export const Disabled: Story = {
     },
   },
 };
+
+export const WithAllowClear: Story = {
+  args: {
+    config: {
+      type: 'date',
+      name: 'clearableDate',
+      label: 'Дата с очисткой',
+      placeholder: 'Выберите дату',
+      format: 'YYYY-MM-DD',
+      defaultValue: '2024-01-15T10:00:00.000Z',
+      allowClear: true,
+    },
+  },
+};
+
+export const WithAllowClearDisabled: Story = {
+  args: {
+    config: {
+      type: 'date',
+      name: 'nonClearableDate',
+      label: 'Дата без очистки',
+      placeholder: 'Выберите дату',
+      format: 'YYYY-MM-DD',
+      defaultValue: '2024-01-15T10:00:00.000Z',
+      allowClear: false,
+    },
+  },
+};

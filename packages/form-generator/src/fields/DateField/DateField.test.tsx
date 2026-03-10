@@ -193,4 +193,38 @@ describe('DateField', () => {
     const disabledCells = document.querySelectorAll('.ant-picker-cell-disabled');
     expect(disabledCells.length).toBeGreaterThan(0);
   });
+
+  it('16. показывает кнопку очистки когда allowClear=true и дата выбрана', () => {
+    const config: DateFieldConfig = {
+      ...baseConfig,
+      allowClear: true,
+    };
+    render(
+      <TestWrapper
+        config={config}
+        defaultValues={{ testDate: '2024-06-15T10:00:00.000Z' }}
+      />,
+    );
+    const picker = document.querySelector('.ant-picker')!;
+    fireEvent.mouseEnter(picker);
+    const clearBtn = document.querySelector('.ant-picker-clear');
+    expect(clearBtn).not.toBeNull();
+  });
+
+  it('17. скрывает кнопку очистки когда allowClear=false', () => {
+    const config: DateFieldConfig = {
+      ...baseConfig,
+      allowClear: false,
+    };
+    render(
+      <TestWrapper
+        config={config}
+        defaultValues={{ testDate: '2024-06-15T10:00:00.000Z' }}
+      />,
+    );
+    const picker = document.querySelector('.ant-picker')!;
+    fireEvent.mouseEnter(picker);
+    const clearBtn = document.querySelector('.ant-picker-clear');
+    expect(clearBtn).toBeNull();
+  });
 });

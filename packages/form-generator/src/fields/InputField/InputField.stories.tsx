@@ -93,3 +93,17 @@ export const Disabled: Story = {
     },
   },
 };
+
+export const WithAllowClear: Story = {
+  args: {
+    config: {
+      type: 'input',
+      name: 'clearable',
+      label: 'Поле с очисткой',
+      placeholder: 'Введите значение и очистите',
+      inputType: 'text',
+      defaultValue: 'Нажмите × чтобы очистить',
+      allowClear: true,
+    },
+  },
+};
