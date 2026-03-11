@@ -199,24 +199,30 @@ export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
         if (!evaluateConditions(group.visibleCondition, values)) continue;
 
         if (!evaluateConditions(group.validateCondition, values)) {
-          hasErrors = true;
-          errors.push({
-            type: 'group',
-            name: group.name,
-            messages: collectValidationMessages(group.validateCondition, values),
-          });
+          const groupMessages = collectValidationMessages(group.validateCondition, values);
+          if (groupMessages.length > 0) {
+            hasErrors = true;
+            errors.push({
+              type: 'group',
+              name: group.name,
+              messages: groupMessages,
+            });
+          }
         }
         for (const field of group.fields) {
           // Скрытые поля не валидируем
           if (!evaluateConditions(field.visibleCondition, values)) continue;
 
           if (!evaluateConditions(field.validateCondition, values)) {
-            hasErrors = true;
-            errors.push({
-              type: 'field',
-              name: field.name,
-              messages: collectValidationMessages(field.validateCondition, values),
-            });
+            const fieldMessages = collectValidationMessages(field.validateCondition, values);
+            if (fieldMessages.length > 0) {
+              hasErrors = true;
+              errors.push({
+                type: 'field',
+                name: field.name,
+                messages: fieldMessages,
+              });
+            }
           }
 
           // Для dynamicList дополнительно валидируем поля каждого элемента
@@ -227,12 +233,15 @@ export const FormGenerator = forwardRef<FormGeneratorRef, FormGeneratorProps>(
               for (const itemField of listField.itemFields) {
                 if (!evaluateConditions(itemField.visibleCondition, itemValues as FormValues)) continue;
                 if (!evaluateConditions(itemField.validateCondition, itemValues as FormValues)) {
-                  hasErrors = true;
-                  errors.push({
-                    type: 'field',
-                    name: `${field.name}[${index}].${itemField.name}`,
-                    messages: collectValidationMessages(itemField.validateCondition, itemValues as FormValues),
-                  });
+                  const itemMessages = collectValidationMessages(itemField.validateCondition, itemValues as FormValues);
+                  if (itemMessages.length > 0) {
+                    hasErrors = true;
+                    errors.push({
+                      type: 'field',
+                      name: `${field.name}[${index}].${itemField.name}`,
+                      messages: itemMessages,
+                    });
+                  }
                 }
               }
             });

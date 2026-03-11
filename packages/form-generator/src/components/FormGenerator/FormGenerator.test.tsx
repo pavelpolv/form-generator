@@ -1045,4 +1045,87 @@ describe('FormGenerator', () => {
     });
   });
 
+  describe('validate() — условие без сообщений не должно блокировать сабмит', () => {
+    it('не должен блокировать сабмит если validateCondition=false но сообщений нет', async () => {
+      // Условие AND с guard-условием без message: когда guard ложен → AND ложен,
+      // но сообщений нет → submit должен пройти
+      const onSubmit = vi.fn();
+      const ref = createRef<FormGeneratorRef>();
+      const config: FormConfig = {
+        groups: [{
+          name: 'Test',
+          fields: [
+            {
+              type: 'switch',
+              name: 'active',
+              label: 'Active',
+              defaultValue: false,
+            },
+            {
+              type: 'input',
+              name: 'target',
+              label: 'Target',
+              placeholder: 'Target',
+              // AND: active===true (no message) AND target!∅ (has message)
+              // Когда active=false → AND false, но message только у target!∅
+              // → collectValidationMessages вернёт [] → не должно блокировать
+              validateCondition: {
+                comparisonType: 'and',
+                children: [
+                  { field: 'active', condition: '===', value: true },
+                  { field: 'target', condition: '!∅', message: 'Target обязателен' },
+                ],
+              },
+            },
+          ],
+        }],
+      };
+
+      render(
+        <FormGenerator
+          ref={ref}
+          config={config}
+          onSubmit={onSubmit}
+          initialValues={{ active: false, target: 'filled value' }}
+        />,
+      );
+
+      await act(async () => { ref.current?.submit(); });
+
+      // active=false → AND ложен, но target заполнен → collectValidationMessages=[] → submit проходит
+      await waitFor(() => expect(onSubmit).toHaveBeenCalledOnce());
+    });
+
+    it('должен блокировать сабмит и показывать ошибку когда validateCondition=false с сообщением', async () => {
+      const onSubmit = vi.fn();
+      const ref = createRef<FormGeneratorRef>();
+      const config: FormConfig = {
+        groups: [{
+          name: 'Test',
+          fields: [
+            {
+              type: 'input',
+              name: 'target',
+              label: 'Target',
+              placeholder: 'Target',
+              validateCondition: {
+                comparisonType: 'and',
+                children: [
+                  { field: 'target', condition: '!∅', message: 'Target обязателен' },
+                ],
+              },
+            },
+          ],
+        }],
+      };
+
+      render(<FormGenerator ref={ref} config={config} onSubmit={onSubmit} />);
+
+      await act(async () => { ref.current?.submit(); });
+
+      expect(onSubmit).not.toHaveBeenCalled();
+      expect(screen.getByText('Target обязателен')).toBeInTheDocument();
+    });
+  });
+
 });
