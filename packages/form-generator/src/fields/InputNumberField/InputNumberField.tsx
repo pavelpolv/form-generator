@@ -40,7 +40,7 @@ const InputNumberInner: FC<{
       required={required}
     >
       <InputNumber
-        value={field.value as number | undefined}
+        value={field.value}
         name={field.name}
         ref={field.ref}
         placeholder={placeholder}
@@ -50,7 +50,6 @@ const InputNumberInner: FC<{
         step={step}
         onChange={handleChange}
         onBlur={handleBlur}
-        style={{ width: '100%' }}
       />
     </Form.Item>
   );
