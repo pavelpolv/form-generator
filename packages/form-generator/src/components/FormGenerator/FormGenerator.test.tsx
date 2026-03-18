@@ -1045,6 +1045,73 @@ describe('FormGenerator', () => {
     });
   });
 
+  describe('ошибки после сабмита исчезают при исправлении поля', () => {
+    it('должен убирать ошибку поля как только оно становится валидным после forceShowErrors', async () => {
+      const config: FormConfig = {
+        groups: [{
+          name: 'Test',
+          fields: [{
+            type: 'input',
+            name: 'email',
+            label: 'Email',
+            placeholder: 'Enter email',
+            validateCondition: {
+              comparisonType: 'and',
+              children: [{ field: 'email', condition: '!∅', message: 'Email обязателен' }],
+            },
+          }],
+        }],
+      };
+
+      const user = userEvent.setup();
+      render(<FormGenerator config={config} />);
+
+      // Кликаем сабмит — поле пустое, ошибка появляется
+      await user.click(screen.getByText('Submit'));
+      expect(screen.getByText('Email обязателен')).toBeInTheDocument();
+
+      // Заполняем поле — ошибка должна сразу исчезнуть
+      await user.type(screen.getByPlaceholderText('Enter email'), 'test@test.com');
+      expect(screen.queryByText('Email обязателен')).not.toBeInTheDocument();
+    });
+
+    it('не должен убирать ошибку пока поле остаётся невалидным', async () => {
+      const config: FormConfig = {
+        groups: [{
+          name: 'Test',
+          fields: [
+            {
+              type: 'input',
+              name: 'source',
+              label: 'Source',
+              placeholder: 'Source',
+            },
+            {
+              type: 'input',
+              name: 'target',
+              label: 'Target',
+              placeholder: 'Target',
+              validateCondition: {
+                comparisonType: 'and',
+                children: [{ field: 'target', condition: '!∅', message: 'Target обязателен' }],
+              },
+            },
+          ],
+        }],
+      };
+
+      const user = userEvent.setup();
+      render(<FormGenerator config={config} />);
+
+      await user.click(screen.getByText('Submit'));
+      expect(screen.getByText('Target обязателен')).toBeInTheDocument();
+
+      // Заполняем другое поле — ошибка target остаётся
+      await user.type(screen.getByPlaceholderText('Source'), 'some value');
+      expect(screen.getByText('Target обязателен')).toBeInTheDocument();
+    });
+  });
+
   describe('validate() — условие без сообщений не должно блокировать сабмит', () => {
     it('не должен блокировать сабмит если validateCondition=false но сообщений нет', async () => {
       // Условие AND с guard-условием без message: когда guard ложен → AND ложен,

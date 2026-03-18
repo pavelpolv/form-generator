@@ -1,5 +1,5 @@
-import { ChangeEvent, FC, memo, useMemo, useCallback } from 'react';
-import { Input, Form } from 'antd';
+import { FC, memo, useMemo, useCallback } from 'react';
+import { InputNumber, Form } from 'antd';
 import { Controller, Control, ControllerRenderProps } from 'react-hook-form';
 import { InputNumberField as InputNumberFieldConfig, FormValues } from '@/types';
 import { validateFieldConfig } from '@/validation/fieldSchemas';
@@ -24,9 +24,8 @@ const InputNumberInner: FC<{
   error?: string
   required?: boolean
 }> = memo(({ field, label, placeholder, disabled, min, max, step, error, required }) => {
-  const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    field.onChange(value === '' ? undefined : Number(value));
+  const handleChange = useCallback((value: number | null) => {
+    field.onChange(value === null ? undefined : value);
   }, [field]);
 
   const handleBlur = useCallback(() => {
@@ -40,9 +39,10 @@ const InputNumberInner: FC<{
       help={error}
       required={required}
     >
-      <Input
-        {...field}
-        type="number"
+      <InputNumber
+        value={field.value as number | undefined}
+        name={field.name}
+        ref={field.ref}
         placeholder={placeholder}
         disabled={disabled}
         min={min}
@@ -50,6 +50,7 @@ const InputNumberInner: FC<{
         step={step}
         onChange={handleChange}
         onBlur={handleBlur}
+        style={{ width: '100%' }}
       />
     </Form.Item>
   );

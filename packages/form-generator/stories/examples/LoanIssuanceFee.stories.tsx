@@ -77,7 +77,7 @@ const loanIssuanceFeeConfig: FormConfig = {
             comparisonType: 'or',
             children: [
               { field: 'passToTranche', condition: '===', value: false },
-              { field: 'rateValue', condition: '!∅', message: 'Поле "Значение ставки" не должно быть пустым' },
+              { field: 'chargePercentRate', condition: '!∅', message: 'Поле "Значение ставки" не должно быть пустым' },
             ],
           },
         },
@@ -99,7 +99,7 @@ const loanIssuanceFeeConfig: FormConfig = {
             comparisonType: 'or',
             children: [
               { field: 'passToTranche', condition: '===', value: false },
-              { field: 'rateValue', condition: '!∅', message: 'Поле "База расчета" не должно быть пустым' },
+              { field: 'chargePercentOf', condition: '!∅', message: 'Поле "База расчета" не должно быть пустым' },
             ],
           },
         },
