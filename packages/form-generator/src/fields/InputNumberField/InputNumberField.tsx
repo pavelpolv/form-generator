@@ -50,6 +50,7 @@ const InputNumberInner: FC<{
         step={step}
         onChange={handleChange}
         onBlur={handleBlur}
+        style={{ width: '100%' }}
       />
     </Form.Item>
   );
